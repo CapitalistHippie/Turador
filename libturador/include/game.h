@@ -1,0 +1,8 @@
+#ifndef LIBTURADOR_GAME_H_INCLUDED
+#define LIBTURADOR_GAME_H_INCLUDED
+
+class Game
+{
+}
+
+#endif // LIBTURADOR_GAME_H_INCLUDED
