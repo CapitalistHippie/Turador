@@ -1,0 +1,18 @@
+<div class="mermaid">
+classDiagram
+
+PlayerState .. Object
+PlayerState : Player* GetPlayer()
+InHarborPlayerState --|> PlayerState
+InHarborPlayerState : Harbor* GetHarbor()
+
+Ship .. Object
+Ship : price
+Ship : tonnage
+Ship : hitPoints
+Ship : size
+Player .. Object
+Player : Ship
+
+Harbor .. Object
+</div>
