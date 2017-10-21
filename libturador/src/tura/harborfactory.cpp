@@ -1,4 +1,4 @@
-#include "tura/harborrepository.h"
+#include "tura/harborfactory.h"
 
 #include "csvparser.hpp"
 
@@ -14,7 +14,7 @@ static const char* const CARGO_AMOUNTS_FILE_PATH = "assets/goederen hoeveelheid.
 static const int HARBORS_AMOUNT = 24;
 static const int CARGO_TYPES_AMOUNT = 15;
 
-Harbor HarborRepository::ConstructHarbor(const models::HarborStats& stats) const
+Harbor HarborFactory::ConstructHarbor(const models::HarborStats& stats) const
 {
   Harbor harbor;
 
@@ -35,7 +35,7 @@ Harbor HarborRepository::ConstructHarbor(const models::HarborStats& stats) const
   return harbor;
 }
 
-HarborRepository::HarborRepository()
+HarborFactory::HarborFactory()
 {
   CsvParser parser;
   parser.OpenFile(CARGO_PRICES_FILE_PATH);
@@ -119,24 +119,12 @@ HarborRepository::HarborRepository()
   }
 }
 
-const Harbor* HarborRepository::GetHarbors() const
-{
-  models::Harbor harbors[HARBORS_AMOUNT];
-
-  for (unsigned int i = 0; i < GetAmountOfHarbors(); ++i)
-  {
-    harbors[i] = ConstructHarbor(harborStats[i]);
-  }
-
-  return harbors;
-}
-
-unsigned int HarborRepository::GetAmountOfHarbors() const
+unsigned int HarborFactory::GetAmountOfHarbors() const
 {
   return HARBORS_AMOUNT;
 }
 
-Harbor HarborRepository::GetHarborByName(const char* const harborName) const
+Harbor HarborFactory::GetHarborByName(const char* const harborName) const
 {
   for (unsigned int i = 0; i < GetAmountOfHarbors(); ++i)
   {
@@ -147,4 +135,14 @@ Harbor HarborRepository::GetHarborByName(const char* const harborName) const
   }
 
   // TODO: Throw
+}
+
+Harbor HarborFactory::GetHarborByIndex(unsigned int index) const
+{
+  if (index >= GetAmountOfHarbors())
+  {
+    // TODO: Throw.
+  }
+
+  return ConstructHarbor(harborStats[index]);
 }

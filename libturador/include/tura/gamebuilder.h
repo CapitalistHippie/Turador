@@ -2,20 +2,20 @@
 #define LIBTURADOR_TURA_GAMEBUILDER_H_INCLUDED
 
 #include "game.h"
-#include "harborrepositoryinterface.h"
 #include "gameconfiguration.h"
+#include "harborfactoryinterface.h"
 
 namespace tura
 {
 class GameBuilder
 {
 private:
-  HarborRepositoryInterface* harborRepository;
+  HarborFactoryInterface* harborFactory;
 
 public:
-  GameBuilder& WithHarborRepository(HarborRepositoryInterface* harborRepository)
+  GameBuilder& WithHarborFactory(HarborFactoryInterface* harborFactory)
   {
-    this->harborRepository = harborRepository;
+    this->harborFactory = harborFactory;
 
     return *this;
   }
@@ -23,7 +23,7 @@ public:
   Game Build()
   {
     auto gameConfiguration = GameConfiguration();
-    gameConfiguration.harborRepository = harborRepository;
+    gameConfiguration.harborFactory = harborFactory;
 
     return Game(gameConfiguration);
   }

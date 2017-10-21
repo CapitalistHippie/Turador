@@ -1,14 +1,14 @@
 #ifndef LIBTURADOR_TURA_GAMECONFIGURATION_H_INCLUDED
 #define LIBTURADOR_TURA_GAMECONFIGURATION_H_INCLUDED
 
-#include "harborrepositoryinterface.h"
+#include "harborfactoryinterface.h"
 
 namespace tura
 {
 class GameConfiguration
 {
 public:
-  HarborRepositoryInterface* harborRepository;
+  HarborFactoryInterface* harborFactory;
 };
 }
 

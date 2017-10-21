@@ -20,16 +20,16 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/game.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gamebuilder.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gameconfiguration.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/harborrepository.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/harborrepositoryinterface.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactory.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactoryinterface.h"
     "${LIBTURADOR_INCLUDE_DIR}/csvparser.hpp"
     "${LIBTURADOR_SRC_DIR}/tura/game.cpp"
-    "${LIBTURADOR_SRC_DIR}/tura/harborrepository.cpp")
+    "${LIBTURADOR_SRC_DIR}/tura/harborfactory.cpp")
 
 set(LIBTURADOR_TESTS_SRC_DIR "${LIBTURADOR_DIR}/tests")
 set(LIBTURADOR_TEST_SRC_FILES
-    "${LIBTURADOR_TESTS_SRC_DIR}/mocks/mockharborrepository.h"
-    "${LIBTURADOR_TESTS_SRC_DIR}/harborrepositoryunittests.cpp"
+    "${LIBTURADOR_TESTS_SRC_DIR}/mocks/mockharborfactory.h"
+    "${LIBTURADOR_TESTS_SRC_DIR}/harborfactoryunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/main.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/testhelpers.h")
 
