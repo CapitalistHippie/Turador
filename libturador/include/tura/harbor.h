@@ -1,0 +1,12 @@
+#ifndef LIBTURADOR_TURA_HARBOR_H_INCLUDED
+#define LIBTURADOR_TURA_HARBOR_H_INCLUDED
+
+namespace tura
+{
+class Harbor
+{
+public:
+};
+}
+
+#endif // LIBTURADOR_TURA_HARBOR_H_INCLUDED

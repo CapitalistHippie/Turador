@@ -12,12 +12,20 @@ set(LIBTURADOR_SRC_DIR "${LIBTURADOR_DIR}/src")
 set(LIBTURADOR_INCLUDE_DIR "${LIBTURADOR_DIR}/include")
 
 set(LIBTURADOR_SRC_FILES
-    "${LIBTURADOR_INCLUDE_DIR}/game.h"
-    "${LIBTURADOR_SRC_DIR}/game.cpp")
+    "${LIBTURADOR_INCLUDE_DIR}/tura/game.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/gamebuilder.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/gameconfiguration.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/harbor.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/harborrepositoryinterface.h"
+    "${LIBTURADOR_SRC_DIR}/tura/game.cpp")
 
 set(LIBTURADOR_TESTS_SRC_DIR "${LIBTURADOR_DIR}/tests")
 set(LIBTURADOR_TEST_SRC_FILES
     "${LIBTURADOR_TESTS_SRC_DIR}/tests.cpp")
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 ###############################################################################
@@ -34,14 +42,6 @@ target_include_directories(${LIBTURADOR_BINARY_NAME}
 
 
 ###############################################################################
-## 3rd party libraries.
-###############################################################################
-
-# GTest. Is included and linked into the tests executable.
-find_package(GTest REQUIRED)
-
-
-###############################################################################
 ## Testing.
 ###############################################################################
 enable_testing()
@@ -50,9 +50,10 @@ add_executable(${LIBTURADOR_TESTS_BINARY_NAME}
     ${LIBTURADOR_TEST_SRC_FILES})
 
 target_link_libraries(${LIBTURADOR_TESTS_BINARY_NAME}
-    ${GTEST_BOTH_LIBRARIES})
+    gtest gtest_main gmock gmock_main
+    ${LIBTURADOR_BINARY_NAME})
 
 target_include_directories(${LIBTURADOR_TESTS_BINARY_NAME}
-    PRIVATE ${GTEST_INCLUDE_DIRS})
+    PRIVATE ${LIBTURADOR_INCLUDE_DIR})
 
 add_test("Tests" ${LIBTURADOR_TESTS_BINARY_NAME})
