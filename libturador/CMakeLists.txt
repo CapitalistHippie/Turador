@@ -13,13 +13,15 @@ set(LIBTURADOR_INCLUDE_DIR "${LIBTURADOR_DIR}/include")
 
 set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/cargo.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/models/gamestate.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harbor.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborcargo.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborcargostats.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborstats.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/game.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/gamebuilder.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/gamebuilder.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gameconfiguration.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/harborbuilder.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactory.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactoryinterface.h"
     "${LIBTURADOR_INCLUDE_DIR}/csvparser.hpp"
@@ -28,10 +30,11 @@ set(LIBTURADOR_SRC_FILES
 
 set(LIBTURADOR_TESTS_SRC_DIR "${LIBTURADOR_DIR}/tests")
 set(LIBTURADOR_TEST_SRC_FILES
-    "${LIBTURADOR_TESTS_SRC_DIR}/mocks/mockharborfactory.h"
-    "${LIBTURADOR_TESTS_SRC_DIR}/harborfactoryunittests.cpp"
-    "${LIBTURADOR_TESTS_SRC_DIR}/main.cpp"
-    "${LIBTURADOR_TESTS_SRC_DIR}/testhelpers.h")
+    "${LIBTURADOR_TESTS_SRC_DIR}/helpers/testhelpers.h"
+    "${LIBTURADOR_TESTS_SRC_DIR}/mocks/harborfactorymock.h"
+    "${LIBTURADOR_TESTS_SRC_DIR}/tura/gameunittests.cpp"
+    "${LIBTURADOR_TESTS_SRC_DIR}/tura/harborfactoryunittests.cpp"
+    "${LIBTURADOR_TESTS_SRC_DIR}/main.cpp")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

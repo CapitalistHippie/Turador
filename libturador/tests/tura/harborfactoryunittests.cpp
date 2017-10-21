@@ -2,17 +2,14 @@
 
 #include <tura/harborfactory.h>
 
-#include <iostream>
+#include "../helpers/testhelpers.h"
 
-#include "testhelpers.h"
-
-using namespace tura;
 using namespace testing;
 
 TEST(HarborFactory, GetAmountOfHarbors_Returns24)
 {
   // Arrange.
-  HarborFactory sut;
+  tura::HarborFactory sut;
 
   // Act.
 
@@ -20,10 +17,10 @@ TEST(HarborFactory, GetAmountOfHarbors_Returns24)
   EXPECT_EQ(24, sut.GetAmountOfHarbors());
 }
 
-TEST(HarborRepository, GetHarbors_ReturnsValidHarbors)
+TEST(HarborFactory, GetHarbors_ReturnsValidHarbors)
 {
   // Arrange.
-  HarborFactory sut;
+  tura::HarborFactory sut;
 
   // Act.
 

@@ -2,19 +2,27 @@
 #define LIBTURADOR_TURA_GAME_H_INCLUDED
 
 #include "gameconfiguration.h"
+#include "models/gamestate.h"
 
 namespace tura
 {
 class Game
 {
 private:
-    GameConfiguration gameConfiguration;
+  GameConfiguration gameConfiguration;
+
+  models::GameState gameState;
 
 public:
-    Game(GameConfiguration gameConfiguration) :
-        gameConfiguration(gameConfiguration)
-    {
-    }
+  Game(GameConfiguration gameConfiguration)
+    : gameConfiguration(gameConfiguration)
+    , gameState(models::GameState::NotStarted)
+  {
+  }
+
+  void Start();
+
+  models::GameState GetState() const;
 };
 }
 

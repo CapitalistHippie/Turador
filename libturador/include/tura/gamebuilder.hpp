@@ -20,7 +20,7 @@ public:
     return *this;
   }
 
-  Game Build()
+  Game Build() const
   {
     auto gameConfiguration = GameConfiguration();
     gameConfiguration.harborFactory = harborFactory;
