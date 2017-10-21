@@ -56,14 +56,23 @@ public:
     fileStream.getline(row.row, sizeof(row.row), '\n');
     row.stream = std::stringstream(row.row);
 
-    // Ignore the \n.
-    if (fileStream.peek() != '\n')
+    return row;
+  }
+
+  void IgnoreNextRow()
+  {
+    if (filePath == nullptr)
     {
       // TODO: Throw.
     }
-    // fileStream.ignore();
 
-    return row;
+    // If the line starts with a '#' it's a comment.
+    while (fileStream.peek() == '#')
+    {
+      fileStream.ignore(std::numeric_limits<int>::max(), '\n');
+    }
+
+    fileStream.ignore(std::numeric_limits<int>::max(), '\n');
   }
 
   void ParseNextColumn(CsvRow& row, char* const columnBuffer, const int columnBufferSize) const

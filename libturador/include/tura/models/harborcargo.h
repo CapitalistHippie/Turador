@@ -10,7 +10,7 @@ namespace models
 struct HarborCargo
 {
   Cargo cargo;
-  unsigned int price;
+  unsigned int price = 0;
 };
 }
 }

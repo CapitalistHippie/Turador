@@ -9,7 +9,7 @@ namespace models
 {
 struct Harbor
 {
-  char name[64];
+  char name[64] = "";
   HarborCargo goods[15];
 };
 }

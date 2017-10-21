@@ -7,8 +7,8 @@ namespace models
 {
 struct Cargo
 {
-  char name[64];
-  unsigned int amount;
+  char name[64] = "";
+  unsigned int amount = 0;
 };
 }
 }

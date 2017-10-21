@@ -15,6 +15,8 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/cargo.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harbor.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborcargo.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborcargostats.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborstats.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/game.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gamebuilder.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gameconfiguration.h"

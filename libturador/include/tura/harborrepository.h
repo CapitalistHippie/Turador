@@ -2,6 +2,7 @@
 #define LIBTURADOR_TURA_HARBORREPOSITORY_H_INCLUDED
 
 #include "models/harbor.h"
+#include "models/harborstats.h"
 
 #include "harborrepositoryinterface.h"
 
@@ -10,7 +11,9 @@ namespace tura
 class HarborRepository : public HarborRepositoryInterface
 {
 private:
-  models::Harbor harbors[24];
+  models::HarborStats harborStats[24];
+
+  models::Harbor ConstructHarbor(const models::HarborStats& stats) const;
 
 public:
   HarborRepository();
