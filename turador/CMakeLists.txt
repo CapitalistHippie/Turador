@@ -22,6 +22,12 @@ project(${TURADOR_PROJECT_NAME})
 add_executable(${TURADOR_BINARY_NAME}
     ${TURADOR_SRC_FILES})
 
+# Copy assets.
+# file(GLOB assets "assets/*")
+# foreach(asset ${assets})
+#     configure_file(${asset} "assets/${asset}" COPYONLY)
+# endforeach()
+
 
 ###############################################################################
 ## 1st party libraries.
