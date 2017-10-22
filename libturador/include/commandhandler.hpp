@@ -15,6 +15,17 @@ public:
   virtual void HandleCommand(const CommandInterface& command) = 0;
 };
 
+template<typename Command>
+class CommandHandlerBase : public CommandHandlerInterface
+{
+public:
+  virtual ~CommandHandlerBase() {}
+
+  void HandleCommand(const CommandInterface& command) override { HandleCommand(command); }
+
+  virtual void HandleCommand(const Command& command) = 0;
+};
+
 class CommandHandler
 {
 public:
