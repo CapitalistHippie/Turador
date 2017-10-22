@@ -1,12 +1,13 @@
 #ifndef LIBTURADOR_TURA_GAME_H_INCLUDED
 #define LIBTURADOR_TURA_GAME_H_INCLUDED
 
+#include "../commandhandler.hpp"
 #include "gameconfiguration.h"
 #include "models/gamestate.h"
 
 namespace tura
 {
-class Game
+class Game : public CommandHandler
 {
 private:
   GameConfiguration gameConfiguration;
@@ -14,11 +15,7 @@ private:
   models::GameState gameState;
 
 public:
-  Game(GameConfiguration gameConfiguration)
-    : gameConfiguration(gameConfiguration)
-    , gameState(models::GameState::NotStarted)
-  {
-  }
+  Game(GameConfiguration gameConfiguration);
 
   void Start();
 

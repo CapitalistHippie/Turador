@@ -12,6 +12,8 @@ set(LIBTURADOR_SRC_DIR "${LIBTURADOR_DIR}/src")
 set(LIBTURADOR_INCLUDE_DIR "${LIBTURADOR_DIR}/include")
 
 set(LIBTURADOR_SRC_FILES
+    "${LIBTURADOR_INCLUDE_DIR}/tura/commandhandlers/purchasecargocommandhandler.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/commands/purchasecargocommand.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/cargo.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/gamestate.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harbor.h"
@@ -24,6 +26,7 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborbuilder.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactory.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactoryinterface.h"
+    "${LIBTURADOR_INCLUDE_DIR}/commandhandler.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/csvparser.hpp"
     "${LIBTURADOR_SRC_DIR}/tura/game.cpp"
     "${LIBTURADOR_SRC_DIR}/tura/harborfactory.cpp")
