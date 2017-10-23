@@ -2,8 +2,6 @@
 
 #include <tura/harborfactory.h>
 
-#include "../helpers/testhelpers.h"
-
 using namespace testing;
 
 TEST(HarborFactory, GetAmountOfHarbors_Returns24)

@@ -7,7 +7,6 @@
 #include <tura/models/gamestate.h>
 #include <tura/models/harbor.h>
 
-#include "../helpers/testhelpers.h"
 #include "../mocks/harborfactorymock.h"
 
 using namespace testing;

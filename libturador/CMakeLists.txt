@@ -13,6 +13,7 @@ set(LIBTURADOR_INCLUDE_DIR "${LIBTURADOR_DIR}/include")
 
 set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/commandhandlers/purchasecargocommandhandler.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/commands/commandbase.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/commands/purchasecargocommand.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/cargo.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/gamestate.h"
@@ -35,6 +36,7 @@ set(LIBTURADOR_TESTS_SRC_DIR "${LIBTURADOR_DIR}/tests")
 set(LIBTURADOR_TEST_SRC_FILES
     "${LIBTURADOR_TESTS_SRC_DIR}/helpers/testhelpers.h"
     "${LIBTURADOR_TESTS_SRC_DIR}/mocks/harborfactorymock.h"
+    "${LIBTURADOR_TESTS_SRC_DIR}/tura/commandhandlers/purchasecargocommandhandlertests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/tura/gameunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/tura/harborfactoryunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/main.cpp")
