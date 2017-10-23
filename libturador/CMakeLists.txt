@@ -21,6 +21,7 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborcargo.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborcargostats.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborstats.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/error.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/game.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gamebuilder.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gameconfiguration.h"
@@ -29,6 +30,7 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactoryinterface.h"
     "${LIBTURADOR_INCLUDE_DIR}/commandhandler.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/csvparser.hpp"
+    "${LIBTURADOR_SRC_DIR}/tura/error.cpp"
     "${LIBTURADOR_SRC_DIR}/tura/game.cpp"
     "${LIBTURADOR_SRC_DIR}/tura/harborfactory.cpp")
 

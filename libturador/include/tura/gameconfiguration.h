@@ -8,7 +8,11 @@ namespace tura
 class GameConfiguration
 {
 public:
-  HarborFactoryInterface* harborFactory;
+  static const unsigned int STARTING_GOLD_DEFAULT = 1000;
+
+  HarborFactoryInterface* harborFactory = nullptr;
+
+  unsigned int startingGold = STARTING_GOLD_DEFAULT;
 };
 }
 

@@ -10,23 +10,24 @@ namespace tura
 class GameBuilder
 {
 private:
-  HarborFactoryInterface* harborFactory;
+  GameConfiguration gameConfiguration;
 
 public:
   GameBuilder& WithHarborFactory(HarborFactoryInterface* harborFactory)
   {
-    this->harborFactory = harborFactory;
+    gameConfiguration.harborFactory = harborFactory;
 
     return *this;
   }
 
-  Game Build() const
+  GameBuilder& WithStartingGold(unsigned int startingGold)
   {
-    auto gameConfiguration = GameConfiguration();
-    gameConfiguration.harborFactory = harborFactory;
+    gameConfiguration.startingGold = startingGold;
 
-    return Game(gameConfiguration);
+    return *this;
   }
+
+  Game Build() const { return Game(gameConfiguration); }
 };
 }
 
