@@ -8,7 +8,8 @@ namespace tura
 enum class Error
 {
   None,
-  InsuitableState
+  InsuitableState,
+  InsufficientGold
 };
 }
 

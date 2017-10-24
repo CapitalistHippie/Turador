@@ -18,9 +18,16 @@ class PurchaseCargoCommandHandler : public CommandHandlerBase<commands::Purchase
 public:
   void HandleCommand(const commands::PurchaseCargoCommand& command) override
   {
-    if (command.game.GetState() != models::GameState::InHarbor)
+    if (command.game.gameData.gameState != models::GameState::InHarbor)
     {
       throw std::system_error(std::make_error_code(Error::InsuitableState));
+    }
+
+    auto totalGoldToSpend = command.game.GetCurrentHarborCargoByName(command.cargoName).price * command.cargoAmount;
+
+    if (command.game.gameData.currentGold < totalGoldToSpend)
+    {
+      throw std::system_error(std::make_error_code(Error::InsufficientGold));
     }
   }
 };

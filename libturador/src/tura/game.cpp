@@ -8,19 +8,37 @@ using namespace tura::models;
 using namespace tura::commands;
 using namespace tura::commandhandlers;
 
-Game::Game(GameConfiguration gameConfiguration)
-  : gameConfiguration(gameConfiguration)
-  , gameState(models::GameState::NotStarted)
+tura::Game::Game(GameConfiguration gameConfiguration)
+  : harborFactory(gameConfiguration.harborFactory)
+  , gameConfiguration(gameConfiguration)
 {
   RegisterCommandHandler<PurchaseCargoCommand, PurchaseCargoCommandHandler>();
 }
 
-void Game::Start()
+void tura::Game::Start()
 {
-  gameState = GameState::InHarbor;
+  // The game starts in a harbor. Set the state to InHarbor and the harbor to the first one.
+  gameData.gameState = GameState::InHarbor;
+  gameData.currentHarbor = harborFactory->GetHarborByIndex(0);
+
+  gameData.currentGold = gameConfiguration.startingGold;
 }
 
-GameState Game::GetState() const
+const models::Game& tura::Game::GetGameData() const
 {
-  return gameState;
+  return gameData;
+}
+
+const HarborCargo& tura::Game::GetCurrentHarborCargoByName(const char* const cargoName) const
+{
+  // TODO: Remove the magic 15.
+  for (unsigned int i = 0; i < 15; ++i)
+  {
+    if (strcmp(cargoName, gameData.currentHarbor.goods[i].cargo.name) == 0)
+    {
+      return gameData.currentHarbor.goods[i];
+    }
+  }
+
+  // TODO: Throw.
 }

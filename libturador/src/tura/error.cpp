@@ -11,7 +11,7 @@ public:
 
 const char* TuraErrorCategory::name() const noexcept
 {
-  return "flights";
+  return "Turador";
 }
 
 std::string TuraErrorCategory::message(int ev) const

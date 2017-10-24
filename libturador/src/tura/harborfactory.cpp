@@ -128,7 +128,7 @@ Harbor HarborFactory::GetHarborByName(const char* const harborName) const
 {
   for (unsigned int i = 0; i < GetAmountOfHarbors(); ++i)
   {
-    if (strcmp(harborName, harborStats[i].harborName))
+    if (strcmp(harborName, harborStats[i].harborName) == 0)
     {
       return ConstructHarbor(harborStats[i]);
     }

@@ -14,11 +14,13 @@ using namespace testing;
 TEST(Game, Start_GameStartsInHarborState)
 {
   // Arrange.
+  const char* const harborName = "Test harbor";
+
   tura::HarborBuilder harborBuilder;
-  auto harbor = harborBuilder.WithName("Test harbor").Build();
+  auto harbor = harborBuilder.WithName(harborName).Build();
 
   StrictMock<HarborFactoryMock> harborFactoryMock;
-  ON_CALL(harborFactoryMock, GetHarborByIndex(0)).WillByDefault(Return(harbor));
+  EXPECT_CALL(harborFactoryMock, GetHarborByIndex(0)).WillOnce(Return(harbor));
 
   tura::GameBuilder gameBuilder;
   auto sut = gameBuilder.WithHarborFactory(&harborFactoryMock).Build();
@@ -27,5 +29,5 @@ TEST(Game, Start_GameStartsInHarborState)
   sut.Start();
 
   // Assert.
-  EXPECT_EQ(tura::models::GameState::InHarbor, sut.GetState());
+  EXPECT_EQ(tura::models::GameState::InHarbor, sut.GetGameData().gameState);
 }

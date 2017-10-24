@@ -12,7 +12,7 @@ struct PurchaseCargoCommand : public CommandBase
   using CommandBase::CommandBase;
 
   char cargoName[64];
-  unsigned int amount;
+  unsigned int cargoAmount;
 };
 }
 }

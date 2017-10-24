@@ -3,23 +3,28 @@
 
 #include "../commandhandler.hpp"
 #include "gameconfiguration.h"
+#include "harborfactoryinterface.h"
+#include "models/game.h"
 #include "models/gamestate.h"
+#include "models/harborcargo.h"
 
 namespace tura
 {
 class Game : public CommandHandler
 {
 private:
+  HarborFactoryInterface* harborFactory;
   GameConfiguration gameConfiguration;
 
-  models::GameState gameState;
-
 public:
+  models::Game gameData;
+
   Game(GameConfiguration gameConfiguration);
 
   void Start();
 
-  models::GameState GetState() const;
+  const models::Game& GetGameData() const;
+  const models::HarborCargo& GetCurrentHarborCargoByName(const char* const cargoName) const;
 };
 }
 

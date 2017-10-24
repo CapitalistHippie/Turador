@@ -3,6 +3,8 @@
 
 #include <typeindex>
 
+#include "noncopyable.h"
+
 struct CommandInterface
 {
 };
@@ -47,7 +49,9 @@ private:
   };
 
   template<typename Command, typename CommandHandler>
-  class CommandCommandHandler : public CommandCommandHandlerInterface
+  class CommandCommandHandler
+    : public CommandCommandHandlerInterface
+    , public Noncopyable
   {
   public:
     CommandHandler commandHandler;

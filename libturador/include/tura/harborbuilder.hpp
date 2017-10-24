@@ -10,28 +10,36 @@ namespace tura
 class HarborBuilder
 {
 private:
-  const char* name;
+  models::Harbor harbor;
+  unsigned int cargoIndex;
 
 public:
   HarborBuilder()
-    : name("")
+    : cargoIndex(0)
   {
   }
 
   HarborBuilder& WithName(const char* const name)
   {
-    this->name = name;
+    strncpy(harbor.name, name, sizeof(harbor.name));
 
     return *this;
   }
 
-  models::Harbor Build() const
+  HarborBuilder& WithCargo(const char* const cargoName, unsigned int cargoAmount, unsigned int cargoPrice)
   {
-    auto harbor = models::Harbor();
-    strncpy(harbor.name, name, sizeof(harbor.name));
+    // TODO: Check cargo index count.
 
-    return harbor;
+    strncpy(harbor.goods[cargoIndex].cargo.name, cargoName, sizeof(harbor.goods[cargoIndex].cargo.name));
+    harbor.goods[cargoIndex].cargo.amount = cargoAmount;
+    harbor.goods[cargoIndex].price = cargoPrice;
+
+    cargoIndex++;
+
+    return *this;
   }
+
+  models::Harbor Build() const { return harbor; }
 };
 }
 

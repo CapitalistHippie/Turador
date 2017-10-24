@@ -16,14 +16,27 @@
 
 using namespace testing;
 
+tura::commands::PurchaseCargoCommand BuildCommand(tura::Game& game,
+                                                  const char* const cargoName = nullptr,
+                                                  unsigned int cargoAmount = 0)
+{
+  tura::commands::PurchaseCargoCommand command(game);
+  if (cargoName != nullptr)
+  {
+    strncpy(command.cargoName, cargoName, sizeof(command.cargoName));
+  }
+  command.cargoAmount = cargoAmount;
+
+  return command;
+}
+
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableState)
 {
   // Arrange.
   tura::HarborBuilder harborBuilder;
   auto harbor = harborBuilder.WithName("Test harbor").Build();
 
-  StrictMock<HarborFactoryMock> harborFactoryMock;
-  ON_CALL(harborFactoryMock, GetHarborByIndex(0)).WillByDefault(Return(harbor));
+  HarborFactoryMock harborFactoryMock;
 
   tura::GameBuilder gameBuilder;
   auto game = gameBuilder.WithHarborFactory(&harborFactoryMock).Build();
@@ -34,4 +47,28 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableStat
 
   // Act and assert.
   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(command), tura::Error::InsuitableState);
+}
+
+TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficientGold)
+{
+  // Arrange.
+  const char* const harborName = "Test harbor";
+  const char* const cargoName = "Test cargo";
+
+  tura::HarborBuilder harborBuilder;
+  auto harbor = harborBuilder.WithName(harborName).WithCargo(cargoName, 100, 100).Build();
+
+  StrictMock<HarborFactoryMock> harborFactoryMock;
+  EXPECT_CALL(harborFactoryMock, GetHarborByIndex(0)).WillOnce(Return(harbor));
+
+  tura::GameBuilder gameBuilder;
+  auto game = gameBuilder.WithHarborFactory(&harborFactoryMock).WithStartingGold(0).Build();
+
+  auto command = BuildCommand(game, cargoName, 1);
+
+  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+
+  // Act and assert.
+  game.Start();
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(command), tura::Error::InsufficientGold);
 }
