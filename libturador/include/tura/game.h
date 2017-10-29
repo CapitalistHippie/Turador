@@ -2,6 +2,7 @@
 #define LIBTURADOR_TURA_GAME_H_INCLUDED
 
 #include "../commandhandler.hpp"
+#include "commands/commandbase.h"
 #include "gameconfiguration.h"
 #include "harborfactoryinterface.h"
 #include "models/game.h"
@@ -10,18 +11,26 @@
 
 namespace tura
 {
-class Game : public CommandHandler
+class Game : private CommandHandler
 {
 private:
   HarborFactoryInterface* harborFactory;
   GameConfiguration gameConfiguration;
 
-public:
   models::Game gameData;
 
+public:
   Game(GameConfiguration gameConfiguration);
 
   void Start();
+
+  template<typename Command>
+  void HandleCommand(const Command& command)
+  {
+    commands::CommandBase<Command> commandHandlerCommand(command, *this, gameData);
+
+    CommandHandler::HandleCommand(commandHandlerCommand);
+  }
 
   const models::Game& GetGameData() const;
   const models::HarborCargo& GetCurrentHarborCargoByName(const char* const cargoName) const;

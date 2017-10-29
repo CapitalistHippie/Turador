@@ -13,19 +13,20 @@ namespace tura
 {
 namespace commandhandlers
 {
-class PurchaseCargoCommandHandler : public CommandHandlerBase<commands::PurchaseCargoCommand>
+class PurchaseCargoCommandHandler : public CommandHandlerBase<commands::CommandBase<commands::PurchaseCargoCommand>>
 {
 public:
-  void HandleCommand(const commands::PurchaseCargoCommand& command) override
+  void HandleCommand(const commands::CommandBase<commands::PurchaseCargoCommand>& command) override
   {
-    if (command.game.gameData.gameState != models::GameState::InHarbor)
+    if (command.gameData.gameState != models::GameState::InHarbor)
     {
       throw std::system_error(std::make_error_code(Error::InsuitableState));
     }
 
-    auto totalGoldToSpend = command.game.GetCurrentHarborCargoByName(command.cargoName).price * command.cargoAmount;
+    auto totalGoldToSpend =
+      command.game.GetCurrentHarborCargoByName(command.command.cargoName).price * command.command.cargoAmount;
 
-    if (command.game.gameData.currentGold < totalGoldToSpend)
+    if (command.gameData.currentGold < totalGoldToSpend)
     {
       throw std::system_error(std::make_error_code(Error::InsufficientGold));
     }

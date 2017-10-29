@@ -12,7 +12,7 @@ tura::Game::Game(GameConfiguration gameConfiguration)
   : harborFactory(gameConfiguration.harborFactory)
   , gameConfiguration(gameConfiguration)
 {
-  RegisterCommandHandler<PurchaseCargoCommand, PurchaseCargoCommandHandler>();
+  RegisterCommandHandler<CommandBase<PurchaseCargoCommand>, PurchaseCargoCommandHandler>();
 }
 
 void tura::Game::Start()

@@ -7,6 +7,7 @@
 
 struct CommandInterface
 {
+  virtual ~CommandInterface() {}
 };
 
 class CommandHandlerInterface
@@ -23,12 +24,12 @@ class CommandHandlerBase : public CommandHandlerInterface
 public:
   virtual ~CommandHandlerBase() {}
 
-  void HandleCommand(const CommandInterface& command) override { HandleCommand(command); }
+  void HandleCommand(const CommandInterface& command) override { HandleCommand(static_cast<const Command&>(command)); }
 
   virtual void HandleCommand(const Command& command) = 0;
 };
 
-class CommandHandler
+class CommandHandler : public Noncopyable
 {
 public:
   static const unsigned int COMMAND_HANDLERS_COUNT_MAX = 64;
@@ -49,9 +50,7 @@ private:
   };
 
   template<typename Command, typename CommandHandler>
-  class CommandCommandHandler
-    : public CommandCommandHandlerInterface
-    , public Noncopyable
+  class CommandCommandHandler : public CommandCommandHandlerInterface
   {
   public:
     CommandHandler commandHandler;
@@ -73,7 +72,10 @@ public:
   {
   }
 
-  ~CommandHandler()
+  CommandHandler(CommandHandler&& other) = default;
+  CommandHandler& operator=(CommandHandler&& other) = default;
+
+  virtual ~CommandHandler()
   {
     for (unsigned int i = 0; i < commandHandlersCount; ++i)
     {
@@ -82,7 +84,7 @@ public:
   }
 
   template<typename Command>
-  void HandCommand(const Command& command)
+  void HandleCommand(const Command& command)
   {
     for (unsigned int i = 0; i < commandHandlersCount; ++i)
     {

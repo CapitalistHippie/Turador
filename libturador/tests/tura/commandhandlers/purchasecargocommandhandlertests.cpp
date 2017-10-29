@@ -16,11 +16,9 @@
 
 using namespace testing;
 
-tura::commands::PurchaseCargoCommand BuildCommand(tura::Game& game,
-                                                  const char* const cargoName = nullptr,
-                                                  unsigned int cargoAmount = 0)
+tura::commands::PurchaseCargoCommand BuildCommand(const char* const cargoName = nullptr, unsigned int cargoAmount = 0)
 {
-  tura::commands::PurchaseCargoCommand command(game);
+  tura::commands::PurchaseCargoCommand command;
   if (cargoName != nullptr)
   {
     strncpy(command.cargoName, cargoName, sizeof(command.cargoName));
@@ -33,20 +31,13 @@ tura::commands::PurchaseCargoCommand BuildCommand(tura::Game& game,
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableState)
 {
   // Arrange.
-  tura::HarborBuilder harborBuilder;
-  auto harbor = harborBuilder.WithName("Test harbor").Build();
-
-  HarborFactoryMock harborFactoryMock;
-
   tura::GameBuilder gameBuilder;
-  auto game = gameBuilder.WithHarborFactory(&harborFactoryMock).Build();
+  auto game = gameBuilder.Build();
 
-  tura::commands::PurchaseCargoCommand command(game);
-
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  tura::commands::PurchaseCargoCommand command;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(command), tura::Error::InsuitableState);
+  ASSERT_THROW_SYSTEM_ERROR(game.HandleCommand(command), tura::Error::InsuitableState);
 }
 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficientGold)
@@ -64,11 +55,9 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficient
   tura::GameBuilder gameBuilder;
   auto game = gameBuilder.WithHarborFactory(&harborFactoryMock).WithStartingGold(0).Build();
 
-  auto command = BuildCommand(game, cargoName, 1);
-
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  auto command = BuildCommand(cargoName, 1);
 
   // Act and assert.
   game.Start();
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(command), tura::Error::InsufficientGold);
+  ASSERT_THROW_SYSTEM_ERROR(game.HandleCommand(command), tura::Error::InsufficientGold);
 }
