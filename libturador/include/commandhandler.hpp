@@ -5,28 +5,32 @@
 
 #include "noncopyable.h"
 
-struct CommandInterface
+class CommandInterface
 {
-  virtual ~CommandInterface() {}
+public:
+  virtual ~CommandInterface() = default;
 };
 
 class CommandHandlerInterface
 {
 public:
-  virtual ~CommandHandlerInterface() {}
+  virtual ~CommandHandlerInterface() = default;
 
-  virtual void HandleCommand(const CommandInterface& command) = 0;
+  virtual void HandleCommand(const CommandInterface& command) const = 0;
 };
 
 template<typename Command>
 class CommandHandlerBase : public CommandHandlerInterface
 {
 public:
-  virtual ~CommandHandlerBase() {}
+  virtual ~CommandHandlerBase() = default;
 
-  void HandleCommand(const CommandInterface& command) override { HandleCommand(static_cast<const Command&>(command)); }
+  void HandleCommand(const CommandInterface& command) const override
+  {
+    HandleCommand(static_cast<const Command&>(command));
+  }
 
-  virtual void HandleCommand(const Command& command) = 0;
+  virtual void HandleCommand(const Command& command) const = 0;
 };
 
 class CommandHandler : public Noncopyable
@@ -43,10 +47,10 @@ private:
     {
     }
 
-    virtual ~CommandCommandHandlerInterface() {}
+    virtual ~CommandCommandHandlerInterface() = default;
 
     std::type_index commandTypeIndex;
-    virtual CommandHandlerInterface& GetCommandHandler() = 0;
+    virtual const CommandHandlerInterface& GetCommandHandler() const = 0;
   };
 
   template<typename Command, typename CommandHandler>
@@ -60,7 +64,7 @@ private:
     {
     }
 
-    CommandHandlerInterface& GetCommandHandler() override { return commandHandler; }
+    const CommandHandlerInterface& GetCommandHandler() const override { return commandHandler; }
   };
 
   unsigned int commandHandlersCount;

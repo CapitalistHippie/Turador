@@ -16,7 +16,7 @@ namespace commandhandlers
 class PurchaseCargoCommandHandler : public CommandHandlerBase<commands::CommandBase<commands::PurchaseCargoCommand>>
 {
 public:
-  void HandleCommand(const commands::CommandBase<commands::PurchaseCargoCommand>& command) override
+  void HandleCommand(const commands::CommandBase<commands::PurchaseCargoCommand>& command) const override
   {
     if (command.gameData.gameState != models::GameState::InHarbor)
     {

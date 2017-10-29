@@ -8,7 +8,7 @@ namespace tura
 class HarborFactoryInterface
 {
 public:
-  virtual ~HarborFactoryInterface(){};
+  virtual ~HarborFactoryInterface() = default;
   virtual unsigned int GetAmountOfHarbors() const = 0;
   virtual models::Harbor GetHarborByName(const char* const harborName) const = 0;
   virtual models::Harbor GetHarborByIndex(unsigned int index) const = 0;
