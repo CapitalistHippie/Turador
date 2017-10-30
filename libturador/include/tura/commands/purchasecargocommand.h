@@ -1,7 +1,7 @@
 #ifndef LIBTURADOR_TURA_COMMANDS_PURCHASECARGOCOMMAND_H_INCLUDED
 #define LIBTURADOR_TURA_COMMANDS_PURCHASECARGOCOMMAND_H_INCLUDED
 
-#include "../../commandhandler.hpp"
+#include "../../commandmediator.hpp"
 
 namespace tura
 {

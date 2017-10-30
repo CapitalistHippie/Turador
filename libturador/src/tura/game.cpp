@@ -10,9 +10,10 @@ using namespace tura::commandhandlers;
 
 tura::Game::Game(GameConfiguration gameConfiguration)
   : harborFactory(gameConfiguration.harborFactory)
+  , commandMediator(gameConfiguration.commandMediator)
   , gameConfiguration(gameConfiguration)
 {
-  RegisterCommandHandler<CommandBase<PurchaseCargoCommand>, PurchaseCargoCommandHandler>();
+  commandMediator->RegisterCommandHandler<CommandBase<PurchaseCargoCommand>, PurchaseCargoCommandHandler>();
 }
 
 void tura::Game::Start()

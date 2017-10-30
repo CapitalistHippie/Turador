@@ -28,7 +28,7 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborbuilder.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactory.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactoryinterface.h"
-    "${LIBTURADOR_INCLUDE_DIR}/commandhandler.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/commandmediator.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/noncopyable.h"
     "${LIBTURADOR_INCLUDE_DIR}/csvparser.hpp"
     "${LIBTURADOR_SRC_DIR}/tura/error.cpp"

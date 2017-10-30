@@ -3,6 +3,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <commandmediator.hpp>
 #include <tura/commandhandlers/purchasecargocommandhandler.hpp>
 #include <tura/commands/purchasecargocommand.h>
 #include <tura/error.h>
@@ -31,8 +32,9 @@ tura::commands::PurchaseCargoCommand BuildCommand(const char* const cargoName = 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableState)
 {
   // Arrange.
+  CommandMediator commandMediator;
   tura::GameBuilder gameBuilder;
-  auto game = gameBuilder.Build();
+  auto game = gameBuilder.WithCommandMediator(&commandMediator).Build();
 
   tura::commands::PurchaseCargoCommand command;
 
@@ -52,8 +54,10 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficient
   StrictMock<HarborFactoryMock> harborFactoryMock;
   EXPECT_CALL(harborFactoryMock, GetHarborByIndex(0)).WillOnce(Return(harbor));
 
+  CommandMediator commandMediator;
   tura::GameBuilder gameBuilder;
-  auto game = gameBuilder.WithHarborFactory(&harborFactoryMock).WithStartingGold(0).Build();
+  auto game =
+    gameBuilder.WithCommandMediator(&commandMediator).WithHarborFactory(&harborFactoryMock).WithStartingGold(0).Build();
 
   auto command = BuildCommand(cargoName, 1);
 

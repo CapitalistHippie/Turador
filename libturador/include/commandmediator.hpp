@@ -1,5 +1,5 @@
-#ifndef LIBTURADOR_COMMANDHANDLER_HPP_INCLUDED
-#define LIBTURADOR_COMMANDHANDLER_HPP_INCLUDED
+#ifndef LIBTURADOR_COMMANDMEDIATOR_HPP_INCLUDED
+#define LIBTURADOR_COMMANDMEDIATOR_HPP_INCLUDED
 
 #include <typeindex>
 
@@ -33,7 +33,7 @@ public:
   virtual void HandleCommand(const Command& command) const = 0;
 };
 
-class CommandHandler : public Noncopyable
+class CommandMediator : public Noncopyable
 {
 public:
   static const unsigned int COMMAND_HANDLERS_COUNT_MAX = 64;
@@ -71,15 +71,15 @@ private:
   CommandCommandHandlerInterface* commandHandlers[COMMAND_HANDLERS_COUNT_MAX];
 
 public:
-  CommandHandler()
+  CommandMediator()
     : commandHandlersCount(0)
   {
   }
 
-  CommandHandler(CommandHandler&& other) = default;
-  CommandHandler& operator=(CommandHandler&& other) = default;
+  CommandMediator(CommandMediator&& other) = default;
+  CommandMediator& operator=(CommandMediator&& other) = default;
 
-  virtual ~CommandHandler()
+  virtual ~CommandMediator()
   {
     for (unsigned int i = 0; i < commandHandlersCount; ++i)
     {
@@ -88,7 +88,7 @@ public:
   }
 
   template<typename Command>
-  void HandleCommand(const Command& command)
+  void HandleCommand(const Command& command) const
   {
     for (unsigned int i = 0; i < commandHandlersCount; ++i)
     {
@@ -124,4 +124,4 @@ public:
   }
 };
 
-#endif // LIBTURADOR_COMMANDHANDLER_HPP_INCLUDED
+#endif // LIBTURADOR_COMMANDMEDIATOR_HPP_INCLUDED

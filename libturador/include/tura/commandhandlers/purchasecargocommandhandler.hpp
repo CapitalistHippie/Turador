@@ -3,7 +3,7 @@
 
 #include <system_error>
 
-#include "../../commandhandler.hpp"
+#include "../../commandmediator.hpp"
 #include "../commands/purchasecargocommand.h"
 #include "../error.h"
 #include "../game.h"

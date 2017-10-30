@@ -1,7 +1,7 @@
 #ifndef LIBTURADOR_TURA_GAME_H_INCLUDED
 #define LIBTURADOR_TURA_GAME_H_INCLUDED
 
-#include "../commandhandler.hpp"
+#include "../commandmediator.hpp"
 #include "commands/commandbase.h"
 #include "gameconfiguration.h"
 #include "harborfactoryinterface.h"
@@ -11,10 +11,11 @@
 
 namespace tura
 {
-class Game : private CommandHandler
+class Game : private CommandMediator
 {
 private:
   HarborFactoryInterface* harborFactory;
+  CommandMediator* commandMediator;
   GameConfiguration gameConfiguration;
 
   models::Game gameData;
@@ -29,7 +30,7 @@ public:
   {
     commands::CommandBase<Command> commandHandlerCommand(command, *this, gameData);
 
-    CommandHandler::HandleCommand(commandHandlerCommand);
+    commandMediator->HandleCommand(commandHandlerCommand);
   }
 
   const models::Game& GetGameData() const;

@@ -1,8 +1,7 @@
 #ifndef LIBTURADOR_TURA_GAMEBUILDER_H_INCLUDED
 #define LIBTURADOR_TURA_GAMEBUILDER_H_INCLUDED
 
-#include <utility>
-
+#include "../commandmediator.hpp"
 #include "game.h"
 #include "gameconfiguration.h"
 #include "harborfactoryinterface.h"
@@ -18,6 +17,13 @@ public:
   GameBuilder& WithHarborFactory(HarborFactoryInterface* harborFactory)
   {
     gameConfiguration.harborFactory = harborFactory;
+
+    return *this;
+  }
+
+  GameBuilder& WithCommandMediator(CommandMediator* commandMediator)
+  {
+    gameConfiguration.commandMediator = commandMediator;
 
     return *this;
   }

@@ -22,8 +22,9 @@ TEST(Game, Start_GameStartsInHarborState)
   StrictMock<HarborFactoryMock> harborFactoryMock;
   EXPECT_CALL(harborFactoryMock, GetHarborByIndex(0)).WillOnce(Return(harbor));
 
+  CommandMediator commandMediator;
   tura::GameBuilder gameBuilder;
-  auto sut = gameBuilder.WithHarborFactory(&harborFactoryMock).Build();
+  auto sut = gameBuilder.WithCommandMediator(&commandMediator).WithHarborFactory(&harborFactoryMock).Build();
 
   // Act.
   sut.Start();

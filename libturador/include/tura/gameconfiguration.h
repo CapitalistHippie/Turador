@@ -11,6 +11,7 @@ public:
   static const unsigned int STARTING_GOLD_DEFAULT = 1000;
 
   HarborFactoryInterface* harborFactory = nullptr;
+  CommandMediator* commandMediator = nullptr;
 
   unsigned int startingGold = STARTING_GOLD_DEFAULT;
 };
