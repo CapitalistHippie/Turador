@@ -29,17 +29,3 @@ const models::Game& tura::Game::GetGameData() const
 {
   return gameData;
 }
-
-const HarborCargo& tura::Game::GetCurrentHarborCargoByName(const char* const cargoName) const
-{
-  // TODO: Remove the magic 15.
-  for (unsigned int i = 0; i < 15; ++i)
-  {
-    if (strcmp(cargoName, gameData.currentHarbor.goods[i].cargo.name) == 0)
-    {
-      return gameData.currentHarbor.goods[i];
-    }
-  }
-
-  // TODO: Throw.
-}

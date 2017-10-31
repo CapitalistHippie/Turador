@@ -25,6 +25,7 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/game.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gamebuilder.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/gameconfiguration.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/gamehelpers.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborbuilder.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactory.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactoryinterface.h"

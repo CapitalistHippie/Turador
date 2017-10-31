@@ -4,9 +4,11 @@
 #include <system_error>
 
 #include "../../commandmediator.hpp"
+#include "../commands/commandbase.h"
 #include "../commands/purchasecargocommand.h"
 #include "../error.h"
-#include "../game.h"
+#include "../gamehelpers.hpp"
+#include "../models/game.h"
 #include "../models/gamestate.h"
 
 namespace tura
@@ -24,7 +26,7 @@ public:
     }
 
     auto totalGoldToSpend =
-      command.game.GetCurrentHarborCargoByName(command.command.cargoName).price * command.command.cargoAmount;
+      GetCurrentHarborCargoByName(command.gameData, command.command.cargoName).price * command.command.cargoAmount;
 
     if (command.gameData.currentGold < totalGoldToSpend)
     {

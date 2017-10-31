@@ -14,12 +14,10 @@ class CommandBase : public CommandInterface
 {
 public:
   const Command& command;
-  const Game& game;
   models::Game& gameData;
 
-  CommandBase(const Command& command, const Game& game, models::Game& gameData)
+  CommandBase(const Command& command, models::Game& gameData)
     : command(command)
-    , game(game)
     , gameData(gameData)
   {
   }

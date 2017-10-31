@@ -3,17 +3,13 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <commandmediator.hpp>
 #include <tura/commandhandlers/purchasecargocommandhandler.hpp>
 #include <tura/commands/purchasecargocommand.h>
 #include <tura/error.h>
-#include <tura/game.h>
-#include <tura/gamebuilder.hpp>
 #include <tura/harborbuilder.hpp>
 #include <tura/models/harbor.h>
 
 #include "../../helpers/testhelpers.h"
-#include "../../mocks/harborfactorymock.h"
 
 using namespace testing;
 
@@ -32,14 +28,16 @@ tura::commands::PurchaseCargoCommand BuildCommand(const char* const cargoName = 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableState)
 {
   // Arrange.
-  CommandMediator commandMediator;
-  tura::GameBuilder gameBuilder;
-  auto game = gameBuilder.WithCommandMediator(&commandMediator).Build();
+  tura::models::Game gameData;
+  gameData.gameState = tura::models::GameState::NotStarted;
 
   tura::commands::PurchaseCargoCommand command;
+  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+
+  tura::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(game.HandleCommand(command), tura::Error::InsuitableState);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsuitableState);
 }
 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficientGold)
@@ -51,17 +49,15 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficient
   tura::HarborBuilder harborBuilder;
   auto harbor = harborBuilder.WithName(harborName).WithCargo(cargoName, 100, 100).Build();
 
-  StrictMock<HarborFactoryMock> harborFactoryMock;
-  EXPECT_CALL(harborFactoryMock, GetHarborByIndex(0)).WillOnce(Return(harbor));
-
-  CommandMediator commandMediator;
-  tura::GameBuilder gameBuilder;
-  auto game =
-    gameBuilder.WithCommandMediator(&commandMediator).WithHarborFactory(&harborFactoryMock).WithStartingGold(0).Build();
+  tura::models::Game gameData;
+  gameData.gameState = tura::models::GameState::InHarbor;
+  gameData.currentHarbor = harbor;
 
   auto command = BuildCommand(cargoName, 1);
+  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+
+  tura::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
-  game.Start();
-  ASSERT_THROW_SYSTEM_ERROR(game.HandleCommand(command), tura::Error::InsufficientGold);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientGold);
 }

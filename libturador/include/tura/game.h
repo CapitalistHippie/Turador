@@ -28,13 +28,12 @@ public:
   template<typename Command>
   void HandleCommand(const Command& command)
   {
-    commands::CommandBase<Command> commandHandlerCommand(command, *this, gameData);
+    commands::CommandBase<Command> commandHandlerCommand(command, gameData);
 
     commandMediator->HandleCommand(commandHandlerCommand);
   }
 
   const models::Game& GetGameData() const;
-  const models::HarborCargo& GetCurrentHarborCargoByName(const char* const cargoName) const;
 };
 }
 
