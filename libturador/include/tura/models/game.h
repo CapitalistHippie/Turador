@@ -3,6 +3,7 @@
 
 #include "gamestate.h"
 #include "harbor.h"
+#include "ship.h"
 
 namespace tura
 {
@@ -13,6 +14,8 @@ struct Game
   models::GameState gameState = GameState::NotStarted;
 
   models::Harbor currentHarbor;
+  models::Ship currentShip;
+
   unsigned int currentGold = 0;
 };
 }

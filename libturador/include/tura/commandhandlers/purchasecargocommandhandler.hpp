@@ -20,18 +20,43 @@ class PurchaseCargoCommandHandler : public CommandHandlerBase<commands::CommandB
 public:
   void HandleCommand(const commands::CommandBase<commands::PurchaseCargoCommand>& command) const override
   {
-    if (command.gameData.gameState != models::GameState::InHarbor)
+    auto& gameData = command.gameData;
+
+    // Check if we're in the right state.
+    if (gameData.gameState != models::GameState::InHarbor)
     {
       throw std::system_error(std::make_error_code(Error::InsuitableState));
     }
 
-    auto totalGoldToSpend =
-      GetCurrentHarborCargoByName(command.gameData, command.command.cargoName).price * command.command.cargoAmount;
+    // Get the harbor cargo.
+    auto& harborCargo = GetCurrentHarborCargoByName(gameData, command.command.cargoName);
 
-    if (command.gameData.currentGold < totalGoldToSpend)
+    // Check if the harbor has enough of the cargo that we want to purchase.
+    if (harborCargo.cargo.amount < command.command.cargoAmount)
+    {
+      throw std::system_error(std::make_error_code(Error::InsufficientCargoInHarbor));
+    }
+
+    // Check if the ship has enough cargo space to hold the cargo.
+    if (command.command.cargoAmount + GetShipUsedCargoSpace(gameData.currentShip) >
+        gameData.currentShip.shipType.cargoSpaceMax)
+    {
+      throw std::system_error(std::make_error_code(Error::InsufficientShipCargoSpace));
+    }
+
+    // Calculate the total gold we need to spend.
+    auto totalGoldToSpend = harborCargo.price * command.command.cargoAmount;
+
+    // Check if we got enough money.
+    if (gameData.currentGold < totalGoldToSpend)
     {
       throw std::system_error(std::make_error_code(Error::InsufficientGold));
     }
+
+    // We good. Let's do this.
+    gameData.currentGold -= totalGoldToSpend;
+    harborCargo.cargo.amount -= command.command.cargoAmount;
+    GetCurrentShipCargoByName(gameData, command.command.cargoName).amount += command.command.cargoAmount;
   }
 };
 }

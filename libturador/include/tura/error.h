@@ -9,7 +9,9 @@ enum class Error
 {
   None,
   InsuitableState,
-  InsufficientGold
+  InsufficientGold,
+  InsufficientCargoInHarbor,
+  InsufficientShipCargoSpace
 };
 }
 
