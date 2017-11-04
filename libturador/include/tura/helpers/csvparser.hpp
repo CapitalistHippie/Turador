@@ -4,6 +4,10 @@
 #include <fstream>
 #include <limits>
 #include <sstream>
+#include <stdexcept>
+#include <system_error>
+
+#include "tura/error.h"
 
 namespace tura
 {
@@ -19,16 +23,23 @@ public:
 class CsvParser
 {
 private:
-  const char* filePath = nullptr;
+  const char* filePath;
+  bool fileOpened;
 
   std::ifstream fileStream;
 
 public:
+  CsvParser()
+    : filePath(nullptr)
+    , fileOpened(false)
+  {
+  }
+
   void OpenFile(const char* const filePath)
   {
     if (filePath == nullptr)
     {
-      // TODO: Throw.
+      throw std::invalid_argument("Argument 'filePath' may not be null.");
     }
 
     fileStream = std::ifstream(filePath);
@@ -36,17 +47,18 @@ public:
     // Check if the file really opened.
     if (!fileStream.is_open())
     {
-      // TODO: Throw.
+      throw std::system_error(std::make_error_code(Error::UnableToOpenFile));
     }
 
     this->filePath = filePath;
+    fileOpened = true;
   }
 
   CsvRow ParseNextRow()
   {
-    if (filePath == nullptr)
+    if (!fileOpened)
     {
-      // TODO: Throw.
+      throw std::system_error(std::make_error_code(Error::NoFileOpened));
     }
 
     // If the line starts with a '#' it's a comment.
@@ -65,9 +77,9 @@ public:
 
   void IgnoreNextRow()
   {
-    if (filePath == nullptr)
+    if (!fileOpened)
     {
-      // TODO: Throw.
+      throw std::system_error(std::make_error_code(Error::NoFileOpened));
     }
 
     // If the line starts with a '#' it's a comment.
@@ -83,7 +95,7 @@ public:
   {
     if (columnBuffer == nullptr)
     {
-      // TODO: Throw.
+      throw std::invalid_argument("Argument 'columnBuffer' may not be null.");
     }
 
     row.stream.getline(columnBuffer, columnBufferSize, ';');

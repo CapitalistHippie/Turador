@@ -25,7 +25,7 @@ public:
     auto& gameData = command.gameData;
 
     // Check if we're in the right state.
-    if (gameData.gameState != models::GameState::InHarbor)
+    if (gameData.gameState != dal::models::GameState::InHarbor)
     {
       throw std::system_error(std::make_error_code(Error::InsuitableState));
     }

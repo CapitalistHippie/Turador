@@ -12,7 +12,9 @@ enum class Error
   InsufficientGold,
   InsufficientCargoInHarbor,
   InsufficientShipCargoSpace,
-  UnknownEntityName
+  UnknownEntityName,
+  UnableToOpenFile,
+  NoFileOpened
 };
 }
 

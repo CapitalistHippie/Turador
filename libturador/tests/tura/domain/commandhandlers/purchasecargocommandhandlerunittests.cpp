@@ -1,24 +1,25 @@
 #include <system_error>
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <tura/commandhandlers/purchasecargocommandhandler.hpp>
-#include <tura/commands/purchasecargocommand.h>
+#include <tura/dal/models/game.h>
+#include <tura/dal/models/harbor.h>
+#include <tura/dal/models/ship.h>
+#include <tura/dal/models/shiptype.h>
+#include <tura/domain/commandhandlers/purchasecargocommandhandler.hpp>
+#include <tura/domain/commands/purchasecargocommand.h>
 #include <tura/error.h>
 #include <tura/harborbuilder.hpp>
-#include <tura/models/harbor.h>
-#include <tura/models/ship.h>
-#include <tura/models/shiptype.h>
 #include <tura/shipbuilder.hpp>
 
-#include "../../helpers/testhelpers.h"
+#include "../../../helpers/testhelpers.h"
 
 using namespace testing;
 
-tura::commands::PurchaseCargoCommand BuildCommand(const char* const cargoName = nullptr, unsigned int cargoAmount = 0)
+tura::domain::commands::PurchaseCargoCommand BuildCommand(const char* const cargoName = nullptr,
+                                                          unsigned int cargoAmount = 0)
 {
-  tura::commands::PurchaseCargoCommand command;
+  tura::domain::commands::PurchaseCargoCommand command;
   if (cargoName != nullptr)
   {
     strncpy(command.cargoName, cargoName, sizeof(command.cargoName));
@@ -31,13 +32,13 @@ tura::commands::PurchaseCargoCommand BuildCommand(const char* const cargoName = 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableState)
 {
   // Arrange.
-  tura::models::Game gameData;
-  gameData.gameState = tura::models::GameState::NotStarted;
+  tura::dal::models::Game gameData;
+  gameData.gameState = tura::dal::models::GameState::NotStarted;
 
-  tura::commands::PurchaseCargoCommand command;
-  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+  tura::domain::commands::PurchaseCargoCommand command;
+  tura::domain::commands::CommandBase<tura::domain::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
 
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsuitableState);
@@ -51,22 +52,22 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficient
   tura::HarborBuilder harborBuilder;
   auto harbor = harborBuilder.WithName("Test harbor").WithCargo(cargoName, 100, 100).Build();
 
-  tura::models::ShipType shipType;
+  tura::dal::models::ShipType shipType;
   shipType.cargoSpaceMax = 10000;
 
   tura::ShipBuilder shipBuilder;
   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 0).Build();
 
-  tura::models::Game gameData;
-  gameData.gameState = tura::models::GameState::InHarbor;
+  tura::dal::models::Game gameData;
+  gameData.gameState = tura::dal::models::GameState::InHarbor;
   gameData.currentGold = 0;
   gameData.currentHarbor = harbor;
   gameData.currentShip = ship;
 
   auto command = BuildCommand(cargoName, 1);
-  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+  tura::domain::commands::CommandBase<tura::domain::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
 
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientGold);
@@ -80,15 +81,15 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughCargoInHarbor_ThrowsIns
   tura::HarborBuilder harborBuilder;
   auto harbor = harborBuilder.WithName("Test harbor").WithCargo(cargoName, 1, 100).Build();
 
-  tura::models::Game gameData;
-  gameData.gameState = tura::models::GameState::InHarbor;
+  tura::dal::models::Game gameData;
+  gameData.gameState = tura::dal::models::GameState::InHarbor;
   gameData.currentGold = 10000;
   gameData.currentHarbor = harbor;
 
   auto command = BuildCommand(cargoName, 100);
-  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+  tura::domain::commands::CommandBase<tura::domain::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
 
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientCargoInHarbor);
@@ -102,22 +103,22 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughCargoSpaceInShip_Throws
   tura::HarborBuilder harborBuilder;
   auto harbor = harborBuilder.WithName("Test harbor").WithCargo(cargoName, 10000, 10).Build();
 
-  tura::models::ShipType shipType;
+  tura::dal::models::ShipType shipType;
   shipType.cargoSpaceMax = 100;
 
   tura::ShipBuilder shipBuilder;
   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
 
-  tura::models::Game gameData;
-  gameData.gameState = tura::models::GameState::InHarbor;
+  tura::dal::models::Game gameData;
+  gameData.gameState = tura::dal::models::GameState::InHarbor;
   gameData.currentGold = 10000;
   gameData.currentHarbor = harbor;
   gameData.currentShip = ship;
 
   auto command = BuildCommand(cargoName, 100);
-  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+  tura::domain::commands::CommandBase<tura::domain::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
 
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientShipCargoSpace);
@@ -133,22 +134,22 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_DecreasesHarborCargoAmountByRequ
   tura::HarborBuilder harborBuilder;
   auto harbor = harborBuilder.WithName("Test harbor").WithCargo(cargoName, harborCargoAmount, 10).Build();
 
-  tura::models::ShipType shipType;
+  tura::dal::models::ShipType shipType;
   shipType.cargoSpaceMax = 10000;
 
   tura::ShipBuilder shipBuilder;
   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 0).Build();
 
-  tura::models::Game gameData;
-  gameData.gameState = tura::models::GameState::InHarbor;
+  tura::dal::models::Game gameData;
+  gameData.gameState = tura::dal::models::GameState::InHarbor;
   gameData.currentGold = 10000;
   gameData.currentHarbor = harbor;
   gameData.currentShip = ship;
 
   auto command = BuildCommand(cargoName, purchaseAmount);
-  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+  tura::domain::commands::CommandBase<tura::domain::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
 
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act.
   sut.HandleCommand(wrappedCommand);
@@ -171,22 +172,22 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_DecreasesCurrentGoldByGoldSpent)
   tura::HarborBuilder harborBuilder;
   auto harbor = harborBuilder.WithName("Test harbor").WithCargo(cargoName, harborCargoAmount, harborCargoPrice).Build();
 
-  tura::models::ShipType shipType;
+  tura::dal::models::ShipType shipType;
   shipType.cargoSpaceMax = 10000;
 
   tura::ShipBuilder shipBuilder;
   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 0).Build();
 
-  tura::models::Game gameData;
-  gameData.gameState = tura::models::GameState::InHarbor;
+  tura::dal::models::Game gameData;
+  gameData.gameState = tura::dal::models::GameState::InHarbor;
   gameData.currentGold = startingGold;
   gameData.currentHarbor = harbor;
   gameData.currentShip = ship;
 
   auto command = BuildCommand(cargoName, purchaseAmount);
-  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+  tura::domain::commands::CommandBase<tura::domain::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
 
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act.
   sut.HandleCommand(wrappedCommand);
@@ -206,22 +207,22 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_IncreasesShipCargoByAmountPurcha
   tura::HarborBuilder harborBuilder;
   auto harbor = harborBuilder.WithName("Test harbor").WithCargo(cargoName, 10000, 10).Build();
 
-  tura::models::ShipType shipType;
+  tura::dal::models::ShipType shipType;
   shipType.cargoSpaceMax = 10000;
 
   tura::ShipBuilder shipBuilder;
   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, currentCargoAmountInShip).Build();
 
-  tura::models::Game gameData;
-  gameData.gameState = tura::models::GameState::InHarbor;
+  tura::dal::models::Game gameData;
+  gameData.gameState = tura::dal::models::GameState::InHarbor;
   gameData.currentGold = 10000;
   gameData.currentHarbor = harbor;
   gameData.currentShip = ship;
 
   auto command = BuildCommand(cargoName, purchaseAmount);
-  tura::commands::CommandBase<tura::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+  tura::domain::commands::CommandBase<tura::domain::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
 
-  tura::commandhandlers::PurchaseCargoCommandHandler sut;
+  tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act.
   sut.HandleCommand(wrappedCommand);

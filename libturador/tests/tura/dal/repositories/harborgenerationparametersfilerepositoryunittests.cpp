@@ -31,11 +31,13 @@ TEST(HarborGenerationParametersFileRepository, GetHarbors_ReturnsValidHarborGene
 
     for (unsigned int j = 0; j < 15; ++j)
     {
-      EXPECT_STRNE("", harborGenerationParameters.goods[j].cargoName);
+      EXPECT_STRNE("", harborGenerationParameters.cargoGenerationParameters[j].cargoName);
 
-      EXPECT_NE(0, harborGenerationParameters.goods[j].priceMin);
-      EXPECT_LE(harborGenerationParameters.goods[j].priceMin, harborGenerationParameters.goods[j].priceMax);
-      EXPECT_LE(harborGenerationParameters.goods[j].amountMin, harborGenerationParameters.goods[j].amountMax);
+      EXPECT_NE(0, harborGenerationParameters.cargoGenerationParameters[j].priceMin);
+      EXPECT_LE(harborGenerationParameters.cargoGenerationParameters[j].priceMin,
+                harborGenerationParameters.cargoGenerationParameters[j].priceMax);
+      EXPECT_LE(harborGenerationParameters.cargoGenerationParameters[j].amountMin,
+                harborGenerationParameters.cargoGenerationParameters[j].amountMax);
     }
   }
 }

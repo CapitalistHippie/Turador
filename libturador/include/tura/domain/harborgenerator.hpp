@@ -46,7 +46,7 @@ public:
 
     strncpy(harbor.name, parameters.harborName, sizeof(harbor.name));
 
-    for (unsigned int i = 0; i < CARGO_TYPE_COUNT; ++i)
+    for (unsigned int i = 0; i < 15; ++i)
     {
       strncpy(harbor.goods[i].cargo.name,
               parameters.cargoGenerationParameters[i].cargoName,

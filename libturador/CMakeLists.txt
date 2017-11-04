@@ -37,7 +37,10 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/service/gameclient.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/error.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborbuilder.hpp"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/shipbuilder.hpp")
+    "${LIBTURADOR_INCLUDE_DIR}/tura/shipbuilder.hpp"
+    "${LIBTURADOR_SRC_DIR}/tura/dal/repositories/harborgenerationparametersfilerepository.cpp"
+    "${LIBTURADOR_SRC_DIR}/tura/domain/game.cpp"
+    "${LIBTURADOR_SRC_DIR}/tura/error.cpp")
 
 set(LIBTURADOR_TESTS_SRC_DIR "${LIBTURADOR_DIR}/tests")
 set(LIBTURADOR_TEST_SRC_FILES
@@ -62,9 +65,6 @@ project(${LIBTURADOR_PROJECT_NAME})
 add_library(${LIBTURADOR_BINARY_NAME}
     STATIC
     ${LIBTURADOR_SRC_FILES})
-
-set_target_properties(${LIBTURADOR_BINARY_NAME} PROPERTIES
-    LINKER_LANGUAGE CXX)
 
 target_include_directories(${LIBTURADOR_BINARY_NAME}
     PUBLIC ${LIBTURADOR_INCLUDE_DIR})
