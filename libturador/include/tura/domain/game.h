@@ -12,11 +12,15 @@ namespace domain
 class Game
 {
 private:
+  CommandMediator commandMediatorInstance;
   CommandMediator* commandMediator;
 
   dal::models::Game gameData;
 
+  void RegisterCommandHandlers();
+
 public:
+  Game();
   Game(CommandMediator* commandMediator);
 
   template<typename Command>

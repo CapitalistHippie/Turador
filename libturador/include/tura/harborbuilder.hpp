@@ -1,16 +1,16 @@
 #ifndef LIBTURADOR_TURA_HARBORBUILDER_H_INCLUDED
 #define LIBTURADOR_TURA_HARBORBUILDER_H_INCLUDED
 
-#include <string.h>
+#include <cstring>
 
-#include "models/harbor.h"
+#include "tura/dal/models/harbor.h"
 
 namespace tura
 {
 class HarborBuilder
 {
 private:
-  models::Harbor harbor;
+  dal::models::Harbor harbor;
   unsigned int cargoIndex;
 
 public:
@@ -39,7 +39,7 @@ public:
     return *this;
   }
 
-  models::Harbor Build() const { return harbor; }
+  dal::models::Harbor Build() const { return harbor; }
 };
 }
 

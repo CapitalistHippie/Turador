@@ -12,41 +12,41 @@ set(LIBTURADOR_SRC_DIR "${LIBTURADOR_DIR}/src")
 set(LIBTURADOR_INCLUDE_DIR "${LIBTURADOR_DIR}/include")
 
 set(LIBTURADOR_SRC_FILES
-    "${LIBTURADOR_INCLUDE_DIR}/tura/commandhandlers/purchasecargocommandhandler.hpp"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/commandhandlers/startgamecommandhandler.hpp"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/commands/commandbase.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/commands/purchasecargocommand.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/commands/startgamecommand.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/models/cargo.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/models/gamestate.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/models/harbor.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborcargo.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborcargostats.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/models/harborstats.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/models/ship.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/models/shiptype.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/cargo.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/gamestate.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/harbor.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/harborcargo.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/harborcargogenerationparameters.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/harborgenerationparameters.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/ship.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/shiptype.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/repositories/harborgenerationparametersfilerepository.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/repositories/harborgenerationparametersrepositoryinterface.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commandhandlers/purchasecargocommandhandler.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commandhandlers/startgamecommandhandler.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commands/commandbase.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commands/purchasecargocommand.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commands/startgamecommand.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commandmediator.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/constants.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/game.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/gamehelpers.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/harborgenerator.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/helpers/csvparser.hpp"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/helpers/noncopyable.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/service/gameclient.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/error.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/game.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/gamebuilder.hpp"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/gamehelpers.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/harborbuilder.hpp"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactory.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/harborfactoryinterface.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/shipbuilder.hpp"
-    "${LIBTURADOR_INCLUDE_DIR}/commandmediator.hpp"
-    "${LIBTURADOR_INCLUDE_DIR}/noncopyable.h"
-    "${LIBTURADOR_INCLUDE_DIR}/csvparser.hpp"
-    "${LIBTURADOR_SRC_DIR}/tura/error.cpp"
-    "${LIBTURADOR_SRC_DIR}/tura/game.cpp"
-    "${LIBTURADOR_SRC_DIR}/tura/harborfactory.cpp")
+    "${LIBTURADOR_INCLUDE_DIR}/tura/shipbuilder.hpp")
 
 set(LIBTURADOR_TESTS_SRC_DIR "${LIBTURADOR_DIR}/tests")
 set(LIBTURADOR_TEST_SRC_FILES
     "${LIBTURADOR_TESTS_SRC_DIR}/helpers/testhelpers.h"
-    "${LIBTURADOR_TESTS_SRC_DIR}/mocks/harborfactorymock.h"
-    "${LIBTURADOR_TESTS_SRC_DIR}/tura/commandhandlers/purchasecargocommandhandlertests.cpp"
-    "${LIBTURADOR_TESTS_SRC_DIR}/tura/gameunittests.cpp"
-    "${LIBTURADOR_TESTS_SRC_DIR}/tura/harborfactoryunittests.cpp"
+    "${LIBTURADOR_TESTS_SRC_DIR}/mocks/harborgeneratormock.h"
+    "${LIBTURADOR_TESTS_SRC_DIR}/tura/dal/repositories/harborgenerationparametersfilerepositoryunittests.cpp"
+    "${LIBTURADOR_TESTS_SRC_DIR}/tura/domain/commandhandlers/purchasecargocommandhandlerunittests.cpp"
+    "${LIBTURADOR_TESTS_SRC_DIR}/tura/domain/commandhandlers/startgamecommandhandlerunittests.cpp"
+    "${LIBTURADOR_TESTS_SRC_DIR}/tura/service/gameclientunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/main.cpp")
 
 set(CMAKE_CXX_STANDARD 11)
@@ -62,6 +62,9 @@ project(${LIBTURADOR_PROJECT_NAME})
 add_library(${LIBTURADOR_BINARY_NAME}
     STATIC
     ${LIBTURADOR_SRC_FILES})
+
+set_target_properties(${LIBTURADOR_BINARY_NAME} PROPERTIES
+    LINKER_LANGUAGE CXX)
 
 target_include_directories(${LIBTURADOR_BINARY_NAME}
     PUBLIC ${LIBTURADOR_INCLUDE_DIR})

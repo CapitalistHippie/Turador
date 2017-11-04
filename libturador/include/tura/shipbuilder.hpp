@@ -1,17 +1,17 @@
 #ifndef LIBTURADOR_TURA_SHIPBUILDER_H_INCLUDED
 #define LIBTURADOR_TURA_SHIPBUILDER_H_INCLUDED
 
-#include <string.h>
+#include <cstring>
 
-#include "models/ship.h"
-#include "models/shiptype.h"
+#include "tura/dal/models/ship.h"
+#include "tura/dal/models/shiptype.h"
 
 namespace tura
 {
 class ShipBuilder
 {
 private:
-  models::Ship ship;
+  dal::models::Ship ship;
   unsigned int cargoIndex;
 
 public:
@@ -20,7 +20,7 @@ public:
   {
   }
 
-  ShipBuilder& WithShipType(models::ShipType shipType)
+  ShipBuilder& WithShipType(dal::models::ShipType shipType)
   {
     ship.shipType = shipType;
 
@@ -39,7 +39,7 @@ public:
     return *this;
   }
 
-  models::Ship Build() const { return ship; }
+  dal::models::Ship Build() const { return ship; }
 };
 }
 

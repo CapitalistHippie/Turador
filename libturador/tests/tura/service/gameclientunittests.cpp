@@ -1,6 +1,5 @@
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <tura/game.h>
+#include <tura/service/gameclient.h>
 
 using namespace testing;

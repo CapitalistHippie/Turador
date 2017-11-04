@@ -13,8 +13,6 @@ private:
   domain::Game game;
 
 public:
-  GameClient();
-
   template<typename Command>
   void HandleCommand(const Command& command)
   {

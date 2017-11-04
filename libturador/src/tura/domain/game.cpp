@@ -10,11 +10,22 @@ using namespace tura::domain;
 using namespace tura::domain::commands;
 using namespace tura::domain::commandhandlers;
 
-Game::Game(CommandMediator* commandMediator)
-  : commandMediator(commandMediator)
+void Game::RegisterCommandHandlers()
 {
   commandMediator->RegisterCommandHandler<CommandBase<StartGameCommand>, StartGameCommandHandler>();
   commandMediator->RegisterCommandHandler<CommandBase<PurchaseCargoCommand>, PurchaseCargoCommandHandler>();
+}
+
+Game::Game()
+  : commandMediator(&commandMediatorInstance)
+{
+  RegisterCommandHandlers();
+}
+
+Game::Game(CommandMediator* commandMediator)
+  : commandMediator(commandMediator)
+{
+  RegisterCommandHandlers();
 }
 
 const dal::models::Game& Game::GetGameData() const
