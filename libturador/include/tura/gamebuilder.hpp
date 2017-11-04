@@ -3,39 +3,23 @@
 
 #include "../commandmediator.hpp"
 #include "game.h"
-#include "gameconfiguration.h"
-#include "harborfactoryinterface.h"
 
 namespace tura
 {
 class GameBuilder
 {
 private:
-  GameConfiguration gameConfiguration;
+  CommandMediator* commandMediator;
 
 public:
-  GameBuilder& WithHarborFactory(HarborFactoryInterface* harborFactory)
-  {
-    gameConfiguration.harborFactory = harborFactory;
-
-    return *this;
-  }
-
   GameBuilder& WithCommandMediator(CommandMediator* commandMediator)
   {
-    gameConfiguration.commandMediator = commandMediator;
+    this->commandMediator = commandMediator;
 
     return *this;
   }
 
-  GameBuilder& WithStartingGold(unsigned int startingGold)
-  {
-    gameConfiguration.startingGold = startingGold;
-
-    return *this;
-  }
-
-  Game Build() const { return Game(gameConfiguration); }
+  Game Build() const { return Game(commandMediator); }
 };
 }
 

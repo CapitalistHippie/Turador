@@ -1,10 +1,14 @@
-#ifndef LIBTURADOR_CSVPARSER_HPP_INCLUDED
-#define LIBTURADOR_CSVPARSER_HPP_INCLUDED
+#ifndef LIBTURADOR_TURA_HELPERS_CSVPARSER_HPP_INCLUDED
+#define LIBTURADOR_TURA_HELPERS_CSVPARSER_HPP_INCLUDED
 
 #include <fstream>
 #include <limits>
 #include <sstream>
 
+namespace tura
+{
+namespace helpers
+{
 class CsvRow
 {
 public:
@@ -87,5 +91,7 @@ public:
 
   void IgnoreNextColumn(CsvRow& row) const { row.stream.ignore(std::numeric_limits<int>::max(), ';'); }
 };
+}
+}
 
-#endif // LIBTURADOR_CSVPARSER_HPP_INCLUDED
+#endif // LIBTURADOR_TURA_HELPERS_CSVPARSER_HPP_INCLUDED

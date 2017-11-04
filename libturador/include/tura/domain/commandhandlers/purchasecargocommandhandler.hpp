@@ -1,17 +1,19 @@
-#ifndef LIBTURADOR_TURA_COMMANDS_PURCHASECARGOCOMMANDHANDLER_HPP_INCLUDED
-#define LIBTURADOR_TURA_COMMANDS_PURCHASECARGOCOMMANDHANDLER_HPP_INCLUDED
+#ifndef LIBTURADOR_TURA_DOMAIN_COMMANDS_PURCHASECARGOCOMMANDHANDLER_HPP_INCLUDED
+#define LIBTURADOR_TURA_DOMAIN_COMMANDS_PURCHASECARGOCOMMANDHANDLER_HPP_INCLUDED
 
 #include <system_error>
 
-#include "../../commandmediator.hpp"
-#include "../commands/commandbase.h"
-#include "../commands/purchasecargocommand.h"
-#include "../error.h"
-#include "../gamehelpers.hpp"
-#include "../models/game.h"
-#include "../models/gamestate.h"
+#include "tura/dal/models/game.h"
+#include "tura/dal/models/gamestate.h"
+#include "tura/domain/commandmediator.hpp"
+#include "tura/domain/commands/commandbase.h"
+#include "tura/domain/commands/purchasecargocommand.h"
+#include "tura/domain/gamehelpers.hpp"
+#include "tura/error.h"
 
 namespace tura
+{
+namespace domain
 {
 namespace commandhandlers
 {
@@ -29,7 +31,7 @@ public:
     }
 
     // Get the harbor cargo.
-    auto& harborCargo = GetCurrentHarborCargoByName(gameData, command.command.cargoName);
+    auto& harborCargo = GetHarborCargoByName(gameData.currentHarbor, command.command.cargoName);
 
     // Check if the harbor has enough of the cargo that we want to purchase.
     if (harborCargo.cargo.amount < command.command.cargoAmount)
@@ -56,10 +58,11 @@ public:
     // We good. Let's do this.
     gameData.currentGold -= totalGoldToSpend;
     harborCargo.cargo.amount -= command.command.cargoAmount;
-    GetCurrentShipCargoByName(gameData, command.command.cargoName).amount += command.command.cargoAmount;
+    GetShipCargoByName(gameData.currentShip, command.command.cargoName).amount += command.command.cargoAmount;
   }
 };
 }
 }
+}
 
-#endif // LIBTURADOR_TURA_COMMANDS_PURCHASECARGOCOMMANDHANDLER_HPP_INCLUDED
+#endif // LIBTURADOR_TURA_DOMAIN_COMMANDS_PURCHASECARGOCOMMANDHANDLER_HPP_INCLUDED

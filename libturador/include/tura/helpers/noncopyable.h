@@ -1,6 +1,10 @@
-#ifndef LIBTURADOR_NONCOPYABLE_HPP_INCLUDED
-#define LIBTURADOR_NONCOPYABLE_HPP_INCLUDED
+#ifndef LIBTURADOR_TURA_HELPERS_NONCOPYABLE_HPP_INCLUDED
+#define LIBTURADOR_TURA_HELPERS_NONCOPYABLE_HPP_INCLUDED
 
+namespace tura
+{
+namespace helpers
+{
 class Noncopyable
 {
 private:
@@ -13,5 +17,7 @@ public:
   Noncopyable(Noncopyable&& other) = default;
   Noncopyable& operator=(Noncopyable&& other) = default;
 };
+}
+}
 
-#endif // LIBTURADOR_NONCOPYABLE_HPP_INCLUDED
+#endif // LIBTURADOR_TURA_HELPERS_NONCOPYABLE_HPP_INCLUDED

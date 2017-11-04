@@ -1,10 +1,14 @@
-#ifndef LIBTURADOR_COMMANDMEDIATOR_HPP_INCLUDED
-#define LIBTURADOR_COMMANDMEDIATOR_HPP_INCLUDED
+#ifndef LIBTURADOR_TURA_DOMAIN_COMMANDMEDIATOR_HPP_INCLUDED
+#define LIBTURADOR_TURA_DOMAIN_COMMANDMEDIATOR_HPP_INCLUDED
 
 #include <typeindex>
 
-#include "noncopyable.h"
+#include "tura/helpers/noncopyable.h"
 
+namespace tura
+{
+namespace domain
+{
 class CommandInterface
 {
 public:
@@ -33,7 +37,7 @@ public:
   virtual void HandleCommand(const Command& command) const = 0;
 };
 
-class CommandMediator : public Noncopyable
+class CommandMediator : public helpers::Noncopyable
 {
 public:
   static const unsigned int COMMAND_HANDLERS_COUNT_MAX = 64;
@@ -123,5 +127,7 @@ public:
     commandHandlersCount++;
   }
 };
+}
+}
 
-#endif // LIBTURADOR_COMMANDMEDIATOR_HPP_INCLUDED
+#endif

@@ -11,7 +11,8 @@ enum class Error
   InsuitableState,
   InsufficientGold,
   InsufficientCargoInHarbor,
-  InsufficientShipCargoSpace
+  InsufficientShipCargoSpace,
+  UnknownEntityName
 };
 }
 
