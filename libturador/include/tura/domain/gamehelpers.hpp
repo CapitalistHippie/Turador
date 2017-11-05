@@ -4,18 +4,17 @@
 #include <cstring>
 #include <system_error>
 
-#include "tura/dal/models/cargo.h"
-#include "tura/dal/models/harbor.h"
-#include "tura/dal/models/harborcargo.h"
-#include "tura/dal/models/ship.h"
+#include "tura/domain/models/cargo.h"
+#include "tura/domain/models/harbor.h"
+#include "tura/domain/models/harborcargo.h"
+#include "tura/domain/models/ship.h"
 #include "tura/error.h"
 
 namespace tura
 {
 namespace domain
 {
-inline const dal::models::HarborCargo& GetHarborCargoByName(const dal::models::Harbor& harbor,
-                                                            const char* const cargoName)
+inline const models::HarborCargo& GetHarborCargoByName(const models::Harbor& harbor, const char* const cargoName)
 {
   // TODO: Remove the magic 15.
   for (unsigned int i = 0; i < 15; ++i)
@@ -29,13 +28,12 @@ inline const dal::models::HarborCargo& GetHarborCargoByName(const dal::models::H
   throw std::system_error(std::make_error_code(Error::UnknownEntityName));
 }
 
-inline dal::models::HarborCargo& GetHarborCargoByName(dal::models::Harbor& harbor, const char* const cargoName)
+inline models::HarborCargo& GetHarborCargoByName(models::Harbor& harbor, const char* const cargoName)
 {
-  return const_cast<dal::models::HarborCargo&>(
-    GetHarborCargoByName(const_cast<const dal::models::Harbor&>(harbor), cargoName));
+  return const_cast<models::HarborCargo&>(GetHarborCargoByName(const_cast<const models::Harbor&>(harbor), cargoName));
 }
 
-inline const dal::models::Cargo& GetShipCargoByName(const dal::models::Ship& ship, const char* const cargoName)
+inline const models::Cargo& GetShipCargoByName(const models::Ship& ship, const char* const cargoName)
 {
   // TODO: Remove the magic 15.
   for (unsigned int i = 0; i < 15; ++i)
@@ -49,12 +47,12 @@ inline const dal::models::Cargo& GetShipCargoByName(const dal::models::Ship& shi
   throw std::system_error(std::make_error_code(Error::UnknownEntityName));
 }
 
-inline dal::models::Cargo& GetShipCargoByName(dal::models::Ship& ship, const char* const cargoName)
+inline models::Cargo& GetShipCargoByName(models::Ship& ship, const char* const cargoName)
 {
-  return const_cast<dal::models::Cargo&>(GetShipCargoByName(const_cast<const dal::models::Ship&>(ship), cargoName));
+  return const_cast<models::Cargo&>(GetShipCargoByName(const_cast<const models::Ship&>(ship), cargoName));
 }
 
-inline unsigned int GetShipUsedCargoSpace(const dal::models::Ship& ship)
+inline unsigned int GetShipUsedCargoSpace(const models::Ship& ship)
 {
   unsigned int usedCargoSpace = 0;
 

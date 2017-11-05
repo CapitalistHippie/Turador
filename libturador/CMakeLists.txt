@@ -12,14 +12,14 @@ set(LIBTURADOR_SRC_DIR "${LIBTURADOR_DIR}/src")
 set(LIBTURADOR_INCLUDE_DIR "${LIBTURADOR_DIR}/include")
 
 set(LIBTURADOR_SRC_FILES
-    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/cargo.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/gamestate.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/harbor.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/harborcargo.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/harborcargogenerationparameters.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/harborgenerationparameters.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/ship.h"
-    "${LIBTURADOR_INCLUDE_DIR}/tura/dal/models/shiptype.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/models/cargo.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/models/gamestate.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/models/harbor.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/models/harborcargo.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/models/harborcargogenerationparameters.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/models/harborgenerationparameters.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/models/ship.h"
+    "${LIBTURADOR_INCLUDE_DIR}/tura/domain/models/shiptype.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/dal/repositories/harborgenerationparametersfilerepository.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/dal/repositories/harborgenerationparametersrepositoryinterface.h"
     "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commandhandlers/purchasecargocommandhandler.hpp"

@@ -3,14 +3,14 @@
 
 #include <cstring>
 
-#include "tura/dal/models/harbor.h"
+#include "tura/domain/models/harbor.h"
 
 namespace tura
 {
 class HarborBuilder
 {
 private:
-  dal::models::Harbor harbor;
+  domain::models::Harbor harbor;
   unsigned int cargoIndex;
 
 public:
@@ -39,7 +39,7 @@ public:
     return *this;
   }
 
-  dal::models::Harbor Build() const { return harbor; }
+  domain::models::Harbor Build() const { return harbor; }
 };
 }
 

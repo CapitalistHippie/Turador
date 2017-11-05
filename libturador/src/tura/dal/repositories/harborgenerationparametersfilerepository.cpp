@@ -10,9 +10,8 @@
 
 using namespace tura;
 using namespace tura::helpers;
-using namespace tura::dal;
+using namespace tura::domain::models;
 using namespace tura::dal::repositories;
-using namespace tura::dal::models;
 
 static const char* const CARGO_PRICES_FILE_PATH = "assets/goederen prijzen.csv";
 static const char* const CARGO_AMOUNTS_FILE_PATH = "assets/goederen hoeveelheid.csv";

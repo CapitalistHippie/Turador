@@ -1,9 +1,9 @@
 #ifndef LIBTURADOR_TURA_DOMAIN_GAME_H_INCLUDED
 #define LIBTURADOR_TURA_DOMAIN_GAME_H_INCLUDED
 
-#include "tura/dal/models/game.h"
 #include "tura/domain/commandmediator.hpp"
 #include "tura/domain/commands/commandbase.h"
+#include "tura/domain/models/game.h"
 
 namespace tura
 {
@@ -15,7 +15,7 @@ private:
   CommandMediator commandMediatorInstance;
   CommandMediator* commandMediator;
 
-  dal::models::Game gameData;
+  models::Game gameData;
 
   void RegisterCommandHandlers();
 
@@ -31,7 +31,7 @@ public:
     commandMediator->HandleCommand(commandHandlerCommand);
   }
 
-  const dal::models::Game& GetGameData() const;
+  const models::Game& GetGameData() const;
 };
 }
 }

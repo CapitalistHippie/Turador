@@ -3,12 +3,12 @@
 
 #include <system_error>
 
-#include "tura/dal/models/game.h"
-#include "tura/dal/models/gamestate.h"
 #include "tura/domain/commandmediator.hpp"
 #include "tura/domain/commands/commandbase.h"
 #include "tura/domain/commands/purchasecargocommand.h"
 #include "tura/domain/gamehelpers.hpp"
+#include "tura/domain/models/game.h"
+#include "tura/domain/models/gamestate.h"
 #include "tura/error.h"
 
 namespace tura
@@ -25,7 +25,7 @@ public:
     auto& gameData = command.gameData;
 
     // Check if we're in the right state.
-    if (gameData.gameState != dal::models::GameState::InHarbor)
+    if (gameData.gameState != models::GameState::InHarbor)
     {
       throw std::system_error(std::make_error_code(Error::InsuitableState));
     }

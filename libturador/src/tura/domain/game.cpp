@@ -28,7 +28,7 @@ Game::Game(CommandMediator* commandMediator)
   RegisterCommandHandlers();
 }
 
-const dal::models::Game& Game::GetGameData() const
+const models::Game& Game::GetGameData() const
 {
   return gameData;
 }

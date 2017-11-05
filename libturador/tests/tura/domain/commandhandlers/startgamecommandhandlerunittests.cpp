@@ -3,13 +3,13 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <tura/dal/models/gamestate.h>
-#include <tura/dal/models/harbor.h>
-#include <tura/dal/models/ship.h>
-#include <tura/dal/models/shiptype.h>
 #include <tura/domain/commandhandlers/startgamecommandhandler.hpp>
 #include <tura/domain/commands/startgamecommand.h>
 #include <tura/domain/constants.h>
+#include <tura/domain/models/gamestate.h>
+#include <tura/domain/models/harbor.h>
+#include <tura/domain/models/ship.h>
+#include <tura/domain/models/shiptype.h>
 #include <tura/error.h>
 #include <tura/harborbuilder.hpp>
 #include <tura/shipbuilder.hpp>
@@ -27,8 +27,8 @@ tura::domain::commands::StartGameCommand BuildCommand()
 TEST(StartGameCommandHandler, HandleCommand_AlreadyRunning_ThrowsInsuitableState)
 {
   // Arrange.
-  tura::dal::models::Game gameData;
-  gameData.gameState = tura::dal::models::GameState::InHarbor;
+  tura::domain::models::Game gameData;
+  gameData.gameState = tura::domain::models::GameState::InHarbor;
 
   tura::domain::commands::StartGameCommand command;
   tura::domain::commands::CommandBase<tura::domain::commands::StartGameCommand> wrappedCommand(command, gameData);
@@ -44,7 +44,7 @@ TEST(StartGameCommandHandler, HandleCommand_AlreadyRunning_ThrowsInsuitableState
 TEST(StartGameCommandHandler, HandleCommand_ResetsGameData)
 {
   // Arrange.
-  tura::dal::models::Game gameData;
+  tura::domain::models::Game gameData;
   gameData.currentGold = 100000;
 
   tura::domain::commands::StartGameCommand command;
@@ -64,7 +64,7 @@ TEST(StartGameCommandHandler, HandleCommand_ResetsGameData)
 TEST(StartGameCommandHandler, HandleCommand_SetsStateToInHarbor)
 {
   // Arrange.
-  tura::dal::models::Game gameData;
+  tura::domain::models::Game gameData;
 
   tura::domain::commands::StartGameCommand command;
   tura::domain::commands::CommandBase<tura::domain::commands::StartGameCommand> wrappedCommand(command, gameData);
@@ -77,13 +77,13 @@ TEST(StartGameCommandHandler, HandleCommand_SetsStateToInHarbor)
   sut.HandleCommand(wrappedCommand);
 
   // Assert.
-  EXPECT_EQ(tura::dal::models::GameState::InHarbor, gameData.gameState);
+  EXPECT_EQ(tura::domain::models::GameState::InHarbor, gameData.gameState);
 }
 
 TEST(StartGameCommandHandler, HandleCommand_SetsCurrentHarborToRandomHarbor)
 {
   // Arrange.
-  tura::dal::models::Game gameData;
+  tura::domain::models::Game gameData;
 
   tura::domain::commands::StartGameCommand command;
   tura::domain::commands::CommandBase<tura::domain::commands::StartGameCommand> wrappedCommand(command, gameData);

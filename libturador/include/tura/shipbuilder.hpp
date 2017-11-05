@@ -3,15 +3,15 @@
 
 #include <cstring>
 
-#include "tura/dal/models/ship.h"
-#include "tura/dal/models/shiptype.h"
+#include "tura/domain/models/ship.h"
+#include "tura/domain/models/shiptype.h"
 
 namespace tura
 {
 class ShipBuilder
 {
 private:
-  dal::models::Ship ship;
+  domain::models::Ship ship;
   unsigned int cargoIndex;
 
 public:
@@ -20,7 +20,7 @@ public:
   {
   }
 
-  ShipBuilder& WithShipType(dal::models::ShipType shipType)
+  ShipBuilder& WithShipType(domain::models::ShipType shipType)
   {
     ship.shipType = shipType;
 
@@ -39,7 +39,7 @@ public:
     return *this;
   }
 
-  dal::models::Ship Build() const { return ship; }
+  domain::models::Ship Build() const { return ship; }
 };
 }
 

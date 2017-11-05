@@ -3,16 +3,16 @@
 
 #include <gmock/gmock.h>
 
-#include <tura/dal/models/harbor.h>
-#include <tura/dal/models/harborcargogenerationparameters.h>
 #include <tura/domain/harborgeneratorinterface.h>
+#include <tura/domain/models/harbor.h>
+#include <tura/domain/models/harborcargogenerationparameters.h>
 
 class HarborGeneratorMock : public tura::domain::HarborGeneratorInterface
 {
 public:
-  MOCK_METHOD0(GenerateRandomHarbor, tura::dal::models::Harbor());
+  MOCK_METHOD0(GenerateRandomHarbor, tura::domain::models::Harbor());
   MOCK_METHOD1(GenerateHarbor,
-               tura::dal::models::Harbor(const tura::dal::models::HarborGenerationParameters& parameters));
+               tura::domain::models::Harbor(const tura::domain::models::HarborGenerationParameters& parameters));
 };
 
 #endif // LIBTURADOR_TESTS_MOCKS_HARBORGENERATORYMOCK_H_INCLUDED

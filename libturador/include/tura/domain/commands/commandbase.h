@@ -1,8 +1,8 @@
 #ifndef LIBTURADOR_TURA_DOMAIN_COMMANDS_COMMANDBASE_H_INCLUDED
 #define LIBTURADOR_TURA_DOMAIN_COMMANDS_COMMANDBASE_H_INCLUDED
 
-#include "tura/dal/models/game.h"
 #include "tura/domain/commandmediator.hpp"
+#include "tura/domain/models/game.h"
 
 namespace tura
 {
@@ -17,9 +17,9 @@ class CommandBase : public CommandInterface
 {
 public:
   const Command& command;
-  dal::models::Game& gameData;
+  models::Game& gameData;
 
-  CommandBase(const Command& command, dal::models::Game& gameData)
+  CommandBase(const Command& command, models::Game& gameData)
     : command(command)
     , gameData(gameData)
   {
