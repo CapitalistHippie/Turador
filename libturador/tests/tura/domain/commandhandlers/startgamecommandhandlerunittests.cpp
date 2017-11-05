@@ -92,6 +92,7 @@ TEST(StartGameCommandHandler, HandleCommand_SetsCurrentHarborToRandomHarbor)
   auto randomHarbor = harborBuilder.WithName("Random harbor").Build();
 
   StrictMock<HarborGeneratorMock> harborGeneratorMock;
+  EXPECT_CALL(harborGeneratorMock, GenerateRandomHarbor()).WillOnce(Return(randomHarbor));
 
   tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock);
 

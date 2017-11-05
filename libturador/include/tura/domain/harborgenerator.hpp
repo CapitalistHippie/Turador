@@ -1,5 +1,5 @@
-#ifndef LIBTURADOR_TURA_DOMAIN_HARBORGENERATOR_H_INCLUDED
-#define LIBTURADOR_TURA_DOMAIN_HARBORGENERATOR_H_INCLUDED
+#ifndef LIBTURADOR_TURA_DOMAIN_HARBORGENERATOR_HPP_INCLUDED
+#define LIBTURADOR_TURA_DOMAIN_HARBORGENERATOR_HPP_INCLUDED
 
 #include <ctime>
 #include <random>
@@ -8,12 +8,13 @@
 #include "tura/dal/models/harborgenerationparameters.h"
 #include "tura/dal/repositories/harborgenerationparametersfilerepository.h"
 #include "tura/dal/repositories/harborgenerationparametersrepositoryinterface.h"
+#include "tura/domain/harborgeneratorinterface.h"
 
 namespace tura
 {
 namespace domain
 {
-class HarborGenerator
+class HarborGenerator : public HarborGeneratorInterface
 {
 private:
   dal::repositories::HarborGenerationParametersFileRepository harborGenerationParametersRepositoryInstance;
@@ -64,4 +65,4 @@ public:
 }
 }
 
-#endif // LIBTURADOR_TURA_DOMAIN_HARBORGENERATOR_H_INCLUDED
+#endif // LIBTURADOR_TURA_DOMAIN_HARBORGENERATOR_HPP_INCLUDED

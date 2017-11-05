@@ -11,6 +11,7 @@
 #include "tura/domain/commands/startgamecommand.h"
 #include "tura/domain/constants.h"
 #include "tura/domain/harborgenerator.hpp"
+#include "tura/domain/harborgeneratorinterface.h"
 #include "tura/error.h"
 
 namespace tura
@@ -23,7 +24,7 @@ class StartGameCommandHandler : public CommandHandlerBase<commands::CommandBase<
 {
 private:
   HarborGenerator harborGeneratorInstance;
-  HarborGenerator* harborGenerator;
+  HarborGeneratorInterface* harborGenerator;
 
 public:
   StartGameCommandHandler()
@@ -31,7 +32,7 @@ public:
   {
   }
 
-  StartGameCommandHandler(HarborGenerator* harborGenerator)
+  StartGameCommandHandler(HarborGeneratorInterface* harborGenerator)
     : harborGenerator(harborGenerator)
   {
   }

@@ -5,9 +5,9 @@
 
 #include <tura/dal/models/harbor.h>
 #include <tura/dal/models/harborcargogenerationparameters.h>
-#include <tura/domain/harborgenerator.hpp>
+#include <tura/domain/harborgeneratorinterface.h>
 
-class HarborGeneratorMock : public tura::domain::HarborGenerator
+class HarborGeneratorMock : public tura::domain::HarborGeneratorInterface
 {
 public:
   MOCK_METHOD0(GenerateRandomHarbor, tura::dal::models::Harbor());
