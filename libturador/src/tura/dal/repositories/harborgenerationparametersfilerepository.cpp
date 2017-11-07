@@ -16,7 +16,6 @@ using namespace tura::dal::repositories;
 static const char* const CARGO_PRICES_FILE_PATH = "assets/goederen prijzen.csv";
 static const char* const CARGO_AMOUNTS_FILE_PATH = "assets/goederen hoeveelheid.csv";
 
-static const int HARBOR_GENERATION_PARAMETERS_COUNT = 24;
 static const int CARGO_TYPE_COUNT = 15;
 
 HarborGenerationParametersFileRepository::HarborGenerationParametersFileRepository()
@@ -28,13 +27,13 @@ HarborGenerationParametersFileRepository::HarborGenerationParametersFileReposito
   auto cargoNamesRow = parser.ParseNextRow();
 
   // First column is nothing. Ignore it.
-  parser.IgnoreNextColumn(cargoNamesRow);
+  cargoNamesRow.IgnoreNextColumn();
 
   // There are 15 types of cargo and 24 harbors.
   for (unsigned int i = 0; i < CARGO_TYPE_COUNT; ++i)
   {
     char cargoNameBuffer[64];
-    parser.ParseNextColumn(cargoNamesRow, cargoNameBuffer, sizeof(cargoNameBuffer));
+    cargoNamesRow.ParseNextColumn(cargoNameBuffer, sizeof(cargoNameBuffer));
 
     // Write the cargo names to the models.
     for (unsigned int j = 0; j < GetHarborGenerationParametersCount(); ++j)
@@ -52,14 +51,13 @@ HarborGenerationParametersFileRepository::HarborGenerationParametersFileReposito
     auto row = parser.ParseNextRow();
 
     // Write the harbor name to the harbor generation parameters as that hasn't been done yet.
-    parser.ParseNextColumn(
-      row, harborGenerationParameters[i].harborName, sizeof(harborGenerationParameters[i].harborName));
+    row.ParseNextColumn(harborGenerationParameters[i].harborName, sizeof(harborGenerationParameters[i].harborName));
 
     // Parse the prices.
     for (unsigned int j = 0; j < CARGO_TYPE_COUNT; ++j)
     {
       char pricesBuffer[64];
-      parser.ParseNextColumn(row, pricesBuffer, sizeof(pricesBuffer));
+      row.ParseNextColumn(pricesBuffer, sizeof(pricesBuffer));
 
       auto pricesStream = std::stringstream(pricesBuffer);
       unsigned int priceMin = 0;
@@ -88,7 +86,7 @@ HarborGenerationParametersFileRepository::HarborGenerationParametersFileReposito
     for (unsigned int j = 0; j < CARGO_TYPE_COUNT; ++j)
     {
       char amountsBuffer[64];
-      parser.ParseNextColumn(row, amountsBuffer, sizeof(amountsBuffer));
+      row.ParseNextColumn(amountsBuffer, sizeof(amountsBuffer));
 
       auto amountsStream = std::stringstream(amountsBuffer);
       unsigned int amountMin = 0;

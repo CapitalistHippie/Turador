@@ -13,7 +13,9 @@ namespace repositories
 class HarborGenerationParametersFileRepository : public HarborGenerationParametersRepositoryInterface
 {
 private:
-  domain::models::HarborGenerationParameters harborGenerationParameters[24];
+  static const int HARBOR_GENERATION_PARAMETERS_COUNT = 24;
+
+  domain::models::HarborGenerationParameters harborGenerationParameters[HARBOR_GENERATION_PARAMETERS_COUNT];
 
 public:
   HarborGenerationParametersFileRepository();

@@ -15,9 +15,39 @@ namespace helpers
 {
 class CsvRow
 {
-public:
+private:
   std::stringstream stream;
-  char row[1024];
+
+public:
+  CsvRow(const char* const row)
+    : stream(row)
+  {
+  }
+
+  void ParseNextColumn(char* const columnBuffer, const int columnBufferSize)
+  {
+    if (columnBuffer == nullptr)
+    {
+      throw std::invalid_argument("Argument 'columnBuffer' may not be null.");
+    }
+
+    stream.getline(columnBuffer, columnBufferSize, ';');
+  }
+
+  void IgnoreNextColumn() { stream.ignore(std::numeric_limits<int>::max(), ';'); }
+
+  template<typename T>
+  CsvRow& operator>>(T& val)
+  {
+    char buffer[64];
+    ParseNextColumn(buffer, sizeof(buffer));
+
+    auto bufferStream = std::stringstream(buffer);
+
+    bufferStream >> val;
+
+    return *this;
+  }
 };
 
 class CsvParser
@@ -68,11 +98,10 @@ public:
     }
 
     // Read the line into a row.
-    CsvRow row;
-    fileStream.getline(row.row, sizeof(row.row), '\n');
-    row.stream = std::stringstream(row.row);
+    char buffer[1024];
+    fileStream.getline(buffer, sizeof(buffer), '\n');
 
-    return row;
+    return CsvRow(buffer);
   }
 
   void IgnoreNextRow()
@@ -90,18 +119,6 @@ public:
 
     fileStream.ignore(std::numeric_limits<int>::max(), '\n');
   }
-
-  void ParseNextColumn(CsvRow& row, char* const columnBuffer, const int columnBufferSize) const
-  {
-    if (columnBuffer == nullptr)
-    {
-      throw std::invalid_argument("Argument 'columnBuffer' may not be null.");
-    }
-
-    row.stream.getline(columnBuffer, columnBufferSize, ';');
-  }
-
-  void IgnoreNextColumn(CsvRow& row) const { row.stream.ignore(std::numeric_limits<int>::max(), ';'); }
 };
 }
 }
