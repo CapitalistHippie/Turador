@@ -2,6 +2,7 @@
 #define LIBTURADOR_TURA_DOMAIN_COMMANDS_PURCHASECARGOCOMMAND_H_INCLUDED
 
 #include "tura/domain/commandmediator.hpp"
+#include "tura/helpers/chararray.hpp"
 
 namespace tura
 {
@@ -11,7 +12,7 @@ namespace commands
 {
 struct PurchaseCargoCommand : public CommandInterface
 {
-  char cargoName[64];
+  helpers::CharArray<64> cargoName;
   unsigned int cargoAmount;
 };
 }

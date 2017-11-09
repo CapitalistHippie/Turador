@@ -12,6 +12,8 @@
 #include "tura/domain/models/game.h"
 #include "tura/domain/models/gamestate.h"
 #include "tura/domain/models/harbor.h"
+#include "tura/domain/shipgenerator.hpp"
+#include "tura/domain/shipgeneratorinterface.h"
 #include "tura/error.h"
 
 namespace tura
@@ -26,14 +28,19 @@ private:
   HarborGenerator harborGeneratorInstance;
   HarborGeneratorInterface* harborGenerator;
 
+  ShipGenerator shipGeneratorInstance;
+  ShipGeneratorInterface* shipGenerator;
+
 public:
   StartGameCommandHandler()
     : harborGenerator(&harborGeneratorInstance)
+    , shipGenerator(&shipGeneratorInstance)
   {
   }
 
-  StartGameCommandHandler(HarborGeneratorInterface* harborGenerator)
+  StartGameCommandHandler(HarborGeneratorInterface* harborGenerator, ShipGeneratorInterface* shipGenerator)
     : harborGenerator(harborGenerator)
+    , shipGenerator(shipGenerator)
   {
   }
 
@@ -52,6 +59,7 @@ public:
     gameData = std::move(freshGameData);
     gameData.gameState = Constants::GameInitialState;
     gameData.currentHarbor = harborGenerator->GenerateRandomHarbor();
+    gameData.currentShip = shipGenerator->GenerateShipByShipTypeName("Pinnace");
     gameData.currentGold = Constants::GameInitialGold;
   }
 };

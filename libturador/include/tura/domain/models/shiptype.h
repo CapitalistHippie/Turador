@@ -3,6 +3,7 @@
 
 #include "tura/domain/models/shipsizeclass.h"
 #include "tura/domain/models/shipweightclass.h"
+#include "tura/helpers/chararray.hpp"
 
 namespace tura
 {
@@ -12,7 +13,7 @@ namespace models
 {
 struct ShipType
 {
-  char name[64] = "";
+  helpers::CharArray<64> name;
   unsigned int price = 0;
   unsigned int cargoSpaceMax = 0;
   unsigned int cannonSpaceMax = 0;

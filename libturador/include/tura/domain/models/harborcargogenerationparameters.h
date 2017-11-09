@@ -1,6 +1,8 @@
 #ifndef LIBTURADOR_TURA_DOMAIN_MODELS_HARBORCARGOGENERATIONPARAMETERS_H_INCLUDED
 #define LIBTURADOR_TURA_DOMAIN_MODELS_HARBORCARGOGENERATIONPARAMETERS_H_INCLUDED
 
+#include "tura/helpers/chararray.hpp"
+
 namespace tura
 {
 namespace domain
@@ -9,7 +11,7 @@ namespace models
 {
 struct HarborCargoGenerationParameters
 {
-  char cargoName[64] = "";
+  helpers::CharArray<64> cargoName;
 
   unsigned int priceMin = 0;
   unsigned int priceMax = 0;

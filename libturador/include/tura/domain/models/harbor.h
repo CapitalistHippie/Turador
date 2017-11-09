@@ -2,6 +2,7 @@
 #define LIBTURADOR_TURA_DOMAIN_MODELS_HARBOR_H_INCLUDED
 
 #include "tura/domain/models/harborcargo.h"
+#include "tura/helpers/chararray.hpp"
 
 namespace tura
 {
@@ -11,7 +12,7 @@ namespace models
 {
 struct Harbor
 {
-  char name[64] = "";
+  helpers::CharArray<64> name;
   HarborCargo goods[15];
 };
 }

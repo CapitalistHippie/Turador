@@ -45,13 +45,11 @@ public:
   {
     models::Harbor harbor;
 
-    strncpy(harbor.name, parameters.harborName, sizeof(harbor.name));
+    harbor.name = parameters.harborName;
 
     for (unsigned int i = 0; i < 15; ++i)
     {
-      strncpy(harbor.goods[i].cargo.name,
-              parameters.cargoGenerationParameters[i].cargoName,
-              sizeof(harbor.goods[i].cargo.name));
+      harbor.goods[i].cargo.name = parameters.cargoGenerationParameters[i].cargoName;
 
       std::uniform_int_distribution<int> rngDistribution(parameters.cargoGenerationParameters[i].priceMin,
                                                          parameters.cargoGenerationParameters[i].priceMax);

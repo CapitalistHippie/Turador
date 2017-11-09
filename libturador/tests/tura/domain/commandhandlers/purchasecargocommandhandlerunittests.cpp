@@ -22,7 +22,7 @@ tura::domain::commands::PurchaseCargoCommand BuildCommand(const char* const carg
   tura::domain::commands::PurchaseCargoCommand command;
   if (cargoName != nullptr)
   {
-    strncpy(command.cargoName, cargoName, sizeof(command.cargoName));
+    command.cargoName = cargoName;
   }
   command.cargoAmount = cargoAmount;
 

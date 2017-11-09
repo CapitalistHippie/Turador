@@ -21,7 +21,7 @@ public:
 
   HarborBuilder& WithName(const char* const name)
   {
-    strncpy(harbor.name, name, sizeof(harbor.name));
+    harbor.name = name;
 
     return *this;
   }
@@ -30,7 +30,7 @@ public:
   {
     // TODO: Check cargo index count.
 
-    strncpy(harbor.goods[cargoIndex].cargo.name, cargoName, sizeof(harbor.goods[cargoIndex].cargo.name));
+    harbor.goods[cargoIndex].cargo.name = cargoName;
     harbor.goods[cargoIndex].cargo.amount = cargoAmount;
     harbor.goods[cargoIndex].price = cargoPrice;
 

@@ -38,9 +38,7 @@ HarborGenerationParametersFileRepository::HarborGenerationParametersFileReposito
     // Write the cargo names to the models.
     for (unsigned int j = 0; j < GetHarborGenerationParametersCount(); ++j)
     {
-      strncpy(harborGenerationParameters[j].cargoGenerationParameters[i].cargoName,
-              cargoNameBuffer,
-              sizeof(harborGenerationParameters[j].cargoGenerationParameters[i].cargoName));
+      harborGenerationParameters[j].cargoGenerationParameters[i].cargoName = cargoNameBuffer;
     }
   }
 
@@ -51,7 +49,8 @@ HarborGenerationParametersFileRepository::HarborGenerationParametersFileReposito
     auto row = parser.ParseNextRow();
 
     // Write the harbor name to the harbor generation parameters as that hasn't been done yet.
-    row.ParseNextColumn(harborGenerationParameters[i].harborName, sizeof(harborGenerationParameters[i].harborName));
+    row.ParseNextColumn(harborGenerationParameters[i].harborName.array,
+                        harborGenerationParameters[i].harborName.MaxLength());
 
     // Parse the prices.
     for (unsigned int j = 0; j < CARGO_TYPE_COUNT; ++j)
@@ -119,7 +118,7 @@ HarborGenerationParameters HarborGenerationParametersFileRepository::GetHarborGe
 
   for (unsigned int i = 0; i < GetHarborGenerationParametersCount(); ++i)
   {
-    if (strcmp(name, harborGenerationParameters[i].harborName) == 0)
+    if (name == harborGenerationParameters[i].harborName)
     {
       return harborGenerationParameters[i];
     }

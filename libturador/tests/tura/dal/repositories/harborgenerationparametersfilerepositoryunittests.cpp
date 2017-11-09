@@ -27,11 +27,11 @@ TEST(HarborGenerationParametersFileRepository, GetHarbors_ReturnsValidHarborGene
   {
     auto harborGenerationParameters = sut.GetHarborGenerationParametersByIndex(i);
 
-    EXPECT_STRNE("", harborGenerationParameters.harborName);
+    EXPECT_STRNE("", harborGenerationParameters.harborName.array);
 
     for (unsigned int j = 0; j < 15; ++j)
     {
-      EXPECT_STRNE("", harborGenerationParameters.cargoGenerationParameters[j].cargoName);
+      EXPECT_STRNE("", harborGenerationParameters.cargoGenerationParameters[j].cargoName.array);
 
       EXPECT_NE(0, harborGenerationParameters.cargoGenerationParameters[j].priceMin);
       EXPECT_LE(harborGenerationParameters.cargoGenerationParameters[j].priceMin,

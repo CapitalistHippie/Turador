@@ -31,7 +31,7 @@ public:
   {
     // TODO: Check cargo index count.
 
-    strncpy(ship.goods[cargoIndex].name, cargoName, sizeof(ship.goods[cargoIndex].name));
+    ship.goods[cargoIndex].name = cargoName;
     ship.goods[cargoIndex].amount = cargoAmount;
 
     cargoIndex++;

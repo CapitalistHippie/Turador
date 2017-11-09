@@ -16,6 +16,7 @@
 
 #include "../../../helpers/testhelpers.h"
 #include "../../../mocks/harborgeneratormock.h"
+#include "../../../mocks/shipgeneratormock.h"
 
 using namespace testing;
 
@@ -34,8 +35,9 @@ TEST(StartGameCommandHandler, HandleCommand_AlreadyRunning_ThrowsInsuitableState
   tura::domain::commands::CommandBase<tura::domain::commands::StartGameCommand> wrappedCommand(command, gameData);
 
   NiceMock<HarborGeneratorMock> harborGeneratorMock;
+  NiceMock<ShipGeneratorMock> shipGeneratorMock;
 
-  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock);
+  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock, &shipGeneratorMock);
 
   // Act and assert.
   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsuitableState);
@@ -51,8 +53,9 @@ TEST(StartGameCommandHandler, HandleCommand_ResetsGameData)
   tura::domain::commands::CommandBase<tura::domain::commands::StartGameCommand> wrappedCommand(command, gameData);
 
   NiceMock<HarborGeneratorMock> harborGeneratorMock;
+  NiceMock<ShipGeneratorMock> shipGeneratorMock;
 
-  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock);
+  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock, &shipGeneratorMock);
 
   // Act.
   sut.HandleCommand(wrappedCommand);
@@ -70,8 +73,9 @@ TEST(StartGameCommandHandler, HandleCommand_SetsStateToInHarbor)
   tura::domain::commands::CommandBase<tura::domain::commands::StartGameCommand> wrappedCommand(command, gameData);
 
   NiceMock<HarborGeneratorMock> harborGeneratorMock;
+  NiceMock<ShipGeneratorMock> shipGeneratorMock;
 
-  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock);
+  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock, &shipGeneratorMock);
 
   // Act.
   sut.HandleCommand(wrappedCommand);
@@ -94,11 +98,41 @@ TEST(StartGameCommandHandler, HandleCommand_SetsCurrentHarborToRandomHarbor)
   StrictMock<HarborGeneratorMock> harborGeneratorMock;
   EXPECT_CALL(harborGeneratorMock, GenerateRandomHarbor()).WillOnce(Return(randomHarbor));
 
-  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock);
+  NiceMock<ShipGeneratorMock> shipGeneratorMock;
+
+  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock, &shipGeneratorMock);
 
   // Act.
   sut.HandleCommand(wrappedCommand);
 
   // Assert.
-  EXPECT_STREQ(randomHarbor.name, gameData.currentHarbor.name);
+  EXPECT_STREQ(randomHarbor.name.array, gameData.currentHarbor.name.array);
+}
+
+TEST(StartGameCommandHandler, HandleCommand_SetsCurrentShipToPinnace)
+{
+  // Arrange.
+  tura::domain::models::Game gameData;
+
+  tura::domain::commands::StartGameCommand command;
+  tura::domain::commands::CommandBase<tura::domain::commands::StartGameCommand> wrappedCommand(command, gameData);
+
+  NiceMock<HarborGeneratorMock> harborGeneratorMock;
+
+  tura::domain::models::ShipType shipType;
+  shipType.name = "Pinnace ship type name";
+
+  tura::domain::models::Ship ship;
+  ship.shipType = shipType;
+
+  StrictMock<ShipGeneratorMock> shipGeneratorMock;
+  EXPECT_CALL(shipGeneratorMock, GenerateShipByShipTypeName(StrEq("Pinnace"))).WillOnce(Return(ship));
+
+  tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock, &shipGeneratorMock);
+
+  // Act.
+  sut.HandleCommand(wrappedCommand);
+
+  // Assert.
+  EXPECT_STREQ(shipType.name.array, gameData.currentShip.shipType.name.array);
 }

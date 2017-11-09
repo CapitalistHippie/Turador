@@ -10,7 +10,7 @@ namespace dal
 {
 namespace repositories
 {
-class ShipTypeRepository : public ShipTypeRepositoryInterface
+class ShipTypeFileRepository : public ShipTypeRepositoryInterface
 {
 private:
   static const int SHIP_TYPE_COUNT = 13;
@@ -18,7 +18,7 @@ private:
   domain::models::ShipType shipTypes[SHIP_TYPE_COUNT];
 
 public:
-  ShipTypeRepository();
+  ShipTypeFileRepository();
 
   unsigned int GetShipTypeCount() const override;
   domain::models::ShipType GetShipTypeByName(const char* const shipTypeName) const override;

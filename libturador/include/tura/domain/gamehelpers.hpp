@@ -19,7 +19,7 @@ inline const models::HarborCargo& GetHarborCargoByName(const models::Harbor& har
   // TODO: Remove the magic 15.
   for (unsigned int i = 0; i < 15; ++i)
   {
-    if (strcmp(cargoName, harbor.goods[i].cargo.name) == 0)
+    if (cargoName == harbor.goods[i].cargo.name)
     {
       return harbor.goods[i];
     }
@@ -38,7 +38,7 @@ inline const models::Cargo& GetShipCargoByName(const models::Ship& ship, const c
   // TODO: Remove the magic 15.
   for (unsigned int i = 0; i < 15; ++i)
   {
-    if (strcmp(cargoName, ship.goods[i].name) == 0)
+    if (cargoName == ship.goods[i].name)
     {
       return ship.goods[i];
     }

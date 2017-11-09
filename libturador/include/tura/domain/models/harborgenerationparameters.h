@@ -2,6 +2,7 @@
 #define LIBTURADOR_TURA_DOMAIN_MODELS_HARBORGENERATIONPARAMETERS_H_INCLUDED
 
 #include "tura/domain/models/harborcargogenerationparameters.h"
+#include "tura/helpers/chararray.hpp"
 
 namespace tura
 {
@@ -11,7 +12,7 @@ namespace models
 {
 struct HarborGenerationParameters
 {
-  char harborName[64] = "";
+  helpers::CharArray<64> harborName;
   HarborCargoGenerationParameters cargoGenerationParameters[15];
 };
 }

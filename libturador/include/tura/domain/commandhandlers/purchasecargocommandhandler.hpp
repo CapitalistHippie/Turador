@@ -31,7 +31,7 @@ public:
     }
 
     // Get the harbor cargo.
-    auto& harborCargo = GetHarborCargoByName(gameData.currentHarbor, command.command.cargoName);
+    auto& harborCargo = GetHarborCargoByName(gameData.currentHarbor, command.command.cargoName.array);
 
     // Check if the harbor has enough of the cargo that we want to purchase.
     if (harborCargo.cargo.amount < command.command.cargoAmount)
@@ -58,7 +58,7 @@ public:
     // We good. Let's do this.
     gameData.currentGold -= totalGoldToSpend;
     harborCargo.cargo.amount -= command.command.cargoAmount;
-    GetShipCargoByName(gameData.currentShip, command.command.cargoName).amount += command.command.cargoAmount;
+    GetShipCargoByName(gameData.currentShip, command.command.cargoName.array).amount += command.command.cargoAmount;
   }
 };
 }

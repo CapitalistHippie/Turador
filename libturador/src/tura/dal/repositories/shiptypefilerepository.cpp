@@ -13,7 +13,7 @@ using namespace tura::dal::repositories;
 
 static const char* const SHIPS_CSV_FILE_PATH = "assets/schepen.csv";
 
-ShipTypeRepository::ShipTypeRepository()
+ShipTypeFileRepository::ShipTypeFileRepository()
 {
   CsvParser parser;
   parser.OpenFile(SHIPS_CSV_FILE_PATH);
@@ -26,7 +26,7 @@ ShipTypeRepository::ShipTypeRepository()
     auto row = parser.ParseNextRow();
 
     // Parse the easy stuff.
-    row.ParseNextColumn(shipTypes[i].name, sizeof(shipTypes[i].name));
+    row.ParseNextColumn(shipTypes[i].name.array, shipTypes[i].name.MaxLength());
     row >> shipTypes[i].price;
     row >> shipTypes[i].cargoSpaceMax;
     row >> shipTypes[i].cannonSpaceMax;
@@ -58,12 +58,12 @@ ShipTypeRepository::ShipTypeRepository()
   }
 }
 
-unsigned int ShipTypeRepository::GetShipTypeCount() const
+unsigned int ShipTypeFileRepository::GetShipTypeCount() const
 {
   return SHIP_TYPE_COUNT;
 }
 
-ShipType ShipTypeRepository::GetShipTypeByName(const char* const shipTypeName) const
+ShipType ShipTypeFileRepository::GetShipTypeByName(const char* const shipTypeName) const
 {
   if (shipTypeName == nullptr)
   {
@@ -72,7 +72,7 @@ ShipType ShipTypeRepository::GetShipTypeByName(const char* const shipTypeName) c
 
   for (unsigned int i = 0; i < GetShipTypeCount(); ++i)
   {
-    if (strcmp(shipTypeName, shipTypes[i].name) == 0)
+    if (shipTypeName == shipTypes[i].name)
     {
       return shipTypes[i];
     }
