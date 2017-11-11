@@ -78,5 +78,5 @@ ShipType ShipTypeFileRepository::GetShipTypeByName(const char* const shipTypeNam
     }
   }
 
-  throw std::system_error(std::make_error_code(Error::UnknownEntityName));
+  throw std::system_error(std::make_error_code(Error::UnknownShipType));
 }

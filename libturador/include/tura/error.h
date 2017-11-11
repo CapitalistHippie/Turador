@@ -11,8 +11,11 @@ enum class Error
   InsuitableState,
   InsufficientGold,
   InsufficientCargoInHarbor,
+  InsufficientCargoInShip,
   InsufficientShipCargoSpace,
-  UnknownEntityName,
+  UnknownCargo,
+  UnknownHarborGenerationParameters,
+  UnknownShipType,
   UnableToOpenFile,
   NoFileOpened
 };

@@ -15,6 +15,10 @@
 #include "../../../helpers/testhelpers.h"
 
 using namespace testing;
+using namespace tura;
+using namespace tura::domain::commands;
+using namespace tura::domain::commandhandlers;
+using namespace tura::domain::models;
 
 tura::domain::commands::PurchaseCargoCommand BuildCommand(const char* const cargoName = nullptr,
                                                           unsigned int cargoAmount = 0)
@@ -71,6 +75,34 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficient
 
   // Act and assert.
   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientGold);
+}
+
+TEST(SellCargoCommandHandler, HandleCommand_UnknownCargo_ThrowsUnknownCargo)
+{
+  HarborBuilder harborBuilder;
+  auto harbor = harborBuilder.WithName("Test harbor").Build();
+
+  ShipType shipType;
+  shipType.cargoSpaceMax = 10000;
+
+  ShipBuilder shipBuilder;
+  auto ship = shipBuilder.WithShipType(shipType).Build();
+
+  tura::domain::models::Game gameData;
+  gameData.gameState = tura::domain::models::GameState::InHarbor;
+  gameData.currentGold = 10000;
+  gameData.currentHarbor = harbor;
+  gameData.currentShip = ship;
+
+  PurchaseCargoCommand command;
+  command.cargoName = "Test cargo";
+  command.cargoAmount = 11;
+  CommandBase<PurchaseCargoCommand> wrappedCommand(command, gameData);
+
+  PurchaseCargoCommandHandler sut;
+
+  // Act and assert.
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::UnknownCargo);
 }
 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughCargoInHarbor_ThrowsInsufficientCargoInHarbor)

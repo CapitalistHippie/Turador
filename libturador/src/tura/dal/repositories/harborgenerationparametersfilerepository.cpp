@@ -124,7 +124,7 @@ HarborGenerationParameters HarborGenerationParametersFileRepository::GetHarborGe
     }
   }
 
-  throw std::system_error(std::make_error_code(Error::UnknownEntityName));
+  throw std::system_error(std::make_error_code(Error::UnknownHarborGenerationParameters));
 }
 
 HarborGenerationParameters HarborGenerationParametersFileRepository::GetHarborGenerationParametersByIndex(

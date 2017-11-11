@@ -1,8 +1,10 @@
 #include "tura/domain/game.h"
 
 #include "tura/domain/commandhandlers/purchasecargocommandhandler.hpp"
+#include "tura/domain/commandhandlers/sellcargocommandhandler.hpp"
 #include "tura/domain/commandhandlers/startgamecommandhandler.hpp"
 #include "tura/domain/commands/purchasecargocommand.h"
+#include "tura/domain/commands/sellcargocommand.h"
 #include "tura/domain/commands/startgamecommand.h"
 
 using namespace tura;
@@ -14,6 +16,7 @@ void Game::RegisterCommandHandlers()
 {
   commandMediator->RegisterCommandHandler<CommandBase<StartGameCommand>, StartGameCommandHandler>();
   commandMediator->RegisterCommandHandler<CommandBase<PurchaseCargoCommand>, PurchaseCargoCommandHandler>();
+  commandMediator->RegisterCommandHandler<CommandBase<SellCargoCommand>, SellCargoCommandHandler>();
 }
 
 Game::Game()

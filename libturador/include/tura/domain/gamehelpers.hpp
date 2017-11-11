@@ -25,7 +25,7 @@ inline const models::HarborCargo& GetHarborCargoByName(const models::Harbor& har
     }
   }
 
-  throw std::system_error(std::make_error_code(Error::UnknownEntityName));
+  throw std::system_error(std::make_error_code(Error::UnknownCargo));
 }
 
 inline models::HarborCargo& GetHarborCargoByName(models::Harbor& harbor, const char* const cargoName)
@@ -44,7 +44,7 @@ inline const models::Cargo& GetShipCargoByName(const models::Ship& ship, const c
     }
   }
 
-  throw std::system_error(std::make_error_code(Error::UnknownEntityName));
+  throw std::system_error(std::make_error_code(Error::UnknownCargo));
 }
 
 inline models::Cargo& GetShipCargoByName(models::Ship& ship, const char* const cargoName)
