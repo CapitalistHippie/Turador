@@ -1,7 +1,9 @@
 #ifndef LIBTURADOR_TURA_DOMAIN_MODELS_HARBOR_H_INCLUDED
 #define LIBTURADOR_TURA_DOMAIN_MODELS_HARBOR_H_INCLUDED
 
+#include "tura/domain/models/cannon.h"
 #include "tura/domain/models/harborcargo.h"
+#include "tura/helpers/array.hpp"
 #include "tura/helpers/chararray.hpp"
 
 namespace tura
@@ -13,7 +15,8 @@ namespace models
 struct Harbor
 {
   helpers::CharArray<64> name;
-  HarborCargo goods[15];
+  helpers::Array<HarborCargo, 32> goods;
+  helpers::Array<Cannon, 32> cannonsForSale;
 };
 }
 }

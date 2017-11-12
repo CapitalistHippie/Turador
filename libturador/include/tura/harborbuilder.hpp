@@ -4,6 +4,7 @@
 #include <cstring>
 
 #include "tura/domain/models/harbor.h"
+#include "tura/domain/models/harborcargo.h"
 
 namespace tura
 {
@@ -11,14 +12,8 @@ class HarborBuilder
 {
 private:
   domain::models::Harbor harbor;
-  unsigned int cargoIndex;
 
 public:
-  HarborBuilder()
-    : cargoIndex(0)
-  {
-  }
-
   HarborBuilder& WithName(const char* const name)
   {
     harbor.name = name;
@@ -28,13 +23,12 @@ public:
 
   HarborBuilder& WithCargo(const char* const cargoName, unsigned int cargoAmount, unsigned int cargoPrice)
   {
-    // TODO: Check cargo index count.
+    domain::models::HarborCargo cargo;
+    cargo.cargo.name = cargoName;
+    cargo.cargo.amount = cargoAmount;
+    cargo.price = cargoPrice;
 
-    harbor.goods[cargoIndex].cargo.name = cargoName;
-    harbor.goods[cargoIndex].cargo.amount = cargoAmount;
-    harbor.goods[cargoIndex].price = cargoPrice;
-
-    cargoIndex++;
+    harbor.goods.Add(cargo);
 
     return *this;
   }

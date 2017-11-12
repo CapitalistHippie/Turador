@@ -16,12 +16,11 @@ namespace domain
 {
 inline const models::HarborCargo& GetHarborCargoByName(const models::Harbor& harbor, const char* const cargoName)
 {
-  // TODO: Remove the magic 15.
-  for (unsigned int i = 0; i < 15; ++i)
+  for (const auto& cargo : harbor.goods)
   {
-    if (cargoName == harbor.goods[i].cargo.name)
+    if (cargoName == cargo.cargo.name)
     {
-      return harbor.goods[i];
+      return cargo;
     }
   }
 
@@ -35,12 +34,11 @@ inline models::HarborCargo& GetHarborCargoByName(models::Harbor& harbor, const c
 
 inline const models::Cargo& GetShipCargoByName(const models::Ship& ship, const char* const cargoName)
 {
-  // TODO: Remove the magic 15.
-  for (unsigned int i = 0; i < 15; ++i)
+  for (const auto& cargo : ship.goods)
   {
-    if (cargoName == ship.goods[i].name)
+    if (cargoName == cargo.name)
     {
-      return ship.goods[i];
+      return cargo;
     }
   }
 
@@ -56,7 +54,7 @@ inline unsigned int GetShipUsedCargoSpace(const models::Ship& ship)
 {
   unsigned int usedCargoSpace = 0;
 
-  for (auto cargo : ship.goods)
+  for (const auto& cargo : ship.goods)
   {
     usedCargoSpace += cargo.amount;
   }

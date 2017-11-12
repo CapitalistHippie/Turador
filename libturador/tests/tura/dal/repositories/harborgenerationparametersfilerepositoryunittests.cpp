@@ -29,15 +29,13 @@ TEST(HarborGenerationParametersFileRepository, GetHarbors_ReturnsValidHarborGene
 
     EXPECT_STRNE("", harborGenerationParameters.harborName.array);
 
-    for (unsigned int j = 0; j < 15; ++j)
+    for (const auto& cargoGenerationParameters : harborGenerationParameters.cargoGenerationParameters)
     {
-      EXPECT_STRNE("", harborGenerationParameters.cargoGenerationParameters[j].cargoName.array);
+      EXPECT_STRNE("", cargoGenerationParameters.cargoName.array);
 
-      EXPECT_NE(0, harborGenerationParameters.cargoGenerationParameters[j].priceMin);
-      EXPECT_LE(harborGenerationParameters.cargoGenerationParameters[j].priceMin,
-                harborGenerationParameters.cargoGenerationParameters[j].priceMax);
-      EXPECT_LE(harborGenerationParameters.cargoGenerationParameters[j].amountMin,
-                harborGenerationParameters.cargoGenerationParameters[j].amountMax);
+      EXPECT_NE(0, cargoGenerationParameters.priceMin);
+      EXPECT_LE(cargoGenerationParameters.priceMin, cargoGenerationParameters.priceMax);
+      EXPECT_LE(cargoGenerationParameters.amountMin, cargoGenerationParameters.amountMax);
     }
   }
 }

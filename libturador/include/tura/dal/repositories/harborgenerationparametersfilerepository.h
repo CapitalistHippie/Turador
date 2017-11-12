@@ -3,6 +3,7 @@
 
 #include "tura/dal/repositories/harborgenerationparametersrepositoryinterface.h"
 #include "tura/domain/models/harborgenerationparameters.h"
+#include "tura/helpers/array.hpp"
 
 namespace tura
 {
@@ -13,9 +14,7 @@ namespace repositories
 class HarborGenerationParametersFileRepository : public HarborGenerationParametersRepositoryInterface
 {
 private:
-  static const int HARBOR_GENERATION_PARAMETERS_COUNT = 24;
-
-  domain::models::HarborGenerationParameters harborGenerationParameters[HARBOR_GENERATION_PARAMETERS_COUNT];
+  tura::helpers::Array<domain::models::HarborGenerationParameters, 32> harborGenerationParameters;
 
 public:
   HarborGenerationParametersFileRepository();

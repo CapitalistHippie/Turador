@@ -13,18 +13,26 @@ namespace tura
 {
 namespace helpers
 {
+enum class ParsingStatus
+{
+  Good,
+  EndOfFile
+};
+
 class CsvRow
 {
 private:
   std::stringstream stream;
 
 public:
+  CsvRow() {}
+
   CsvRow(const char* const row)
     : stream(row)
   {
   }
 
-  void ParseNextColumn(char* const columnBuffer, const int columnBufferSize)
+  ParsingStatus ParseNextColumn(char* const columnBuffer, const int columnBufferSize)
   {
     if (columnBuffer == nullptr)
     {
@@ -32,6 +40,13 @@ public:
     }
 
     stream.getline(columnBuffer, columnBufferSize, ';');
+
+    if (stream.eof())
+    {
+      return ParsingStatus::EndOfFile;
+    }
+
+    return ParsingStatus::Good;
   }
 
   void IgnoreNextColumn() { stream.ignore(std::numeric_limits<int>::max(), ';'); }
@@ -84,7 +99,7 @@ public:
     fileOpened = true;
   }
 
-  CsvRow ParseNextRow()
+  ParsingStatus ParseNextRow(CsvRow& rowBuffer)
   {
     if (!fileOpened)
     {
@@ -101,7 +116,14 @@ public:
     char buffer[1024];
     fileStream.getline(buffer, sizeof(buffer), '\n');
 
-    return CsvRow(buffer);
+    if (fileStream.eof())
+    {
+      return ParsingStatus::EndOfFile;
+    }
+
+    rowBuffer = CsvRow(buffer);
+
+    return ParsingStatus::Good;
   }
 
   void IgnoreNextRow()

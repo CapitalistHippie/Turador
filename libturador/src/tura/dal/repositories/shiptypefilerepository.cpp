@@ -1,5 +1,6 @@
 #include "tura/dal/repositories/shiptypefilerepository.h"
 
+#include <cstring>
 #include <stdexcept>
 #include <system_error>
 
@@ -21,20 +22,21 @@ ShipTypeFileRepository::ShipTypeFileRepository()
   // First row is just headers. Ignore it.
   parser.IgnoreNextRow();
 
-  for (unsigned int i = 0; i < GetShipTypeCount(); ++i)
+  CsvRow rowBuffer;
+  while (parser.ParseNextRow(rowBuffer) != ParsingStatus::EndOfFile)
   {
-    auto row = parser.ParseNextRow();
+    ShipType shipType;
 
     // Parse the easy stuff.
-    row.ParseNextColumn(shipTypes[i].name.array, shipTypes[i].name.MaxLength());
-    row >> shipTypes[i].price;
-    row >> shipTypes[i].cargoSpaceMax;
-    row >> shipTypes[i].cannonSpaceMax;
-    row >> shipTypes[i].hitPointsMax;
+    rowBuffer.ParseNextColumn(shipType.name.array, shipType.name.MaxLength());
+    rowBuffer >> shipType.price;
+    rowBuffer >> shipType.cargoSpaceMax;
+    rowBuffer >> shipType.cannonSpaceMax;
+    rowBuffer >> shipType.hitPointsMax;
 
     // Now for the details.
     char detailsBuffer[64];
-    row.ParseNextColumn(detailsBuffer, sizeof(detailsBuffer));
+    rowBuffer.ParseNextColumn(detailsBuffer, sizeof(detailsBuffer));
     auto detailsStream = std::stringstream(detailsBuffer);
 
     while (!detailsStream.eof())
@@ -44,30 +46,32 @@ ShipTypeFileRepository::ShipTypeFileRepository()
 
       if (strcmp(detailBuffer, "klein") == 0)
       {
-        shipTypes[i].sizeClass = ShipSizeClass::Small;
+        shipType.sizeClass = ShipSizeClass::Small;
       }
       else if (strcmp(detailBuffer, "licht") == 0)
       {
-        shipTypes[i].weightClass = ShipWeightClass::Light;
+        shipType.weightClass = ShipWeightClass::Light;
       }
       else if (strcmp(detailBuffer, "log") == 0)
       {
-        shipTypes[i].weightClass = ShipWeightClass::Heavy;
+        shipType.weightClass = ShipWeightClass::Heavy;
       }
     }
+
+    shipTypes.Add(shipType);
   }
 }
 
 unsigned int ShipTypeFileRepository::GetShipTypeCount() const
 {
-  return SHIP_TYPE_COUNT;
+  return shipTypes.size();
 }
 
 ShipType ShipTypeFileRepository::GetShipTypeByName(const char* const shipTypeName) const
 {
   if (shipTypeName == nullptr)
   {
-    throw std::invalid_argument("Argument 'name' may not be null.");
+    throw std::system_error(std::make_error_code(Error::InvalidArgument), "Argument 'name' may not be null.");
   }
 
   for (unsigned int i = 0; i < GetShipTypeCount(); ++i)

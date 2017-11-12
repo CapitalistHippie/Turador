@@ -14,16 +14,11 @@
 #include <tura/harborbuilder.hpp>
 #include <tura/shipbuilder.hpp>
 
-#include "../../../helpers/testhelpers.h"
-#include "../../../mocks/harborgeneratormock.h"
-#include "../../../mocks/shipgeneratormock.h"
+#include "helpers/testhelpers.h"
+#include "mocks/harborgeneratormock.h"
+#include "mocks/shipgeneratormock.h"
 
 using namespace testing;
-
-tura::domain::commands::StartGameCommand BuildCommand()
-{
-  return tura::domain::commands::StartGameCommand();
-}
 
 TEST(StartGameCommandHandler, HandleCommand_AlreadyRunning_ThrowsInsuitableState)
 {

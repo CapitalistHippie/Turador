@@ -3,6 +3,7 @@
 
 #include "tura/dal/repositories/shiptyperepositoryinterface.h"
 #include "tura/domain/models/shiptype.h"
+#include "tura/helpers/array.hpp"
 
 namespace tura
 {
@@ -13,9 +14,7 @@ namespace repositories
 class ShipTypeFileRepository : public ShipTypeRepositoryInterface
 {
 private:
-  static const int SHIP_TYPE_COUNT = 13;
-
-  domain::models::ShipType shipTypes[SHIP_TYPE_COUNT];
+  helpers::Array<domain::models::ShipType, 32> shipTypes;
 
 public:
   ShipTypeFileRepository();

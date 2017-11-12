@@ -3,6 +3,7 @@
 
 #include "tura/domain/models/cargo.h"
 #include "tura/domain/models/shiptype.h"
+#include "tura/helpers/array.hpp"
 
 namespace tura
 {
@@ -13,7 +14,7 @@ namespace models
 struct Ship
 {
   ShipType shipType;
-  Cargo goods[15]; // TODO: Remove magic 15.
+  helpers::Array<Cargo, 32> goods;
 };
 }
 }

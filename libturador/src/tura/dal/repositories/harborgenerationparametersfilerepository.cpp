@@ -2,7 +2,6 @@
 
 #include <ctime>
 #include <random>
-#include <stdexcept>
 #include <system_error>
 
 #include "tura/error.h"
@@ -16,47 +15,45 @@ using namespace tura::dal::repositories;
 static const char* const CARGO_PRICES_FILE_PATH = "assets/goederen prijzen.csv";
 static const char* const CARGO_AMOUNTS_FILE_PATH = "assets/goederen hoeveelheid.csv";
 
-static const int CARGO_TYPE_COUNT = 15;
-
 HarborGenerationParametersFileRepository::HarborGenerationParametersFileRepository()
 {
   CsvParser parser;
   parser.OpenFile(CARGO_PRICES_FILE_PATH);
 
   // Parse the first row which contains the cargo names.
-  auto cargoNamesRow = parser.ParseNextRow();
+  CsvRow rowBuffer;
+  parser.ParseNextRow(rowBuffer);
 
   // First column is nothing. Ignore it.
-  cargoNamesRow.IgnoreNextColumn();
+  rowBuffer.IgnoreNextColumn();
 
-  // There are 15 types of cargo and 24 harbors.
-  for (unsigned int i = 0; i < CARGO_TYPE_COUNT; ++i)
+  helpers::Array<HarborCargoGenerationParameters, 32> cargoGenerationParametersBuffers;
+
+  char cargoNameBuffer[64];
+  while (rowBuffer.ParseNextColumn(cargoNameBuffer, sizeof(cargoNameBuffer)) != ParsingStatus::EndOfFile)
   {
-    char cargoNameBuffer[64];
-    cargoNamesRow.ParseNextColumn(cargoNameBuffer, sizeof(cargoNameBuffer));
+    HarborCargoGenerationParameters cargoGenerationParametersBuffer;
+    cargoGenerationParametersBuffer.cargoName = cargoNameBuffer;
 
-    // Write the cargo names to the models.
-    for (unsigned int j = 0; j < GetHarborGenerationParametersCount(); ++j)
-    {
-      harborGenerationParameters[j].cargoGenerationParameters[i].cargoName = cargoNameBuffer;
-    }
+    cargoGenerationParametersBuffers.Add(std::move(cargoGenerationParametersBuffer));
   }
 
-  // The following rows all start with the name of the harbor and then 'minimum price-maximum price'.
-  // There are 24 of these. The same amount as the amount of harbors.
-  for (unsigned int i = 0; i < GetHarborGenerationParametersCount(); ++i)
+  // The following rows all start with the name of the harbor and then 'minimum price-maximum price'. Wer're also now
+  // parsing the harbors so we add the previously parsed cargo generation parameters on the harbor.
+  while (parser.ParseNextRow(rowBuffer) != ParsingStatus::EndOfFile)
   {
-    auto row = parser.ParseNextRow();
+    HarborGenerationParameters harborGenerationParametersBuffer;
+    harborGenerationParametersBuffer.cargoGenerationParameters = cargoGenerationParametersBuffers;
 
     // Write the harbor name to the harbor generation parameters as that hasn't been done yet.
-    row.ParseNextColumn(harborGenerationParameters[i].harborName.array,
-                        harborGenerationParameters[i].harborName.MaxLength());
+    rowBuffer.ParseNextColumn(harborGenerationParametersBuffer.harborName.array,
+                              harborGenerationParametersBuffer.harborName.MaxLength());
 
     // Parse the prices.
-    for (unsigned int j = 0; j < CARGO_TYPE_COUNT; ++j)
+    for (auto& cargoGenerationParametersBuffer : harborGenerationParametersBuffer.cargoGenerationParameters)
     {
       char pricesBuffer[64];
-      row.ParseNextColumn(pricesBuffer, sizeof(pricesBuffer));
+      rowBuffer.ParseNextColumn(pricesBuffer, sizeof(pricesBuffer));
 
       auto pricesStream = std::stringstream(pricesBuffer);
       unsigned int priceMin = 0;
@@ -68,24 +65,31 @@ HarborGenerationParametersFileRepository::HarborGenerationParametersFileReposito
       unsigned int priceMax = 0;
       pricesStream >> priceMax;
 
-      harborGenerationParameters[i].cargoGenerationParameters[j].priceMin = priceMin;
-      harborGenerationParameters[i].cargoGenerationParameters[j].priceMax = priceMax;
+      cargoGenerationParametersBuffer.priceMin = priceMin;
+      cargoGenerationParametersBuffer.priceMax = priceMax;
     }
+
+    harborGenerationParameters.Add(harborGenerationParametersBuffer);
   }
 
   // And now for the cargo amounts.
+  // TODO: We're atm assuming the harbors and cargo parameters are in the same order as in the previous file. Should
+  // revise this.
   parser.OpenFile(CARGO_AMOUNTS_FILE_PATH);
   parser.IgnoreNextRow();
 
-  for (unsigned int i = 0; i < GetHarborGenerationParametersCount(); ++i)
+  for (auto& harborGenerationParametersBuffer : harborGenerationParameters)
   {
-    auto row = parser.ParseNextRow();
+    parser.ParseNextRow(rowBuffer);
+
+    // Ignore the first column which has the harbor name.
+    rowBuffer.IgnoreNextColumn();
 
     // Parse the amounts.
-    for (unsigned int j = 0; j < CARGO_TYPE_COUNT; ++j)
+    for (auto& cargoGenerationParametersBuffer : harborGenerationParametersBuffer.cargoGenerationParameters)
     {
       char amountsBuffer[64];
-      row.ParseNextColumn(amountsBuffer, sizeof(amountsBuffer));
+      rowBuffer.ParseNextColumn(amountsBuffer, sizeof(amountsBuffer));
 
       auto amountsStream = std::stringstream(amountsBuffer);
       unsigned int amountMin = 0;
@@ -97,15 +101,15 @@ HarborGenerationParametersFileRepository::HarborGenerationParametersFileReposito
       unsigned int amountMax = 0;
       amountsStream >> amountMax;
 
-      harborGenerationParameters[i].cargoGenerationParameters[j].amountMin = amountMin;
-      harborGenerationParameters[i].cargoGenerationParameters[j].amountMax = amountMax;
+      cargoGenerationParametersBuffer.amountMin = amountMin;
+      cargoGenerationParametersBuffer.amountMax = amountMax;
     }
   }
 }
 
 unsigned int HarborGenerationParametersFileRepository::GetHarborGenerationParametersCount() const
 {
-  return HARBOR_GENERATION_PARAMETERS_COUNT;
+  return harborGenerationParameters.size();
 }
 
 HarborGenerationParameters HarborGenerationParametersFileRepository::GetHarborGenerationParametersByName(
@@ -113,7 +117,7 @@ HarborGenerationParameters HarborGenerationParametersFileRepository::GetHarborGe
 {
   if (name == nullptr)
   {
-    throw std::invalid_argument("Argument 'name' may not be null.");
+    throw std::system_error(std::make_error_code(Error::InvalidArgument), "Argument 'name' can not be null.");
   }
 
   for (unsigned int i = 0; i < GetHarborGenerationParametersCount(); ++i)
@@ -132,7 +136,7 @@ HarborGenerationParameters HarborGenerationParametersFileRepository::GetHarborGe
 {
   if (index >= GetHarborGenerationParametersCount())
   {
-    throw std::out_of_range("Index out of range.");
+    throw std::system_error(std::make_error_code(Error::OutOfRange), "Index is out of range.");
   }
 
   return harborGenerationParameters[index];

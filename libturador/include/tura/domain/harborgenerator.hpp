@@ -1,13 +1,14 @@
 #ifndef LIBTURADOR_TURA_DOMAIN_HARBORGENERATOR_HPP_INCLUDED
 #define LIBTURADOR_TURA_DOMAIN_HARBORGENERATOR_HPP_INCLUDED
 
-#include <ctime>
+#include <chrono>
 #include <random>
 
 #include "tura/dal/repositories/harborgenerationparametersfilerepository.h"
 #include "tura/dal/repositories/harborgenerationparametersrepositoryinterface.h"
 #include "tura/domain/harborgeneratorinterface.h"
 #include "tura/domain/models/harbor.h"
+#include "tura/domain/models/harborcargo.h"
 #include "tura/domain/models/harborgenerationparameters.h"
 
 namespace tura
@@ -26,14 +27,16 @@ public:
   HarborGenerator()
     : harborGenerationParametersRepository(&harborGenerationParametersRepositoryInstance)
   {
-    rng.seed(time(0));
+    auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
+    rng.seed(seed);
   }
 
   HarborGenerator(
     dal::repositories::HarborGenerationParametersRepositoryInterface* harborGenerationParametersRepository)
     : harborGenerationParametersRepository(harborGenerationParametersRepository)
   {
-    rng.seed(time(0));
+    auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
+    rng.seed(seed);
   }
 
   models::Harbor GenerateRandomHarbor()
@@ -43,18 +46,39 @@ public:
 
   models::Harbor GenerateHarbor(const models::HarborGenerationParameters& parameters)
   {
+    for (const auto& parameters : parameters.cargoGenerationParameters)
+    {
+      if (parameters.priceMin > parameters.priceMax)
+      {
+        throw std::system_error(std::make_error_code(Error::InvalidArgument),
+                                "priceMin can not be higher than priceMax.");
+      }
+
+      if (parameters.amountMin > parameters.amountMax)
+      {
+        throw std::system_error(std::make_error_code(Error::InvalidArgument),
+                                "amountMin can not be higher than amountMax.");
+      }
+    }
+
     models::Harbor harbor;
 
     harbor.name = parameters.harborName;
 
-    for (unsigned int i = 0; i < 15; ++i)
+    for (const auto& parameters : parameters.cargoGenerationParameters)
     {
-      harbor.goods[i].cargo.name = parameters.cargoGenerationParameters[i].cargoName;
+      tura::domain::models::HarborCargo cargo;
+      cargo.cargo.name = parameters.cargoName;
 
-      std::uniform_int_distribution<int> rngDistribution(parameters.cargoGenerationParameters[i].priceMin,
-                                                         parameters.cargoGenerationParameters[i].priceMax);
+      // Price.
+      std::uniform_int_distribution<int> rngPriceDistribution(parameters.priceMin, parameters.priceMax);
+      cargo.price = rngPriceDistribution(rng);
 
-      harbor.goods[i].price = rngDistribution(rng);
+      // Amount.
+      std::uniform_int_distribution<int> rngAmountDistribution(parameters.amountMin, parameters.amountMax);
+      cargo.cargo.amount = rngAmountDistribution(rng);
+
+      harbor.goods.Add(cargo);
     }
 
     return harbor;

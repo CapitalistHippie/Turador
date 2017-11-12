@@ -8,6 +8,8 @@ namespace tura
 enum class Error
 {
   None,
+  InvalidArgument,
+  OutOfRange,
   InsuitableState,
   InsufficientGold,
   InsufficientCargoInHarbor,

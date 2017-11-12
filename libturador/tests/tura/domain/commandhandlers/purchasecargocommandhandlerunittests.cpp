@@ -12,7 +12,7 @@
 #include <tura/harborbuilder.hpp>
 #include <tura/shipbuilder.hpp>
 
-#include "../../../helpers/testhelpers.h"
+#include "helpers/testhelpers.h"
 
 using namespace testing;
 using namespace tura;

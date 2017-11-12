@@ -3,6 +3,7 @@
 
 #include <cstring>
 
+#include "tura/domain/models/cargo.h"
 #include "tura/domain/models/ship.h"
 #include "tura/domain/models/shiptype.h"
 
@@ -12,14 +13,8 @@ class ShipBuilder
 {
 private:
   domain::models::Ship ship;
-  unsigned int cargoIndex;
 
 public:
-  ShipBuilder()
-    : cargoIndex(0)
-  {
-  }
-
   ShipBuilder& WithShipType(domain::models::ShipType shipType)
   {
     ship.shipType = shipType;
@@ -29,12 +24,11 @@ public:
 
   ShipBuilder& WithCargo(const char* const cargoName, unsigned int cargoAmount)
   {
-    // TODO: Check cargo index count.
+    domain::models::Cargo cargo;
+    cargo.name = cargoName;
+    cargo.amount = cargoAmount;
 
-    ship.goods[cargoIndex].name = cargoName;
-    ship.goods[cargoIndex].amount = cargoAmount;
-
-    cargoIndex++;
+    ship.goods.Add(cargo);
 
     return *this;
   }
