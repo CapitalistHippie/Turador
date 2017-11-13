@@ -6,6 +6,7 @@
 
 #include "tura/dal/repositories/harborgenerationparametersfilerepository.h"
 #include "tura/dal/repositories/harborgenerationparametersrepositoryinterface.h"
+#include "tura/domain/constants.h"
 #include "tura/domain/harborgeneratorinterface.h"
 #include "tura/domain/models/harbor.h"
 #include "tura/domain/models/harborcargo.h"
@@ -65,6 +66,7 @@ public:
 
     harbor.name = parameters.harborName;
 
+    // Cargo.
     for (const auto& parameters : parameters.cargoGenerationParameters)
     {
       tura::domain::models::HarborCargo cargo;
@@ -79,6 +81,34 @@ public:
       cargo.cargo.amount = rngAmountDistribution(rng);
 
       harbor.goods.Add(cargo);
+    }
+
+    // Cannons for sale.
+    std::uniform_int_distribution<int> rngCannonsForSaleAmountDistribution(Constants::HarborLightCannonsForSaleMin,
+                                                                           Constants::HarborLightCannonsForSaleMax);
+    for (unsigned int i = 0; i < rngCannonsForSaleAmountDistribution(rng); ++i)
+    {
+      models::Cannon cannon;
+      cannon.cannonClass = models::CannonClass::Light;
+      harbor.cannonsForSale.Add(cannon);
+    }
+
+    rngCannonsForSaleAmountDistribution = std::uniform_int_distribution<int>(Constants::HarborMediumCannonsForSaleMin,
+                                                                             Constants::HarborMediumCannonsForSaleMax);
+    for (unsigned int i = 0; i < rngCannonsForSaleAmountDistribution(rng); ++i)
+    {
+      models::Cannon cannon;
+      cannon.cannonClass = models::CannonClass::Medium;
+      harbor.cannonsForSale.Add(cannon);
+    }
+
+    rngCannonsForSaleAmountDistribution = std::uniform_int_distribution<int>(Constants::HarborHeavyCannonsForSaleMin,
+                                                                             Constants::HarborHeavyCannonsForSaleMax);
+    for (unsigned int i = 0; i < rngCannonsForSaleAmountDistribution(rng); ++i)
+    {
+      models::Cannon cannon;
+      cannon.cannonClass = models::CannonClass::Heavy;
+      harbor.cannonsForSale.Add(cannon);
     }
 
     return harbor;

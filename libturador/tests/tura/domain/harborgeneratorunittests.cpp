@@ -3,6 +3,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <tura/domain/constants.h>
 #include <tura/domain/harborgenerator.hpp>
 #include <tura/domain/models/harbor.h>
 #include <tura/domain/models/harborgenerationparameters.h>
@@ -112,5 +113,64 @@ TEST(HarborGenerator, GenerateHarbor_SetsLightHarborCannonsForSaleBetweenInclusi
   // Act.
   auto result = sut.GenerateHarbor(harborGenerationParameters);
 
+  unsigned int lightCannonCount = 0;
+  for (const auto& cannon : result.cannonsForSale)
+  {
+    if (cannon.cannonClass == CannonClass::Light)
+    {
+      lightCannonCount++;
+    }
+  }
+
   // Assert.
+  EXPECT_GE(lightCannonCount, Constants::HarborLightCannonsForSaleMin);
+  EXPECT_LE(lightCannonCount, Constants::HarborLightCannonsForSaleMax);
+}
+
+TEST(HarborGenerator, GenerateHarbor_SetsMediumHarborCannonsForSaleBetweenInclusiveMinAndMax)
+{
+  // Arrange.
+  HarborGenerationParameters harborGenerationParameters;
+
+  HarborGenerator sut;
+
+  // Act.
+  auto result = sut.GenerateHarbor(harborGenerationParameters);
+
+  unsigned int mediumCannonCount = 0;
+  for (const auto& cannon : result.cannonsForSale)
+  {
+    if (cannon.cannonClass == CannonClass::Medium)
+    {
+      mediumCannonCount++;
+    }
+  }
+
+  // Assert.
+  EXPECT_GE(mediumCannonCount, Constants::HarborMediumCannonsForSaleMin);
+  EXPECT_LE(mediumCannonCount, Constants::HarborMediumCannonsForSaleMax);
+}
+
+TEST(HarborGenerator, GenerateHarbor_SetsHeavyHarborCannonsForSaleBetweenInclusiveMinAndMax)
+{
+  // Arrange.
+  HarborGenerationParameters harborGenerationParameters;
+
+  HarborGenerator sut;
+
+  // Act.
+  auto result = sut.GenerateHarbor(harborGenerationParameters);
+
+  unsigned int heavyCannonCount = 0;
+  for (const auto& cannon : result.cannonsForSale)
+  {
+    if (cannon.cannonClass == CannonClass::Heavy)
+    {
+      heavyCannonCount++;
+    }
+  }
+
+  // Assert.
+  EXPECT_GE(heavyCannonCount, Constants::HarborHeavyCannonsForSaleMin);
+  EXPECT_LE(heavyCannonCount, Constants::HarborHeavyCannonsForSaleMax);
 }
