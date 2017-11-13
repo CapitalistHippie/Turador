@@ -12,6 +12,7 @@ set(LIBTURADOR_SRC_DIR "${LIBTURADOR_DIR}/src")
 set(LIBTURADOR_INCLUDE_DIR "${LIBTURADOR_DIR}/include")
 
 set(LIBTURADOR_SRC_FILES
+    "${LIBTURADOR_INCLUDE_DIR}/tura/app/gameclient.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commandhandlers/purchasecargocommandhandler.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commandhandlers/sellcargocommandhandler.hpp"
     "${LIBTURADOR_INCLUDE_DIR}/tura/domain/commandhandlers/startgamecommandhandler.hpp"
@@ -33,13 +34,13 @@ set(LIBTURADOR_TESTS_SRC_DIR "${LIBTURADOR_DIR}/tests")
 set(LIBTURADOR_TESTS_INCLUDE_DIR "${LIBTURADOR_DIR}/tests")
 
 set(LIBTURADOR_TEST_SRC_FILES
+    "${LIBTURADOR_TESTS_SRC_DIR}/tura/app/gameclientunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/tura/dal/repositories/harborgenerationparametersfilerepositoryunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/tura/dal/repositories/shiptypefilerepositoryunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/tura/domain/commandhandlers/purchasecargocommandhandlerunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/tura/domain/commandhandlers/sellcargocommandhandlerunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/tura/domain/commandhandlers/startgamecommandhandlerunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/tura/domain/harborgeneratorunittests.cpp"
-    "${LIBTURADOR_TESTS_SRC_DIR}/tura/service/gameclientunittests.cpp"
     "${LIBTURADOR_TESTS_SRC_DIR}/main.cpp")
 
 set(CMAKE_CXX_STANDARD 11)

@@ -20,6 +20,8 @@ public:
   {
   }
 
+  CharArray(const char* const other) { CopyFrom(other); }
+
   CharArray& operator=(const char* const other)
   {
     CopyFrom(other);
