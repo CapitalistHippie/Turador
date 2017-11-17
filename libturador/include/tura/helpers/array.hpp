@@ -162,7 +162,18 @@ public:
   T* GetData() { return array; }
   const T* GetData() const { return array; }
 
-  void ToLower() { std::transform(data[0], data[size()], tolower()); }
+  bool HasValue(const T& value) const
+  {
+    for (const auto& entry : data)
+    {
+      if (value == entry)
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
 };
 }
 }

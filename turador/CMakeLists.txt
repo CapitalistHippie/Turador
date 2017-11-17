@@ -11,11 +11,6 @@ set(TURADOR_SRC_DIR "${TURADOR_DIR}/src")
 set(TURADOR_INCLUDE_DIR "${TURADOR_DIR}/src")
 
 set(TURADOR_SRC_FILES
-    "${TURADOR_SRC_DIR}/tura/ui/console.hpp"
-    "${TURADOR_SRC_DIR}/tura/ui/inputcommand.hpp"
-    "${TURADOR_SRC_DIR}/tura/ui/inputcommandmediator.hpp"
-    "${TURADOR_SRC_DIR}/tura/ui/inputcommandparser.hpp"
-    "${TURADOR_SRC_DIR}/tura/ui/ui.hpp"
     "${TURADOR_SRC_DIR}/main.cpp")
 
 

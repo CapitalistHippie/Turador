@@ -20,7 +20,8 @@ enum class Error
   UnknownHarborGenerationParameters,
   UnknownShipType,
   UnableToOpenFile,
-  NoFileOpened
+  NoFileOpened,
+  CommandNotRegistered
 };
 }
 

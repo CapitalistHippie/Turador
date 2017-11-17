@@ -49,7 +49,7 @@ public:
   void RegisterCommand(helpers::CharArray<64> commandName)
   {
     commandNames.Add(commandName);
-    inputCommandParametersParsers.Add(new InputCommandParametersParser<Parameters...>);
+    inputCommandParametersParsers.Add(new InputCommandParametersParserImpl<Parameters...>);
   }
 
   InputCommand ParseCommand(std::istream& stream) const
@@ -66,10 +66,20 @@ public:
     // Parse the command.
     streamBuffer.getline(command.command.array, command.command.MaxLength(), ' ');
 
+    if (!IsCommandRegistered(command.command))
+    {
+      throw std::system_error(std::make_error_code(Error::CommandNotRegistered));
+    }
+
     // Parse the command parameters.
     inputCommandParametersParsers[GetCommandNameIndex(command.command)]->Parse(streamBuffer, command);
 
     return command;
+  }
+
+  bool IsCommandRegistered(const helpers::CharArray<64>& commandName) const
+  {
+    return commandNames.HasValue(commandName);
   }
 };
 }

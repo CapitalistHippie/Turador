@@ -125,8 +125,6 @@ template<typename... Parameters>
 void ParseInputCommandParameters(std::istream& stream, InputCommand& command)
 {
   ParseInputCommandParametersImpl<Parameters...>::Parse(stream, command);
-
-  command.commandTypeIndex = std::typeof(InputCommandParametersType<Parameters...>);
 }
 
 template<typename... Parameters>

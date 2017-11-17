@@ -5,6 +5,7 @@
 
 #include <tura/app/gameclient.hpp>
 
+#include "tura/error.h"
 #include "tura/ui/console.hpp"
 #include "tura/ui/inputcommandparser.hpp"
 
@@ -19,7 +20,31 @@ void Start(app::GameClient& gameClient)
   RenderConsole(gameClient.GetGameData());
 
   InputCommandParser commandParser;
-  commandParser.ParseCommand(std::cin);
+  commandParser.RegisterCommand("quit");
+  commandParser.RegisterCommand("exit");
+
+  InputCommand command;
+
+  do
+  {
+    try
+    {
+      command = commandParser.ParseCommand(std::cin);
+    }
+    catch (const std::system_error& e)
+    {
+      if (e.code() == Error::CommandNotRegistered)
+      {
+        RenderConsole(gameClient.GetGameData());
+
+        std::cout << "\nUnknown command. Please try again!\n";
+      }
+      else
+      {
+        throw;
+      }
+    }
+  } while (command.command != "quit" && command.command != "exit");
 }
 }
 }

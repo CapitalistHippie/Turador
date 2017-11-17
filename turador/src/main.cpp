@@ -32,7 +32,5 @@ int main()
     std::cout << "An unknown fatal error occurred.\nPress any key to exit.";
   }
 
-  std::cin.get();
-
   return exitCode;
 }
