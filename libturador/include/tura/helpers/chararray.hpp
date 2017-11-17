@@ -34,6 +34,12 @@ public:
   unsigned int MaxLength() const { return length; }
 };
 
+template<unsigned int length, unsigned int length2>
+bool operator==(const CharArray<length>& left, const CharArray<length2>& right)
+{
+  return strcmp(left.array, right.array) == 0;
+}
+
 template<unsigned int length>
 bool operator==(const CharArray<length>& left, const char* const right)
 {

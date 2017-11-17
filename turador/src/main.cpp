@@ -2,11 +2,7 @@
 
 #include <tura/app/gameclient.hpp>
 
-void Start()
-{
-  tura::app::GameClient gameClient;
-  gameClient.Start();
-}
+#include "tura/ui/ui.hpp"
 
 int main()
 {
@@ -14,15 +10,16 @@ int main()
 
   try
   {
-    Start();
+    tura::app::GameClient gameClient;
+    tura::ui::Start(gameClient);
   }
-  catch (std::system_error& e)
+  catch (const std::system_error& e)
   {
     exitCode = e.code().value();
 
     std::cout << "A fatal error occurred: " << exitCode << ": " << e.what() << "\nPress any key to exit.";
   }
-  catch (std::exception& e)
+  catch (const std::exception& e)
   {
     exitCode = -1;
 

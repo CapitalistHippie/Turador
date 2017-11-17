@@ -9,6 +9,7 @@ enum class Error
 {
   None,
   InvalidArgument,
+  InvalidOutputType,
   OutOfRange,
   InsuitableState,
   InsufficientGold,

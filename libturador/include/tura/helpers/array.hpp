@@ -1,6 +1,8 @@
 #ifndef LIBTURADOR_TURA_HELPERS_ARRAY_HPP_INCLUDED
 #define LIBTURADOR_TURA_HELPERS_ARRAY_HPP_INCLUDED
 
+#include <algorithm>
+#include <ctype.h>
 #include <system_error>
 #include <utility>
 
@@ -132,26 +134,14 @@ public:
     size_ = n;
   }
 
-  void Add(const T& item)
+  void Add(T item)
   {
     if (size() >= length)
     {
       throw std::system_error(std::make_error_code(Error::OutOfRange), "No more space in array.");
     }
 
-    data[size()] = item;
-
-    size_++;
-  }
-
-  void Add(T&& item)
-  {
-    if (size() >= length)
-    {
-      throw std::system_error(std::make_error_code(Error::OutOfRange), "No more space in array.");
-    }
-
-    data[size()] = item;
+    data[size()] = std::move(item);
 
     size_++;
   }
@@ -171,6 +161,8 @@ public:
 
   T* GetData() { return array; }
   const T* GetData() const { return array; }
+
+  void ToLower() { std::transform(data[0], data[size()], tolower()); }
 };
 }
 }
