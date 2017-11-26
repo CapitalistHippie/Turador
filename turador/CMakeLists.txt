@@ -11,6 +11,7 @@ set(TURADOR_SRC_DIR "${TURADOR_DIR}/src")
 set(TURADOR_INCLUDE_DIR "${TURADOR_DIR}/src")
 
 set(TURADOR_SRC_FILES
+    "${TURADOR_SRC_DIR}/tura/ui/cli/cliui.cpp"
     "${TURADOR_SRC_DIR}/main.cpp")
 
 

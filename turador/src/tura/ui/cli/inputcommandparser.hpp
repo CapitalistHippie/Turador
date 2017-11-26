@@ -1,10 +1,12 @@
 #ifndef TURADOR_TURA_UI_INPUTCOMMANDPARSER_HPP_INCLUDED
 #define TURADOR_TURA_UI_INPUTCOMMANDPARSER_HPP_INCLUDED
 
+#include <sstream>
+
 #include <tura/helpers/array.hpp>
 #include <tura/helpers/chararray.hpp>
 
-#include "tura/ui/inputcommand.hpp"
+#include "tura/ui/cli/inputcommand.hpp"
 
 namespace tura
 {
@@ -50,6 +52,25 @@ public:
   {
     commandNames.Add(commandName);
     inputCommandParametersParsers.Add(new InputCommandParametersParserImpl<Parameters...>);
+  }
+
+  void ClearCommands()
+  {
+    commandNames.Clear();
+    inputCommandParametersParsers.Clear();
+  }
+
+  void UnregisterCommand(helpers::CharArray<64> commandName)
+  {
+    for (unsigned int i = 0; i < commandNames.size(); ++i)
+    {
+      if (commandName == commandNames[i])
+      {
+        delete inputCommandParametersParsers[i];
+        inputCommandParametersParsers.Remove(i);
+        commandNames.Remove(i);
+      }
+    }
   }
 
   InputCommand ParseCommand(std::istream& stream) const

@@ -164,7 +164,7 @@ public:
 
   bool HasValue(const T& value) const
   {
-    for (const auto& entry : data)
+    for (const auto& entry : *this)
     {
       if (value == entry)
       {
@@ -173,6 +173,36 @@ public:
     }
 
     return false;
+  }
+
+  size_type IndexOf(const T& value) const
+  {
+    for (size_type i = 0; i < size(); ++i)
+    {
+      if (value == data[i])
+      {
+        return i;
+      }
+    }
+
+    // TODO: Throw.
+  }
+
+  void Clear() { size_ = 0; }
+
+  void Remove(size_type index)
+  {
+    if (index >= size() || index < 0)
+    {
+      // TODO: Throw.
+    }
+
+    for (size_type i = index; i < size() - 1; ++i)
+    {
+      data[i] = data[i + 1];
+    }
+
+    size_--;
   }
 };
 }
