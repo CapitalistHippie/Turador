@@ -3,13 +3,13 @@
 
 #include <system_error>
 
-#include "tura/domain/commandmediator.hpp"
 #include "tura/domain/commands/commandbase.h"
 #include "tura/domain/commands/purchasecargocommand.h"
 #include "tura/domain/gamehelpers.hpp"
 #include "tura/domain/models/game.h"
 #include "tura/domain/models/gamestate.h"
 #include "tura/error.h"
+#include "tura/helpers/commandmediator.hpp"
 
 namespace tura
 {
@@ -17,7 +17,8 @@ namespace domain
 {
 namespace commandhandlers
 {
-class PurchaseCargoCommandHandler : public CommandHandlerBase<commands::CommandBase<commands::PurchaseCargoCommand>>
+class PurchaseCargoCommandHandler
+  : public helpers::CommandHandlerBase<commands::CommandBase<commands::PurchaseCargoCommand>>
 {
 public:
   void HandleCommand(const commands::CommandBase<commands::PurchaseCargoCommand>& command) const override

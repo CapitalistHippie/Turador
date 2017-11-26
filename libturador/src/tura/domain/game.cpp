@@ -25,7 +25,7 @@ Game::Game()
   RegisterCommandHandlers();
 }
 
-Game::Game(CommandMediator* commandMediator)
+Game::Game(helpers::CommandMediator* commandMediator)
   : commandMediator(commandMediator)
 {
   RegisterCommandHandlers();

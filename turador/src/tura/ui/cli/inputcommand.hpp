@@ -1,5 +1,5 @@
-#ifndef TURADOR_TURA_UI_INPUTCOMMAND_HPP_INCLUDED
-#define TURADOR_TURA_UI_INPUTCOMMAND_HPP_INCLUDED
+#ifndef TURADOR_TURA_UI_CLI_INPUTCOMMAND_HPP_INCLUDED
+#define TURADOR_TURA_UI_CLI_INPUTCOMMAND_HPP_INCLUDED
 
 #include <system_error>
 
@@ -10,6 +10,8 @@
 namespace tura
 {
 namespace ui
+{
+namespace cli
 {
 class InputCommandParameter
 {
@@ -147,7 +149,8 @@ InputCommand ParseInputCommand(std::istream& stream)
 
   return command;
 }
+} // namespace cli
 } // namespace ui
 } // namespace tura
 
-#endif // #ifndef TURADOR_TURA_UI_INPUTCOMMAND_HPP_INCLUDED
+#endif // #ifndef TURADOR_TURA_UI_CLI_INPUTCOMMAND_HPP_INCLUDED

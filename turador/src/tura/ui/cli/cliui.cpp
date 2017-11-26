@@ -20,6 +20,8 @@ void CliUi::SetState(CliUiState state)
       activeStateHandler =
         new statehandlers::GameNotStartedStateHandler(*this, gameClient, commandParser, outputStream);
       break;
+      // default:
+      // TODO: Throw.
   }
 
   activeStateHandler->EnterState();

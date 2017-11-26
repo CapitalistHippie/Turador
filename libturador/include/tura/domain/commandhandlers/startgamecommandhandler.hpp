@@ -3,7 +3,6 @@
 
 #include <system_error>
 
-#include "tura/domain/commandmediator.hpp"
 #include "tura/domain/commands/commandbase.h"
 #include "tura/domain/commands/startgamecommand.h"
 #include "tura/domain/constants.h"
@@ -15,6 +14,7 @@
 #include "tura/domain/shipgenerator.hpp"
 #include "tura/domain/shipgeneratorinterface.h"
 #include "tura/error.h"
+#include "tura/helpers/commandmediator.hpp"
 
 namespace tura
 {
@@ -22,7 +22,7 @@ namespace domain
 {
 namespace commandhandlers
 {
-class StartGameCommandHandler : public CommandHandlerBase<commands::CommandBase<commands::StartGameCommand>>
+class StartGameCommandHandler : public helpers::CommandHandlerBase<commands::CommandBase<commands::StartGameCommand>>
 {
 private:
   HarborGenerator harborGeneratorInstance;

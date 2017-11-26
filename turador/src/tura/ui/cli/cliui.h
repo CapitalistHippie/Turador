@@ -1,6 +1,7 @@
 #ifndef TURADOR_TURA_UI_CLI_CLIUI_H_INCLUDED
 #define TURADOR_TURA_UI_CLI_CLIUI_H_INCLUDED
 
+#include <functional>
 #include <istream>
 #include <ostream>
 
@@ -11,6 +12,7 @@
 #include "tura/ui/cli/cliuistate.h"
 #include "tura/ui/cli/consolehelpers.hpp"
 #include "tura/ui/cli/helpers.hpp"
+#include "tura/ui/cli/inputcommandmediator.hpp"
 #include "tura/ui/cli/inputcommandparser.hpp"
 #include "tura/ui/cli/statehandlers/statehandler.h"
 
@@ -27,6 +29,7 @@ private:
   std::istream& inputStream;
   std::ostream& outputStream;
   InputCommandParser commandParser;
+  InputCommandMediator commandMediator;
 
   bool started;
   bool shouldStop;
@@ -67,6 +70,9 @@ public:
     commandParser.RegisterCommand("quit");
     commandParser.RegisterCommand("exit");
 
+    commandMediator.RegisterCommandHandler("quit", std::bind(&CliUi::Stop, this));
+    commandMediator.RegisterCommandHandler("exit", std::bind(&CliUi::Stop, this));
+
     auto initialState = GetCliUiStateFromGameState(gameClient.GetGameData().gameState);
     SetState(initialState);
 
@@ -79,7 +85,7 @@ public:
       try
       {
         auto command = commandParser.ParseCommand(inputStream);
-        HandleCommand(command);
+        commandMediator.HandleCommand(command);
       }
       catch (const std::system_error& e)
       {
@@ -96,7 +102,8 @@ public:
       }
     } while (!shouldStop);
 
-    commandParser.ClearCommands();
+    commandParser.Clear();
+    commandMediator.Clear();
 
     started = false;
     shouldStop = false;
@@ -125,8 +132,6 @@ public:
 
     activeStateHandler->RenderConsole();
   }
-
-  void HandleCommand(const InputCommand& command) {}
 };
 }
 }

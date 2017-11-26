@@ -1,5 +1,5 @@
-#ifndef LIBTURADOR_TURA_DOMAIN_COMMANDMEDIATOR_HPP_INCLUDED
-#define LIBTURADOR_TURA_DOMAIN_COMMANDMEDIATOR_HPP_INCLUDED
+#ifndef LIBTURADOR_TURA_HELPERS_COMMANDMEDIATOR_HPP_INCLUDED
+#define LIBTURADOR_TURA_HELPERS_COMMANDMEDIATOR_HPP_INCLUDED
 
 #include <typeindex>
 
@@ -7,7 +7,7 @@
 
 namespace tura
 {
-namespace domain
+namespace helpers
 {
 class CommandInterface
 {
@@ -130,4 +130,4 @@ public:
 }
 }
 
-#endif
+#endif // #ifndef LIBTURADOR_TURA_HELPERS_COMMANDMEDIATOR_HPP_INCLUDED

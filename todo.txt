@@ -1,0 +1,7 @@
+- Alle TODO's fixen
+- Error category per layer (domain, app, etc...)
+- Helpers in eigen library
+- Layers in eigen library en CMake project.
+- HarborCargoGenerationParameters hernoemen naar HarborCargoType
+- Unit tests in eigen CMake project.
+- Meer dingen in cpp files ipv hpp

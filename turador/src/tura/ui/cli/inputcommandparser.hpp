@@ -1,16 +1,19 @@
-#ifndef TURADOR_TURA_UI_INPUTCOMMANDPARSER_HPP_INCLUDED
-#define TURADOR_TURA_UI_INPUTCOMMANDPARSER_HPP_INCLUDED
+#ifndef TURADOR_TURA_UI_CLI_INPUTCOMMANDPARSER_HPP_INCLUDED
+#define TURADOR_TURA_UI_CLI_INPUTCOMMANDPARSER_HPP_INCLUDED
 
 #include <sstream>
 
 #include <tura/helpers/array.hpp>
 #include <tura/helpers/chararray.hpp>
+#include <tura/helpers/noncopyable.h>
 
 #include "tura/ui/cli/inputcommand.hpp"
 
 namespace tura
 {
 namespace ui
+{
+namespace cli
 {
 class InputCommandParametersParser
 {
@@ -27,7 +30,7 @@ class InputCommandParametersParserImpl : public InputCommandParametersParser
   }
 };
 
-class InputCommandParser
+class InputCommandParser : helpers::Noncopyable
 {
 private:
   helpers::Array<helpers::CharArray<64>, 32> commandNames;
@@ -47,6 +50,14 @@ private:
   }
 
 public:
+  ~InputCommandParser()
+  {
+    for (auto parser : inputCommandParametersParsers)
+    {
+      delete parser;
+    }
+  }
+
   template<typename... Parameters>
   void RegisterCommand(helpers::CharArray<64> commandName)
   {
@@ -54,8 +65,13 @@ public:
     inputCommandParametersParsers.Add(new InputCommandParametersParserImpl<Parameters...>);
   }
 
-  void ClearCommands()
+  void Clear()
   {
+    for (auto parser : inputCommandParametersParsers)
+    {
+      delete parser;
+    }
+
     commandNames.Clear();
     inputCommandParametersParsers.Clear();
   }
@@ -105,5 +121,6 @@ public:
 };
 }
 }
+}
 
-#endif // TURADOR_TURA_UI_INPUTCOMMANDPARSER_HPP_INCLUDED
+#endif // TURADOR_TURA_UI_CLI_INPUTCOMMANDPARSER_HPP_INCLUDED
