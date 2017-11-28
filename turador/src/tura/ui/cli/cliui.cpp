@@ -18,7 +18,7 @@ void CliUi::SetState(CliUiState state)
   {
     case CliUiState::GameNotStarted:
       activeStateHandler =
-        new statehandlers::GameNotStartedStateHandler(*this, gameClient, commandParser, outputStream);
+        new statehandlers::GameNotStartedStateHandler(*this, gameClient, commandParser, commandMediator, outputStream);
       break;
       // default:
       // TODO: Throw.

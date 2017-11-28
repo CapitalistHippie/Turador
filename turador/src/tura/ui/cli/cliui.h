@@ -69,9 +69,13 @@ public:
 
     commandParser.RegisterCommand("quit");
     commandParser.RegisterCommand("exit");
+    commandParser.RegisterCommand("stop");
 
-    commandMediator.RegisterCommandHandler("quit", std::bind(&CliUi::Stop, this));
-    commandMediator.RegisterCommandHandler("exit", std::bind(&CliUi::Stop, this));
+    auto stopFunction = std::bind(&CliUi::Stop, this);
+
+    commandMediator.RegisterCommandHandler("quit", stopFunction);
+    commandMediator.RegisterCommandHandler("exit", stopFunction);
+    commandMediator.RegisterCommandHandler("stop", stopFunction);
 
     auto initialState = GetCliUiStateFromGameState(gameClient.GetGameData().gameState);
     SetState(initialState);

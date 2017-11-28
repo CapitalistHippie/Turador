@@ -44,6 +44,8 @@ private:
   helpers::Array<helpers::CharArray<64>, 32> commandHandlerCommandNames;
 
 public:
+  typedef helpers::Array<CommandHandlerInvoker*, 32>::size_type CommandHandlerHandle;
+
   ~InputCommandMediator()
   {
     for (auto invoker : commandHandlerInvokers)
@@ -54,23 +56,28 @@ public:
 
   void HandleCommand(const InputCommand& command) const
   {
-    if (!commandHandlerCommandNames.HasValue(command.command))
+    for (unsigned int i = 0; i < commandHandlerCommandNames.size(); ++i)
     {
-      // TODO: Throw.
+      if (command.command.array == commandHandlerCommandNames[i])
+      {
+        commandHandlerInvokers[i]->Invoke(command);
+      }
     }
-
-    commandHandlerInvokers[commandHandlerCommandNames.IndexOf(command.command)]->Invoke(command);
   }
 
   template<typename CommandHandler>
-  void RegisterCommandHandler(helpers::CharArray<64> commandName, CommandHandler commandHandler)
+  CommandHandlerHandle RegisterCommandHandler(helpers::CharArray<64> commandName, CommandHandler commandHandler)
   {
     CommandHandlerInvoker* commandHandlerInvoker = new CommandHandlerInvokerImpl<CommandHandler>(commandHandler);
 
     try
     {
+      auto index = commandHandlerCommandNames.size();
+
       commandHandlerCommandNames.Add(commandName);
       commandHandlerInvokers.Add(commandHandlerInvoker);
+
+      return index;
     }
     catch (...)
     {
@@ -78,6 +85,13 @@ public:
 
       throw;
     }
+  }
+
+  void UnregisterCommandHandler(CommandHandlerHandle commandHandlerHandle)
+  {
+    delete commandHandlerInvokers[commandHandlerHandle];
+    commandHandlerInvokers.Remove(commandHandlerHandle);
+    commandHandlerCommandNames.Remove(commandHandlerHandle);
   }
 
   void Clear()
