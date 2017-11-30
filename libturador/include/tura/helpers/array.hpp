@@ -134,6 +134,34 @@ public:
     size_ = n;
   }
 
+  // Array(const Array<T, length>& other) = default;
+  // Array& operator=(const Array<T, length>& other) = default;
+
+  // Array(Array<T, length>&& other)
+  //   : size_(0)
+  // {
+  //   for (auto& entry : other)
+  //   {
+  //     Emplace(std::move(entry));
+  //   }
+
+  //   other.size_ = 0;
+  // }
+
+  // Array& operator=(Array<T, length>&& other)
+  // {
+  //   size_ = 0;
+
+  //   for (auto& entry : other)
+  //   {
+  //     Emplace(std::move(entry));
+  //   }
+
+  //   other.size_ = 0;
+
+  //   return *this;
+  // }
+
   void Add(T item)
   {
     if (size() >= length)
@@ -154,7 +182,7 @@ public:
       throw std::system_error(std::make_error_code(Error::OutOfRange), "No more space in array.");
     }
 
-    data[size()] = T(args);
+    data[size()] = T(args...);
 
     size_++;
   }

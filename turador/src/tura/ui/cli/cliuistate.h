@@ -9,7 +9,8 @@ namespace cli
 {
 enum class CliUiState
 {
-  GameNotStarted
+  GameNotStarted,
+  InHarbor
 };
 }
 }

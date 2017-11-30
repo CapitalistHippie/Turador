@@ -56,6 +56,15 @@ public:
       throw std::system_error(std::make_error_code(Error::InsufficientGold));
     }
 
+    // Check if the ship has the cargo. If it doesn't, add it.
+    if (!HasShipCargoByName(gameData.currentShip, command.command.cargoName.array))
+    {
+      models::Cargo newShipCargo;
+      newShipCargo.name = command.command.cargoName;
+
+      gameData.currentShip.goods.Add(newShipCargo);
+    }
+
     // We good. Let's do this.
     gameData.currentGold -= totalGoldToSpend;
     harborCargo.cargo.amount -= command.command.cargoAmount;

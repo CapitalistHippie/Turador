@@ -2,6 +2,8 @@
 #define LIBTURADOR_TURA_HELPERS_CHARARRAY_HPP_INCLUDED
 
 #include <cstring>
+#include <istream>
+#include <ostream>
 
 #include "tura/error.h"
 
@@ -70,6 +72,22 @@ template<unsigned int length>
 bool operator!=(const char* const right, const CharArray<length>& left)
 {
   return left != right;
+}
+
+template<unsigned int length>
+std::istream& operator>>(std::istream& stream, CharArray<length>& array)
+{
+  stream.getline(array.array, length, ' ');
+
+  return stream;
+}
+
+template<unsigned int length>
+std::ostream& operator<<(std::ostream& stream, const CharArray<length>& array)
+{
+  stream << array.array;
+
+  return stream;
 }
 }
 }

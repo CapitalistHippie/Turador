@@ -65,8 +65,6 @@ public:
       return;
     }
 
-    // gameClient.Start();
-
     commandParser.RegisterCommand("quit");
     commandParser.RegisterCommand("exit");
     commandParser.RegisterCommand("stop");
@@ -90,6 +88,8 @@ public:
       {
         auto command = commandParser.ParseCommand(inputStream);
         commandMediator.HandleCommand(command);
+
+        RenderConsole();
       }
       catch (const std::system_error& e)
       {

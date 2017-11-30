@@ -45,6 +45,19 @@ inline const models::Cargo& GetShipCargoByName(const models::Ship& ship, const c
   throw std::system_error(std::make_error_code(Error::UnknownCargo));
 }
 
+inline bool HasShipCargoByName(const models::Ship& ship, const char* const cargoName)
+{
+  for (const auto& cargo : ship.goods)
+  {
+    if (cargoName == cargo.name)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 inline models::Cargo& GetShipCargoByName(models::Ship& ship, const char* const cargoName)
 {
   return const_cast<models::Cargo&>(GetShipCargoByName(const_cast<const models::Ship&>(ship), cargoName));

@@ -77,8 +77,20 @@ public:
     return *this;
   }
 
-  InputCommand(InputCommand&&) = default;
-  InputCommand& operator=(InputCommand&&) = default;
+  InputCommand(InputCommand&& other)
+    : parameters(other.parameters)
+    , command(other.command)
+  {
+    other.parameters.Clear();
+  }
+
+  InputCommand& operator=(InputCommand&& other)
+  {
+    parameters = other.parameters;
+    command = other.command;
+
+    other.parameters.Clear();
+  }
 
   unsigned int GetAmountOfParameters() const noexcept { return parameters.size(); }
 
@@ -91,7 +103,7 @@ public:
   template<typename T>
   T& GetParameter(unsigned int index) const
   {
-    return *static_cast<T* const>(parameters.at(index)->Get());
+    return *static_cast<T*>(parameters[index]->Get());
   }
 }; // class InputCommand
 
