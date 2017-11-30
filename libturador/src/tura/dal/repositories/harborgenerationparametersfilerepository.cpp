@@ -146,7 +146,7 @@ HarborGenerationParameters HarborGenerationParametersFileRepository::GetRandomHa
 {
   std::default_random_engine rng;
   rng.seed(time(0));
-  std::uniform_int_distribution<int> rngDistribution1(0, GetHarborGenerationParametersCount());
+  std::uniform_int_distribution<int> rngDistribution1(0, GetHarborGenerationParametersCount() - 1);
 
   return harborGenerationParameters[rngDistribution1(rng)];
 }

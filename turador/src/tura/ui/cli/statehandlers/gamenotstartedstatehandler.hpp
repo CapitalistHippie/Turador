@@ -30,11 +30,7 @@ public:
 
   void ExitStateFromBase() noexcept override {}
 
-  void RenderConsole() const override
-  {
-    outputStream << "Welcome to the game!\n"
-                 << "Enter 'start' to start.\n";
-  }
+  void RenderConsole() const override { outputStream << "Enter 'start' to start.\n"; }
 };
 }
 }

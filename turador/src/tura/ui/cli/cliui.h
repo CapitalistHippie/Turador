@@ -97,7 +97,7 @@ public:
         {
           RenderConsole();
 
-          outputStream << "\nUnavailable or unknown command. Please try again!\n";
+          outputStream << "Unavailable or unknown command. Please try again!\n\n";
         }
         else
         {
@@ -134,7 +134,12 @@ public:
       // TODO: Throw.
     }
 
+    outputStream << "Welcome to Turador!\n"
+                 << "Enter quit, exit or stop to stop.\n\n";
+
     activeStateHandler->RenderConsole();
+
+    outputStream << '\n';
   }
 };
 }

@@ -37,6 +37,7 @@ public:
   {
     models::Ship ship;
     ship.shipType = shipType;
+    ship.hitpoints = shipType.hitPointsMax;
 
     return ship;
   }

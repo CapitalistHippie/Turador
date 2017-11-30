@@ -2,6 +2,7 @@
 #define LIBTURADOR_TURA_APP_GAMECLIENT_H_INCLUDED
 
 #include "tura/domain/commands/purchasecargocommand.h"
+#include "tura/domain/commands/sellcargocommand.h"
 #include "tura/domain/commands/startgamecommand.h"
 #include "tura/domain/game.h"
 #include "tura/domain/models/game.h"
@@ -35,6 +36,15 @@ public:
   void PurchaseCargo(tura::helpers::CharArray<64> cargoName, unsigned int cargoAmount)
   {
     domain::commands::PurchaseCargoCommand command;
+    command.cargoName = cargoName;
+    command.cargoAmount = cargoAmount;
+
+    HandleCommand(command);
+  }
+
+  void SellCargo(tura::helpers::CharArray<64> cargoName, unsigned int cargoAmount)
+  {
+    domain::commands::SellCargoCommand command;
     command.cargoName = cargoName;
     command.cargoAmount = cargoAmount;
 
