@@ -2,6 +2,7 @@
 #define LIBTURADOR_TURA_APP_GAMECLIENT_H_INCLUDED
 
 #include "tura/domain/commands/purchasecargocommand.h"
+#include "tura/domain/commands/repairshipcommand.h"
 #include "tura/domain/commands/sellcargocommand.h"
 #include "tura/domain/commands/startgamecommand.h"
 #include "tura/domain/game.h"
@@ -47,6 +48,14 @@ public:
     domain::commands::SellCargoCommand command;
     command.cargoName = cargoName;
     command.cargoAmount = cargoAmount;
+
+    HandleCommand(command);
+  }
+
+  void RepairShip(unsigned int amountOfGoldToSpend)
+  {
+    domain::commands::RepairShipCommand command;
+    command.amount = amountOfGoldToSpend;
 
     HandleCommand(command);
   }

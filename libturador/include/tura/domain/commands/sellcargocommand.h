@@ -13,7 +13,7 @@ namespace commands
 struct SellCargoCommand : public helpers::CommandInterface
 {
   helpers::CharArray<64> cargoName;
-  unsigned int cargoAmount;
+  unsigned int cargoAmount = 0;
 };
 }
 }

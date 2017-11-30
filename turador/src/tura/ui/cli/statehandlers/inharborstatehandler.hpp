@@ -35,6 +35,13 @@ private:
     gameClient.SellCargo(cargoName, cargoAmount);
   }
 
+  void RepairShipCommandHandler(const InputCommand& inputCommand)
+  {
+    auto amount = inputCommand.GetParameter<unsigned int>(0);
+
+    gameClient.RepairShip(amount);
+  }
+
 public:
   using BaseStateHandler::BaseStateHandler;
 
@@ -47,6 +54,10 @@ public:
     RegisterCommand<helpers::CharArray<64>, unsigned int>("sellcargo");
     RegisterCommandHandler("sellcargo",
                            std::bind(&InHarborStateHandler::SellCargoCommandHandler, this, std::placeholders::_1));
+
+    RegisterCommand<unsigned int>("repairship");
+    RegisterCommandHandler("repairship",
+                           std::bind(&InHarborStateHandler::RepairShipCommandHandler, this, std::placeholders::_1));
   }
 
   void ExitStateFromBase() noexcept override {}
@@ -58,8 +69,8 @@ public:
 
     outputStream << "You have " << gameData.currentGold << " gold.\n"
                  << "Your ship is the " << gameData.currentShip.shipType.name << ".\n"
-                 << "Your ship has " << gameData.currentShip.hitpoints << " out of "
-                 << gameData.currentShip.shipType.hitPointsMax << " hitpoints.\n"
+                 << "Your ship has " << gameData.currentShip.hitPoints << " out of "
+                 << gameData.currentShip.shipType.hitPointsMax << " hit points.\n"
                  << "Your ship has the following goods on board:\n"
                  << "(Name - Amount)\n";
 
@@ -83,7 +94,8 @@ public:
 
     outputStream << "The following commands are available:\n"
                  << "purchasecargo <cargo name> <cargo amount>\n"
-                 << "sellcargo <cargo name> <cargo amount>\n";
+                 << "sellcargo <cargo name> <cargo amount>\n"
+                 << "repairship <amount of gold to spend (1 gold = 10 hit points)>\n";
   }
 };
 }
