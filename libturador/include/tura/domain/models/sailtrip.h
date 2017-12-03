@@ -12,7 +12,7 @@ namespace models
 struct SailTrip
 {
   SailRoute route;
-  unsigned int turnsSailed = 0;
+  int turnsSailed = 0;
 };
 }
 }

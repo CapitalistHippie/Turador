@@ -15,7 +15,7 @@ struct Ship
 {
   ShipType shipType;
   helpers::Array<Cargo, 32> goods;
-  unsigned int hitPoints = 0;
+  int hitPoints = 0;
   helpers::Array<Cannon, 32> cannons;
 };
 }

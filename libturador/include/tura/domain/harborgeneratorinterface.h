@@ -3,6 +3,7 @@
 
 #include "tura/domain/models/harbor.h"
 #include "tura/domain/models/harborgenerationparameters.h"
+#include "tura/helpers/chararray.hpp"
 
 namespace tura
 {
@@ -13,8 +14,9 @@ class HarborGeneratorInterface
 public:
   virtual ~HarborGeneratorInterface() = default;
 
-  virtual models::Harbor GenerateRandomHarbor() = 0;
-  virtual models::Harbor GenerateHarbor(const models::HarborGenerationParameters& parameters) = 0;
+  virtual models::Harbor GenerateRandomHarbor() const = 0;
+  virtual models::Harbor GenerateHarbor(const models::HarborGenerationParameters& parameters) const = 0;
+  virtual models::Harbor GenerateHarborByName(const helpers::CharArray<64>& harborName) const = 0;
 };
 }
 }

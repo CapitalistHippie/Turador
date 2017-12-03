@@ -26,6 +26,8 @@ ShipTypeFileRepository::ShipTypeFileRepository()
   while (parser.ParseNextRow(rowBuffer) != ParsingStatus::EndOfFile)
   {
     ShipType shipType;
+    shipType.sizeClass = domain::models::ShipSizeClass::Normal;
+    shipType.weightClass = domain::models::ShipWeightClass::Normal;
 
     // Parse the easy stuff.
     rowBuffer.ParseNextColumn(shipType.name.array, shipType.name.MaxLength());

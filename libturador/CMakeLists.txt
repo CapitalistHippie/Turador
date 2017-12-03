@@ -27,6 +27,7 @@ set(LIBTURADOR_SRC_FILES
     "${LIBTURADOR_INCLUDE_DIR}/tura/shipbuilder.hpp"
     "${LIBTURADOR_SRC_DIR}/tura/dal/repositories/shiptypefilerepository.cpp"
     "${LIBTURADOR_SRC_DIR}/tura/dal/repositories/harborgenerationparametersfilerepository.cpp"
+    "${LIBTURADOR_SRC_DIR}/tura/domain/constants.cpp"
     "${LIBTURADOR_SRC_DIR}/tura/domain/functionalerrorcategory.cpp"
     "${LIBTURADOR_SRC_DIR}/tura/domain/game.cpp"
     "${LIBTURADOR_SRC_DIR}/tura/error.cpp")

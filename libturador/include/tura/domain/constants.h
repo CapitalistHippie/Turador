@@ -24,6 +24,20 @@ struct Constants
   static const unsigned int HeavyCannonPrice = 1000;
 
   static const unsigned int HarborShipsForSale = 3;
+
+  static const float SailingFightChance;
+  static const float SailingSailChance;
+
+  static const float SailingWindStrengthChanceNone;
+  static const float SailingWindStrengthChanceBreeze;
+  static const float SailingWindStrengthChanceWeak;
+  static const float SailingWindStrengthChanceNormal;
+  static const float SailingWindStrengthChanceStrong;
+  static const float SailingWindStrengthChanceStorm;
+
+  static const float SailingStormResultChanceBlownOffCourse;
+  static const float SailingStormResultChanceNothing;
+  static const float SailingStormResultChanceBlownOnCourse;
 };
 }
 }

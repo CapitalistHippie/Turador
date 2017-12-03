@@ -21,7 +21,9 @@ private:
   {
     auto harborName = inputCommand.GetParameter<helpers::CharArray<64>>(0);
 
-    gameClient.Sail(harborName);
+    gameClient.StartSailing(harborName);
+
+    context.SetState(CliUiState::Sailing);
   }
 
 public:

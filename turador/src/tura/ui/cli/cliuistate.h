@@ -12,7 +12,8 @@ enum class CliUiState
   GameNotStarted,
   InHarbor,
   GameOver,
-  Map
+  Map,
+  Sailing
 };
 }
 }

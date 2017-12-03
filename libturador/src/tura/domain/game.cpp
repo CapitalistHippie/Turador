@@ -8,6 +8,7 @@
 #include "tura/domain/commandhandlers/sellcannonscommandhandler.hpp"
 #include "tura/domain/commandhandlers/sellcargocommandhandler.hpp"
 #include "tura/domain/commandhandlers/startgamecommandhandler.hpp"
+#include "tura/domain/commandhandlers/startsailingcommandhandler.hpp"
 #include "tura/domain/commands/purchasecannonscommand.h"
 #include "tura/domain/commands/purchasecargocommand.h"
 #include "tura/domain/commands/purchaseshipcommand.h"
@@ -16,6 +17,7 @@
 #include "tura/domain/commands/sellcannonscommand.h"
 #include "tura/domain/commands/sellcargocommand.h"
 #include "tura/domain/commands/startgamecommand.h"
+#include "tura/domain/commands/startsailingcommand.h"
 
 using namespace tura;
 using namespace tura::domain;
@@ -32,6 +34,7 @@ void Game::RegisterCommandHandlers()
   commandMediator->RegisterCommandHandler<CommandBase<SellCannonsCommand>, SellCannonsCommandHandler>();
   commandMediator->RegisterCommandHandler<CommandBase<SellCargoCommand>, SellCargoCommandHandler>();
   commandMediator->RegisterCommandHandler<CommandBase<StartGameCommand>, StartGameCommandHandler>();
+  commandMediator->RegisterCommandHandler<CommandBase<StartSailingCommand>, StartSailingCommandHandler>();
 }
 
 Game::Game()

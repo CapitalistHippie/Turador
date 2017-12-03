@@ -36,7 +36,7 @@ public:
     {
       gameData.gameState = models::GameState::Won;
     }
-    else if (gameData.currentShip.hitPoints == 0)
+    else if (gameData.currentShip.hitPoints <= 0)
     {
       gameData.gameState = models::GameState::Lost;
     }

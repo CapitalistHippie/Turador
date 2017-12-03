@@ -33,16 +33,12 @@ private:
   dal::repositories::ShipTypeFileRepository shipTypeRepositoryInstance;
   dal::repositories::ShipTypeRepositoryInterface* shipTypeRepository;
 
-  std::default_random_engine rng;
-
 public:
   HarborGenerator()
     : harborGenerationParametersRepository(&harborGenerationParametersRepositoryInstance)
     , sailRouteRepository(&sailRouteRepositoryInstance)
     , shipTypeRepository(&shipTypeRepositoryInstance)
   {
-    auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
-    rng.seed(seed);
   }
 
   HarborGenerator(
@@ -53,17 +49,24 @@ public:
     , sailRouteRepository(sailRouteRepository)
     , shipTypeRepository(shipTypeRepository)
   {
-    auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
-    rng.seed(seed);
   }
 
-  models::Harbor GenerateRandomHarbor()
+  models::Harbor GenerateRandomHarbor() const override
   {
     return GenerateHarbor(harborGenerationParametersRepository->GetRandomHarborGenerationParameters());
   }
 
-  models::Harbor GenerateHarbor(const models::HarborGenerationParameters& parameters)
+  models::Harbor GenerateHarborByName(const helpers::CharArray<64>& harborName) const override
   {
+    return GenerateHarbor(harborGenerationParametersRepository->GetHarborGenerationParametersByName(harborName.array));
+  }
+
+  models::Harbor GenerateHarbor(const models::HarborGenerationParameters& parameters) const override
+  {
+    std::default_random_engine rng;
+    auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
+    rng.seed(seed);
+
     for (const auto& parameters : parameters.cargoGenerationParameters)
     {
       if (parameters.priceMin > parameters.priceMax)

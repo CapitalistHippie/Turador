@@ -4,6 +4,7 @@
 #include "tura/ui/cli/statehandlers/gameoverstatehandler.hpp"
 #include "tura/ui/cli/statehandlers/inharborstatehandler.hpp"
 #include "tura/ui/cli/statehandlers/mapstatehandler.hpp"
+#include "tura/ui/cli/statehandlers/sailingstatehandler.hpp"
 
 using namespace tura;
 using namespace tura::ui;
@@ -30,6 +31,10 @@ void CliUi::SetState(CliUiState state)
     case CliUiState::Map:
       activeStateHandler =
         new statehandlers::MapStateHandler(*this, gameClient, commandParser, commandMediator, outputStream);
+      break;
+    case CliUiState::Sailing:
+      activeStateHandler =
+        new statehandlers::SailingStateHandler(*this, gameClient, commandParser, commandMediator, outputStream);
       break;
     case CliUiState::GameOver:
       activeStateHandler =
