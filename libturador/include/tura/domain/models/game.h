@@ -3,6 +3,7 @@
 
 #include "tura/domain/models/gamestate.h"
 #include "tura/domain/models/harbor.h"
+#include "tura/domain/models/sailtrip.h"
 #include "tura/domain/models/ship.h"
 
 namespace tura
@@ -17,6 +18,7 @@ struct Game
 
   models::Harbor currentHarbor;
   models::Ship currentShip;
+  models::SailTrip currentSailTrip;
 
   unsigned int currentGold = 0;
 };

@@ -17,6 +17,7 @@ enum class FunctionalError
   InsufficientCannonsInShip,
   InsufficientShipCargoSpace,
   UnknownCargo,
+  UnknownSailRoute,
   CargoNotInShip,
   ShipCannonLimitReached,
   ShipNotForSaleInHarbor

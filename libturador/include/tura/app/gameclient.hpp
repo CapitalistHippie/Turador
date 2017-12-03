@@ -5,8 +5,8 @@
 #include "tura/domain/commands/purchasecargocommand.h"
 #include "tura/domain/commands/purchaseshipcommand.h"
 #include "tura/domain/commands/repairshipcommand.h"
+#include "tura/domain/commands/sailcommand.h"
 #include "tura/domain/commands/sellcannonscommand.h"
-// #include "tura/domain/commands/sailcommand.h"
 #include "tura/domain/commands/sellcargocommand.h"
 #include "tura/domain/commands/startgamecommand.h"
 #include "tura/domain/game.h"
@@ -94,10 +94,10 @@ public:
 
   void Sail(tura::helpers::CharArray<64> harborName)
   {
-    // domain::commands::SailCommand command;
-    // command.harborName = harborName;
+    domain::commands::SailCommand command;
+    command.harborName = harborName;
 
-    // HandleCommand(command);
+    HandleCommand(command);
   }
 };
 }

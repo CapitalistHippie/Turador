@@ -12,7 +12,8 @@ enum class GameState
   NotStarted,
   InHarbor,
   Won,
-  Lost
+  Lost,
+  Sailing
 };
 }
 }

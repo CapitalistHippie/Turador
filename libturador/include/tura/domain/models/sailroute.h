@@ -13,7 +13,7 @@ struct SailRoute
 {
   helpers::CharArray<64> fromHarborName;
   helpers::CharArray<64> toHarborName;
-  unsigned int distanceInTurns;
+  unsigned int distanceInTurns = 0;
 };
 }
 }
