@@ -10,7 +10,9 @@ namespace models
 enum class GameState
 {
   NotStarted,
-  InHarbor
+  InHarbor,
+  Won,
+  Lost
 };
 }
 }

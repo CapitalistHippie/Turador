@@ -3,6 +3,7 @@
 
 #include "tura/domain/models/cannon.h"
 #include "tura/domain/models/harborcargo.h"
+#include "tura/domain/models/shiptype.h"
 #include "tura/helpers/array.hpp"
 #include "tura/helpers/chararray.hpp"
 
@@ -17,6 +18,7 @@ struct Harbor
   helpers::CharArray<64> name;
   helpers::Array<HarborCargo, 32> goods;
   helpers::Array<Cannon, 32> cannonsForSale;
+  helpers::Array<ShipType, 32> shipsForSale;
 };
 }
 }

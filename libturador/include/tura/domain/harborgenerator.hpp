@@ -6,11 +6,14 @@
 
 #include "tura/dal/repositories/harborgenerationparametersfilerepository.h"
 #include "tura/dal/repositories/harborgenerationparametersrepositoryinterface.h"
+#include "tura/dal/repositories/shiptypefilerepository.h"
+#include "tura/dal/repositories/shiptyperepositoryinterface.h"
 #include "tura/domain/constants.h"
 #include "tura/domain/harborgeneratorinterface.h"
 #include "tura/domain/models/harbor.h"
 #include "tura/domain/models/harborcargo.h"
 #include "tura/domain/models/harborgenerationparameters.h"
+#include "tura/helpers/array.hpp"
 
 namespace tura
 {
@@ -22,19 +25,25 @@ private:
   dal::repositories::HarborGenerationParametersFileRepository harborGenerationParametersRepositoryInstance;
   dal::repositories::HarborGenerationParametersRepositoryInterface* harborGenerationParametersRepository;
 
+  dal::repositories::ShipTypeFileRepository shipTypeRepositoryInstance;
+  dal::repositories::ShipTypeRepositoryInterface* shipTypeRepository;
+
   std::default_random_engine rng;
 
 public:
   HarborGenerator()
     : harborGenerationParametersRepository(&harborGenerationParametersRepositoryInstance)
+    , shipTypeRepository(&shipTypeRepositoryInstance)
   {
     auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
     rng.seed(seed);
   }
 
   HarborGenerator(
-    dal::repositories::HarborGenerationParametersRepositoryInterface* harborGenerationParametersRepository)
+    dal::repositories::HarborGenerationParametersRepositoryInterface* harborGenerationParametersRepository,
+    dal::repositories::ShipTypeRepositoryInterface* shipTypeRepository)
     : harborGenerationParametersRepository(harborGenerationParametersRepository)
+    , shipTypeRepository(shipTypeRepository)
   {
     auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
     rng.seed(seed);
@@ -109,6 +118,24 @@ public:
       models::Cannon cannon;
       cannon.cannonClass = models::CannonClass::Heavy;
       harbor.cannonsForSale.Add(cannon);
+    }
+
+    // Ships for sale.
+    auto shipTypeCount = shipTypeRepository->GetShipTypeCount();
+    helpers::Array<unsigned int, 64> randomNumbersSource;
+    for (unsigned int i = 0; i < shipTypeCount; ++i)
+    {
+      randomNumbersSource.Add(i);
+    }
+
+    for (unsigned int i = 0; i < Constants::HarborShipsForSale; ++i)
+    {
+      std::uniform_int_distribution<unsigned int> dist(0, randomNumbersSource.size() - 1);
+      auto shipTypeIndex = dist(rng);
+
+      harbor.shipsForSale.Add(shipTypeRepository->GetShipTypeByIndex(shipTypeIndex));
+
+      randomNumbersSource.Remove(shipTypeIndex);
     }
 
     return harbor;

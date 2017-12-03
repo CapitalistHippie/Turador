@@ -77,7 +77,7 @@ bool operator!=(const char* const right, const CharArray<length>& left)
 template<unsigned int length>
 std::istream& operator>>(std::istream& stream, CharArray<length>& array)
 {
-  stream.getline(array.array, length, ' ');
+  stream.getline(array.array, length);
 
   return stream;
 }

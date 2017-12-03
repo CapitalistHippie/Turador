@@ -128,6 +128,13 @@ private:
     gameClient.SellCannons(cannonClass, amount);
   }
 
+  void PurchaseShipCommandHandler(const InputCommand& inputCommand)
+  {
+    auto shipType = inputCommand.GetParameter<helpers::CharArray<64>>(0);
+
+    gameClient.PurchaseShip(shipType);
+  }
+
   void RepairShipCommandHandler(const InputCommand& inputCommand)
   {
     auto amount = inputCommand.GetParameter<unsigned int>(0);
@@ -155,6 +162,10 @@ public:
     RegisterCommand<helpers::CharArray<64>, unsigned int>("sellcannons");
     RegisterCommandHandler("sellcannons",
                            std::bind(&InHarborStateHandler::SellCannonsCommandHandler, this, std::placeholders::_1));
+
+    RegisterCommand<helpers::CharArray<64>>("purchaseship");
+    RegisterCommandHandler("purchaseship",
+                           std::bind(&InHarborStateHandler::PurchaseShipCommandHandler, this, std::placeholders::_1));
 
     RegisterCommand<unsigned int>("repairship");
     RegisterCommandHandler("repairship",
@@ -220,11 +231,24 @@ public:
 
     outputStream << '\n';
 
+    outputStream << "The harbor has the following ships for sale:\n"
+                 << "(Type - Price - Size class - Weight class - Cargo space - Cannon space - Hit points)\n";
+
+    for (const auto& shipType : harbor.shipsForSale)
+    {
+      outputStream << shipType.name << " - " << shipType.price << " - " << ShipSizeClassToString(shipType.sizeClass)
+                   << ShipWeightClassToString(shipType.weightClass) << " - " << shipType.cargoSpaceMax << " - "
+                   << shipType.cannonSpaceMax << " - " << shipType.hitPointsMax << '\n';
+    }
+
+    outputStream << '\n';
+
     outputStream << "The following commands are available:\n"
                  << "purchasecargo <cargo name> <cargo amount>\n"
                  << "sellcargo <cargo name> <cargo amount>\n"
                  << "purchasecannons <cannon type> <amount>\n"
                  << "sellcannons <cannon type> <amount>\n"
+                 << "purchaseship <ship type>\n"
                  << "repairship <amount of gold to spend (1 gold = 10 hit points)>\n";
   }
 };

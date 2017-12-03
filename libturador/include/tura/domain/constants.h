@@ -22,6 +22,8 @@ struct Constants
   static const unsigned int LightCannonPrice = 50;
   static const unsigned int MediumCannonPrice = 200;
   static const unsigned int HeavyCannonPrice = 1000;
+
+  static const unsigned int HarborShipsForSale = 3;
 };
 }
 }

@@ -2,12 +2,14 @@
 
 #include "tura/domain/commandhandlers/purchasecannonscommandhandler.hpp"
 #include "tura/domain/commandhandlers/purchasecargocommandhandler.hpp"
+#include "tura/domain/commandhandlers/purchaseshipcommandhandler.hpp"
 #include "tura/domain/commandhandlers/repairshipcommandhandler.hpp"
 #include "tura/domain/commandhandlers/sellcannonscommandhandler.hpp"
 #include "tura/domain/commandhandlers/sellcargocommandhandler.hpp"
 #include "tura/domain/commandhandlers/startgamecommandhandler.hpp"
 #include "tura/domain/commands/purchasecannonscommand.h"
 #include "tura/domain/commands/purchasecargocommand.h"
+#include "tura/domain/commands/purchaseshipcommand.h"
 #include "tura/domain/commands/repairshipcommand.h"
 #include "tura/domain/commands/sellcannonscommand.h"
 #include "tura/domain/commands/sellcargocommand.h"
@@ -22,6 +24,7 @@ void Game::RegisterCommandHandlers()
 {
   commandMediator->RegisterCommandHandler<CommandBase<PurchaseCannonsCommand>, PurchaseCannonsCommandHandler>();
   commandMediator->RegisterCommandHandler<CommandBase<PurchaseCargoCommand>, PurchaseCargoCommandHandler>();
+  commandMediator->RegisterCommandHandler<CommandBase<PurchaseShipCommand>, PurchaseShipCommandHandler>();
   commandMediator->RegisterCommandHandler<CommandBase<RepairShipCommand>, RepairShipCommandHandler>();
   commandMediator->RegisterCommandHandler<CommandBase<SellCannonsCommand>, SellCannonsCommandHandler>();
   commandMediator->RegisterCommandHandler<CommandBase<SellCargoCommand>, SellCargoCommandHandler>();

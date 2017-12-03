@@ -15,6 +15,7 @@ public:
   virtual ~ShipTypeRepositoryInterface() = default;
   virtual unsigned int GetShipTypeCount() const = 0;
   virtual domain::models::ShipType GetShipTypeByName(const char* const shipTypeName) const = 0;
+  virtual domain::models::ShipType GetShipTypeByIndex(unsigned int index) const = 0;
 };
 }
 }

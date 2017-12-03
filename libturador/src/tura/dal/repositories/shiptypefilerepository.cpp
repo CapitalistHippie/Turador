@@ -84,3 +84,8 @@ ShipType ShipTypeFileRepository::GetShipTypeByName(const char* const shipTypeNam
 
   throw std::system_error(std::make_error_code(Error::UnknownShipType));
 }
+
+ShipType ShipTypeFileRepository::GetShipTypeByIndex(unsigned int index) const
+{
+  return shipTypes[index];
+}

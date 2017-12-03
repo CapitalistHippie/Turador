@@ -58,9 +58,9 @@ public:
       commandParser.UnregisterCommand(commandName);
     }
 
-    for (const auto& commandHandlerHandle : commandHandlerHandlesToUnregister)
+    for (int i = commandHandlerHandlesToUnregister.size() - 1; i >= 0; --i)
     {
-      commandMediator.UnregisterCommandHandler(commandHandlerHandle);
+      commandMediator.UnregisterCommandHandler(commandHandlerHandlesToUnregister[i]);
     }
 
     ExitStateFromBase();

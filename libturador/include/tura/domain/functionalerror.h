@@ -18,7 +18,8 @@ enum class FunctionalError
   InsufficientShipCargoSpace,
   UnknownCargo,
   CargoNotInShip,
-  ShipCannonLimitReached
+  ShipCannonLimitReached,
+  ShipNotForSaleInHarbor
 };
 }
 }

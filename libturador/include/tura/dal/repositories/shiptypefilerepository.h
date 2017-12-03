@@ -21,6 +21,7 @@ public:
 
   unsigned int GetShipTypeCount() const override;
   domain::models::ShipType GetShipTypeByName(const char* const shipTypeName) const override;
+  domain::models::ShipType GetShipTypeByIndex(unsigned int index) const override;
 };
 }
 }

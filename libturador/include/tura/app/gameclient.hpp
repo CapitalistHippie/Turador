@@ -3,6 +3,7 @@
 
 #include "tura/domain/commands/purchasecannonscommand.h"
 #include "tura/domain/commands/purchasecargocommand.h"
+#include "tura/domain/commands/purchaseshipcommand.h"
 #include "tura/domain/commands/repairshipcommand.h"
 #include "tura/domain/commands/sellcannonscommand.h"
 #include "tura/domain/commands/sellcargocommand.h"
@@ -68,6 +69,14 @@ public:
     domain::commands::SellCannonsCommand command;
     command.cannonClass = cannonClass;
     command.amount = amount;
+
+    HandleCommand(command);
+  }
+
+  void PurchaseShip(tura::helpers::CharArray<64> shipType)
+  {
+    domain::commands::PurchaseShipCommand command;
+    command.shipType = shipType;
 
     HandleCommand(command);
   }

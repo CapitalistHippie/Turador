@@ -90,6 +90,11 @@ public:
         auto command = commandParser.ParseCommand(inputStream);
         commandMediator.HandleCommand(command);
 
+        if (IsGameOver())
+        {
+          SetState(CliUiState::GameOver);
+        }
+
         RenderConsole();
       }
       catch (const std::system_error& e)
@@ -153,6 +158,17 @@ public:
     activeStateHandler->RenderConsole();
 
     outputStream << '\n';
+  }
+
+  bool IsGameOver() const
+  {
+    auto gameState = gameClient.GetGameData().gameState;
+    if (gameState == domain::models::GameState::Won || gameState == domain::models::GameState::Lost)
+    {
+      return true;
+    }
+
+    return false;
   }
 };
 }

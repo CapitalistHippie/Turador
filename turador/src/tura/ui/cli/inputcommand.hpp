@@ -129,6 +129,42 @@ struct ParseInputCommandParametersImpl<Parameter, Parameters...>
   }
 };
 
+template<typename... Parameters>
+struct ParseInputCommandParametersImpl<helpers::CharArray<64>, Parameters...>
+{
+  static void Parse(std::istream& stream, InputCommand& command)
+  {
+    helpers::CharArray<64> arrayParameter;
+
+    stream.getline(arrayParameter.array, arrayParameter.MaxLength(), ' ');
+    if (stream.fail())
+    {
+      throw std::system_error(std::make_error_code(Error::InvalidOutputType));
+    }
+
+    command.AddParameter(arrayParameter);
+
+    ParseInputCommandParametersImpl<Parameters...>::Parse(stream, command);
+  }
+};
+
+template<>
+struct ParseInputCommandParametersImpl<helpers::CharArray<64>>
+{
+  static void Parse(std::istream& stream, InputCommand& command)
+  {
+    helpers::CharArray<64> arrayParameter;
+
+    stream.getline(arrayParameter.array, arrayParameter.MaxLength());
+    if (stream.fail())
+    {
+      throw std::system_error(std::make_error_code(Error::InvalidOutputType));
+    }
+
+    command.AddParameter(arrayParameter);
+  }
+};
+
 template<>
 struct ParseInputCommandParametersImpl<>
 {
