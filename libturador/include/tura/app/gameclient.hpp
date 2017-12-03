@@ -4,7 +4,7 @@
 #include "tura/domain/commands/purchasecannonscommand.h"
 #include "tura/domain/commands/purchasecargocommand.h"
 #include "tura/domain/commands/repairshipcommand.h"
-// #include "tura/domain/commands/sellcannonscommand.h"
+#include "tura/domain/commands/sellcannonscommand.h"
 #include "tura/domain/commands/sellcargocommand.h"
 #include "tura/domain/commands/startgamecommand.h"
 #include "tura/domain/game.h"
@@ -65,11 +65,11 @@ public:
 
   void SellCannons(domain::models::CannonClass cannonClass, unsigned int amount)
   {
-    // domain::commands::SellCannonsCommand command;
-    // command.cannonClass = cannonClass;
-    // command.amount = amount;
+    domain::commands::SellCannonsCommand command;
+    command.cannonClass = cannonClass;
+    command.amount = amount;
 
-    // HandleCommand(command);
+    HandleCommand(command);
   }
 
   void RepairShip(unsigned int amountOfGoldToSpend)
