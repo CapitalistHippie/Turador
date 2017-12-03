@@ -142,6 +142,8 @@ private:
     gameClient.RepairShip(amount);
   }
 
+  void MapCommandHandler(const InputCommand& inputCommand) { context.SetState(CliUiState::Map); }
+
 public:
   using BaseStateHandler::BaseStateHandler;
 
@@ -170,6 +172,9 @@ public:
     RegisterCommand<unsigned int>("repairship");
     RegisterCommandHandler("repairship",
                            std::bind(&InHarborStateHandler::RepairShipCommandHandler, this, std::placeholders::_1));
+
+    RegisterCommand("map");
+    RegisterCommandHandler("map", std::bind(&InHarborStateHandler::MapCommandHandler, this, std::placeholders::_1));
   }
 
   void ExitStateFromBase() noexcept override {}
@@ -237,7 +242,7 @@ public:
     for (const auto& shipType : harbor.shipsForSale)
     {
       outputStream << shipType.name << " - " << shipType.price << " - " << ShipSizeClassToString(shipType.sizeClass)
-                   << ShipWeightClassToString(shipType.weightClass) << " - " << shipType.cargoSpaceMax << " - "
+                   << " - " << ShipWeightClassToString(shipType.weightClass) << " - " << shipType.cargoSpaceMax << " - "
                    << shipType.cannonSpaceMax << " - " << shipType.hitPointsMax << '\n';
     }
 
@@ -249,7 +254,8 @@ public:
                  << "purchasecannons <cannon type> <amount>\n"
                  << "sellcannons <cannon type> <amount>\n"
                  << "purchaseship <ship type>\n"
-                 << "repairship <amount of gold to spend (1 gold = 10 hit points)>\n";
+                 << "repairship <amount of gold to spend (1 gold = 10 hit points)>\n"
+                 << "map\n";
   }
 };
 }

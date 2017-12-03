@@ -11,7 +11,8 @@ enum class CliUiState
 {
   GameNotStarted,
   InHarbor,
-  GameOver
+  GameOver,
+  Map
 };
 }
 }

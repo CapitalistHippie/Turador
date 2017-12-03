@@ -6,6 +6,8 @@
 
 #include "tura/dal/repositories/harborgenerationparametersfilerepository.h"
 #include "tura/dal/repositories/harborgenerationparametersrepositoryinterface.h"
+#include "tura/dal/repositories/sailroutefilerepository.hpp"
+#include "tura/dal/repositories/sailrouterepository.h"
 #include "tura/dal/repositories/shiptypefilerepository.h"
 #include "tura/dal/repositories/shiptyperepositoryinterface.h"
 #include "tura/domain/constants.h"
@@ -25,6 +27,9 @@ private:
   dal::repositories::HarborGenerationParametersFileRepository harborGenerationParametersRepositoryInstance;
   dal::repositories::HarborGenerationParametersRepositoryInterface* harborGenerationParametersRepository;
 
+  dal::repositories::SailRouteFileRepository sailRouteRepositoryInstance;
+  dal::repositories::SailRouteRepository* sailRouteRepository;
+
   dal::repositories::ShipTypeFileRepository shipTypeRepositoryInstance;
   dal::repositories::ShipTypeRepositoryInterface* shipTypeRepository;
 
@@ -33,6 +38,7 @@ private:
 public:
   HarborGenerator()
     : harborGenerationParametersRepository(&harborGenerationParametersRepositoryInstance)
+    , sailRouteRepository(&sailRouteRepositoryInstance)
     , shipTypeRepository(&shipTypeRepositoryInstance)
   {
     auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
@@ -41,8 +47,10 @@ public:
 
   HarborGenerator(
     dal::repositories::HarborGenerationParametersRepositoryInterface* harborGenerationParametersRepository,
+    dal::repositories::SailRouteRepository* sailRouteRepository,
     dal::repositories::ShipTypeRepositoryInterface* shipTypeRepository)
     : harborGenerationParametersRepository(harborGenerationParametersRepository)
+    , sailRouteRepository(sailRouteRepository)
     , shipTypeRepository(shipTypeRepository)
   {
     auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
@@ -131,12 +139,15 @@ public:
     for (unsigned int i = 0; i < Constants::HarborShipsForSale; ++i)
     {
       std::uniform_int_distribution<unsigned int> dist(0, randomNumbersSource.size() - 1);
-      auto shipTypeIndex = dist(rng);
+      auto shipTypeIndex = randomNumbersSource[dist(rng)];
 
       harbor.shipsForSale.Add(shipTypeRepository->GetShipTypeByIndex(shipTypeIndex));
 
       randomNumbersSource.Remove(shipTypeIndex);
     }
+
+    // Sail routes.
+    harbor.sailRoutes = sailRouteRepository->GetSailRoutesFromHarbor(harbor.name);
 
     return harbor;
   }
