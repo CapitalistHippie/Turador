@@ -6,6 +6,8 @@
 #include "tura/domain/commands/commandbase.h"
 #include "tura/domain/commands/startgamecommand.h"
 #include "tura/domain/constants.h"
+#include "tura/domain/functionalerror.h"
+#include "tura/domain/functionalerrorcategory.h"
 #include "tura/domain/harborgenerator.hpp"
 #include "tura/domain/harborgeneratorinterface.h"
 #include "tura/domain/models/game.h"
@@ -13,7 +15,6 @@
 #include "tura/domain/models/harbor.h"
 #include "tura/domain/shipgenerator.hpp"
 #include "tura/domain/shipgeneratorinterface.h"
-#include "tura/error.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -51,7 +52,7 @@ public:
     // Check if the game hasn't already started.
     if (gameData.gameState != models::GameState::NotStarted)
     {
-      throw std::system_error(std::make_error_code(Error::InsuitableState), "Game is already running.");
+      throw std::system_error(std::make_error_code(FunctionalError::InsuitableState), "Game is already running.");
     }
 
     // Reset and set the initial data.

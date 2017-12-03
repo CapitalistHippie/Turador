@@ -5,11 +5,11 @@
 #include <tura/domain/commandhandlers/sellcargocommandhandler.hpp>
 #include <tura/domain/commands/commandbase.h>
 #include <tura/domain/commands/sellcargocommand.h>
+#include <tura/domain/functionalerror.h>
 #include <tura/domain/models/game.h>
 #include <tura/domain/models/harbor.h>
 #include <tura/domain/models/ship.h>
 #include <tura/domain/models/shiptype.h>
-#include <tura/error.h>
 #include <tura/harborbuilder.hpp>
 #include <tura/shipbuilder.hpp>
 
@@ -33,7 +33,7 @@ TEST(SellCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableState)
   SellCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsuitableState);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::InsuitableState);
 }
 
 TEST(SellCargoCommandHandler, HandleCommand_NotEnoughCargoInShip_ThrowsInsufficientCargoInShip)
@@ -63,11 +63,12 @@ TEST(SellCargoCommandHandler, HandleCommand_NotEnoughCargoInShip_ThrowsInsuffici
   SellCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientCargoInShip);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::InsufficientCargoInShip);
 }
 
-TEST(SellCargoCommandHandler, HandleCommand_UnknownCargo_ThrowsUnknownCargo2)
+TEST(SellCargoCommandHandler, HandleCommand_UnknownCargoInShip_ThrowsCargoNotInShip)
 {
+  // Arrange.
   Harbor harbor;
 
   ShipType shipType;
@@ -89,7 +90,7 @@ TEST(SellCargoCommandHandler, HandleCommand_UnknownCargo_ThrowsUnknownCargo2)
   SellCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::UnknownCargo);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::CargoNotInShip);
 }
 
 TEST(SellCargoCommandHandler, HandleCommand_RemovesCargoSoldFromShip)

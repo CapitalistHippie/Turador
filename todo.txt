@@ -5,3 +5,4 @@
 - HarborCargoGenerationParameters hernoemen naar HarborCargoType
 - Unit tests in eigen CMake project.
 - Meer dingen in cpp files ipv hpp
+- CLI functional errors.

@@ -5,10 +5,11 @@
 
 #include "tura/domain/commands/commandbase.h"
 #include "tura/domain/commands/repairshipcommand.h"
+#include "tura/domain/functionalerror.h"
+#include "tura/domain/functionalerrorcategory.h"
 #include "tura/domain/gamehelpers.hpp"
 #include "tura/domain/models/game.h"
 #include "tura/domain/models/gamestate.h"
-#include "tura/error.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -27,7 +28,7 @@ public:
     // Check if we're in the right state.
     if (gameData.gameState != models::GameState::InHarbor)
     {
-      throw std::system_error(std::make_error_code(Error::InsuitableState));
+      throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
 
     // Calculate the total gold we need to spend and the hit points to repair.
@@ -52,7 +53,7 @@ public:
     // Check if we got enough money.
     if (gameData.currentGold < totalGoldToSpend)
     {
-      throw std::system_error(std::make_error_code(Error::InsufficientGold));
+      throw std::system_error(std::make_error_code(FunctionalError::InsufficientGold));
     }
 
     // We got this.

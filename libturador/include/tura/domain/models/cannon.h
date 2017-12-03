@@ -11,7 +11,7 @@ namespace models
 {
 struct Cannon
 {
-  CannonClass cannonClass = CannonClass::Medium;
+  CannonClass cannonClass = CannonClass::Light;
 };
 }
 }

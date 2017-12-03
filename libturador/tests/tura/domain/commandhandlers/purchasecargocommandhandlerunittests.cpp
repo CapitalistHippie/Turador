@@ -4,11 +4,11 @@
 
 #include <tura/domain/commandhandlers/purchasecargocommandhandler.hpp>
 #include <tura/domain/commands/purchasecargocommand.h>
+#include <tura/domain/functionalerror.h>
 #include <tura/domain/models/game.h>
 #include <tura/domain/models/harbor.h>
 #include <tura/domain/models/ship.h>
 #include <tura/domain/models/shiptype.h>
-#include <tura/error.h>
 #include <tura/harborbuilder.hpp>
 #include <tura/shipbuilder.hpp>
 
@@ -45,7 +45,7 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableStat
   tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsuitableState);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::InsuitableState);
 }
 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficientGold)
@@ -74,7 +74,7 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughGold_ThrowsInsufficient
   tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientGold);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::InsufficientGold);
 }
 
 TEST(SellCargoCommandHandler, HandleCommand_UnknownCargo_ThrowsUnknownCargo)
@@ -102,7 +102,7 @@ TEST(SellCargoCommandHandler, HandleCommand_UnknownCargo_ThrowsUnknownCargo)
   PurchaseCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::UnknownCargo);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::UnknownCargo);
 }
 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughCargoInHarbor_ThrowsInsufficientCargoInHarbor)
@@ -124,7 +124,8 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughCargoInHarbor_ThrowsIns
   tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientCargoInHarbor);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand),
+                            tura::domain::FunctionalError::InsufficientCargoInHarbor);
 }
 
 TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughCargoSpaceInShip_ThrowsInsufficientShipCargoSpace)
@@ -153,7 +154,8 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_NotEnoughCargoSpaceInShip_Throws
   tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsufficientShipCargoSpace);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand),
+                            tura::domain::FunctionalError::InsufficientShipCargoSpace);
 }
 
 TEST(PurchaseCargoCommandHandler, HandleCommand_DecreasesHarborCargoAmountByRequestedAmount)
@@ -260,5 +262,41 @@ TEST(PurchaseCargoCommandHandler, HandleCommand_IncreasesShipCargoByAmountPurcha
   sut.HandleCommand(wrappedCommand);
 
   // Assert.
+  EXPECT_EQ(expectedCargoAmountInShip, gameData.currentShip.goods[0].amount);
+}
+
+TEST(PurchaseCargoCommandHandler, HandleCommand_ShipDoesntHaveCargo_AddsCargoToShip)
+{
+  // Arrange.
+  const char* const cargoName = "Test cargo";
+  const int purchaseAmount = 10;
+  const int currentCargoAmountInShip = 0;
+  const int expectedCargoAmountInShip = purchaseAmount + currentCargoAmountInShip;
+
+  tura::HarborBuilder harborBuilder;
+  auto harbor = harborBuilder.WithName("Test harbor").WithCargo(cargoName, 10000, 10).Build();
+
+  tura::domain::models::ShipType shipType;
+  shipType.cargoSpaceMax = 10000;
+
+  tura::ShipBuilder shipBuilder;
+  auto ship = shipBuilder.WithShipType(shipType).Build();
+
+  tura::domain::models::Game gameData;
+  gameData.gameState = tura::domain::models::GameState::InHarbor;
+  gameData.currentGold = 10000;
+  gameData.currentHarbor = harbor;
+  gameData.currentShip = ship;
+
+  auto command = BuildCommand(cargoName, purchaseAmount);
+  tura::domain::commands::CommandBase<tura::domain::commands::PurchaseCargoCommand> wrappedCommand(command, gameData);
+
+  tura::domain::commandhandlers::PurchaseCargoCommandHandler sut;
+
+  // Act.
+  sut.HandleCommand(wrappedCommand);
+
+  // Assert.
+  EXPECT_STREQ(cargoName, gameData.currentShip.goods[0].name.array);
   EXPECT_EQ(expectedCargoAmountInShip, gameData.currentShip.goods[0].amount);
 }

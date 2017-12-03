@@ -1,8 +1,10 @@
 #ifndef LIBTURADOR_TURA_APP_GAMECLIENT_H_INCLUDED
 #define LIBTURADOR_TURA_APP_GAMECLIENT_H_INCLUDED
 
+#include "tura/domain/commands/purchasecannonscommand.h"
 #include "tura/domain/commands/purchasecargocommand.h"
 #include "tura/domain/commands/repairshipcommand.h"
+// #include "tura/domain/commands/sellcannonscommand.h"
 #include "tura/domain/commands/sellcargocommand.h"
 #include "tura/domain/commands/startgamecommand.h"
 #include "tura/domain/game.h"
@@ -50,6 +52,24 @@ public:
     command.cargoAmount = cargoAmount;
 
     HandleCommand(command);
+  }
+
+  void PurchaseCannons(domain::models::CannonClass cannonClass, unsigned int amount)
+  {
+    domain::commands::PurchaseCannonsCommand command;
+    command.cannonClass = cannonClass;
+    command.amount = amount;
+
+    HandleCommand(command);
+  }
+
+  void SellCannons(domain::models::CannonClass cannonClass, unsigned int amount)
+  {
+    // domain::commands::SellCannonsCommand command;
+    // command.cannonClass = cannonClass;
+    // command.amount = amount;
+
+    // HandleCommand(command);
   }
 
   void RepairShip(unsigned int amountOfGoldToSpend)

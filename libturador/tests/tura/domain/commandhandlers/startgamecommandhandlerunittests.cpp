@@ -6,11 +6,11 @@
 #include <tura/domain/commandhandlers/startgamecommandhandler.hpp>
 #include <tura/domain/commands/startgamecommand.h>
 #include <tura/domain/constants.h>
+#include <tura/domain/functionalerror.h>
 #include <tura/domain/models/gamestate.h>
 #include <tura/domain/models/harbor.h>
 #include <tura/domain/models/ship.h>
 #include <tura/domain/models/shiptype.h>
-#include <tura/error.h>
 #include <tura/harborbuilder.hpp>
 #include <tura/shipbuilder.hpp>
 
@@ -35,7 +35,7 @@ TEST(StartGameCommandHandler, HandleCommand_AlreadyRunning_ThrowsInsuitableState
   tura::domain::commandhandlers::StartGameCommandHandler sut(&harborGeneratorMock, &shipGeneratorMock);
 
   // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::Error::InsuitableState);
+  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::InsuitableState);
 }
 
 TEST(StartGameCommandHandler, HandleCommand_ResetsGameData)

@@ -6,6 +6,7 @@
 #include <ostream>
 
 #include <tura/app/gameclient.hpp>
+#include <tura/domain/functionalerrorcategory.h>
 #include <tura/error.h>
 #include <tura/helpers/noncopyable.h>
 
@@ -93,11 +94,23 @@ public:
       }
       catch (const std::system_error& e)
       {
-        if (e.code() == Error::CommandNotRegistered)
+        if (e.code().category() == domain::GetFunctionalErrorCategory())
+        {
+          RenderConsole();
+
+          outputStream << "You can not do that. Please try something else.\n" << e.what() << "\n\n";
+        }
+        else if (e.code() == Error::CommandNotRegistered)
         {
           RenderConsole();
 
           outputStream << "Unavailable or unknown command. Please try again!\n\n";
+        }
+        else if (e.code() == Error::InvalidOutputType)
+        {
+          RenderConsole();
+
+          outputStream << "Invalid parameter type. Please try again!\n\n";
         }
         else
         {

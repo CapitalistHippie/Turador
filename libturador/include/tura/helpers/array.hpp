@@ -17,6 +17,7 @@ class Array
 {
 public:
   typedef T value_type;
+  typedef unsigned int difference_type;
   typedef T& reference;
   typedef const T& const_reference;
   typedef T* pointer;
@@ -30,10 +31,11 @@ private:
 
 public:
   class iterator
+    : public std::iterator<std::bidirectional_iterator_tag, value_type, difference_type, pointer, reference>
   {
   public:
     typedef iterator self_type;
-    typedef std::forward_iterator_tag iterator_category;
+
     iterator(pointer ptr)
       : ptr_(ptr)
     {
@@ -49,6 +51,17 @@ public:
       ptr_++;
       return *this;
     }
+    self_type operator--()
+    {
+      self_type i = *this;
+      ptr_--;
+      return i;
+    }
+    self_type operator--(int junk)
+    {
+      ptr_--;
+      return *this;
+    }
     reference operator*() { return *ptr_; }
     pointer operator->() { return ptr_; }
     bool operator==(const self_type& rhs) { return ptr_ == rhs.ptr_; }
@@ -59,11 +72,11 @@ public:
   };
 
   class const_iterator
+    : public std::iterator<std::bidirectional_iterator_tag, value_type, difference_type, const_pointer, const_reference>
   {
   public:
     typedef const_iterator self_type;
-    typedef unsigned int difference_type;
-    typedef std::forward_iterator_tag iterator_category;
+
     const_iterator(const_pointer ptr)
       : ptr_(ptr)
     {
@@ -77,6 +90,17 @@ public:
     self_type operator++(int junk)
     {
       ptr_++;
+      return *this;
+    }
+    self_type operator--()
+    {
+      self_type i = *this;
+      ptr_--;
+      return i;
+    }
+    self_type operator--(int junk)
+    {
+      ptr_--;
       return *this;
     }
     const const_reference operator*() { return *ptr_; }

@@ -18,8 +18,8 @@ struct ShipType
   unsigned int cargoSpaceMax = 0;
   unsigned int cannonSpaceMax = 0;
   unsigned int hitPointsMax = 0;
-  ShipWeightClass weightClass = ShipWeightClass::Normal;
-  ShipSizeClass sizeClass = ShipSizeClass::Normal;
+  ShipWeightClass weightClass = ShipWeightClass::Light;
+  ShipSizeClass sizeClass = ShipSizeClass::Small;
 };
 }
 }

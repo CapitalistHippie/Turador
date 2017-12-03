@@ -10,7 +10,7 @@ namespace domain
 struct Constants
 {
   static const models::GameState GameInitialState = models::GameState::InHarbor;
-  static const unsigned int GameInitialGold = 1000;
+  static const unsigned int GameInitialGold = 100000;
 
   static const unsigned int HarborLightCannonsForSaleMin = 0;
   static const unsigned int HarborLightCannonsForSaleMax = 5;
