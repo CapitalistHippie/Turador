@@ -17,9 +17,31 @@ namespace statehandlers
 class InBattleStateHandler : public BaseStateHandler
 {
 private:
-  void FireCommandHandler(const InputCommand& inputCommand) { gameClient.Fire(); }
-  void RunCommandHandler(const InputCommand& inputCommand) { gameClient.Run(); }
-  void SurrenderCommandHandler(const InputCommand& inputCommand) { gameClient.Surrender(); }
+  void FireCommandHandler(const InputCommand& inputCommand)
+  {
+    gameClient.Fire();
+    CheckState();
+  }
+
+  void RunCommandHandler(const InputCommand& inputCommand)
+  {
+    gameClient.Run();
+    CheckState();
+  }
+
+  void SurrenderCommandHandler(const InputCommand& inputCommand)
+  {
+    gameClient.Surrender();
+    CheckState();
+  }
+
+  void CheckState()
+  {
+    if (gameClient.GetGameData().gameState == domain::models::GameState::Sailing)
+    {
+      context.SetState(CliUiState::Sailing);
+    }
+  }
 
 public:
   using BaseStateHandler::BaseStateHandler;
