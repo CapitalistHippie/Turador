@@ -17,7 +17,9 @@ namespace statehandlers
 class InBattleStateHandler : public BaseStateHandler
 {
 private:
-  void FireCommandHandler(const InputCommand& inputCommand) {}
+  void FireCommandHandler(const InputCommand& inputCommand) { gameClient.Fire(); }
+  void RunCommandHandler(const InputCommand& inputCommand) { gameClient.Run(); }
+  void SurrenderCommandHandler(const InputCommand& inputCommand) { gameClient.Surrender(); }
 
 public:
   using BaseStateHandler::BaseStateHandler;
@@ -26,6 +28,13 @@ public:
   {
     RegisterCommand("fire");
     RegisterCommandHandler("fire", std::bind(&InBattleStateHandler::FireCommandHandler, this, std::placeholders::_1));
+
+    RegisterCommand("run");
+    RegisterCommandHandler("run", std::bind(&InBattleStateHandler::RunCommandHandler, this, std::placeholders::_1));
+
+    RegisterCommand("surrender");
+    RegisterCommandHandler("surrender",
+                           std::bind(&InBattleStateHandler::SurrenderCommandHandler, this, std::placeholders::_1));
   }
 
   void ExitStateFromBase() noexcept override {}

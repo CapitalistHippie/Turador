@@ -109,13 +109,13 @@ public:
         {
           RenderConsole();
 
-          outputStream << "Unavailable or unknown command. Please try again!\n\n";
+          outputStream << "Unavailable or unknown command. Please try something else!\n\n";
         }
         else if (e.code() == Error::InvalidOutputType)
         {
           RenderConsole();
 
-          outputStream << "Invalid parameter type. Please try again!\n\n";
+          outputStream << "Invalid parameter type. Please try something else!\n\n";
         }
         else
         {
