@@ -48,6 +48,7 @@ public:
   void RenderConsole() const override
   {
     const auto& gameData = gameClient.GetGameData();
+    const auto& ship = gameData.currentShip;
     const auto& trip = gameData.currentSailTrip;
 
     outputStream << "You are sailing from " << trip.route.fromHarborName << " to " << trip.route.toHarborName << ".\n";
@@ -55,6 +56,7 @@ public:
     auto turnsToGo = trip.route.distanceInTurns - trip.turnsSailed;
 
     outputStream << "You have " << turnsToGo << " turns to go until you arrive.\n";
+    outputStream << "Your ship has " << ship.hitPoints << " out of " << ship.shipType.hitPointsMax << " hit points.\n";
 
     outputStream << '\n';
 

@@ -2,6 +2,7 @@
 
 #include "tura/ui/cli/statehandlers/gamenotstartedstatehandler.hpp"
 #include "tura/ui/cli/statehandlers/gameoverstatehandler.hpp"
+#include "tura/ui/cli/statehandlers/inbattlestatehandler.hpp"
 #include "tura/ui/cli/statehandlers/inharborstatehandler.hpp"
 #include "tura/ui/cli/statehandlers/mapstatehandler.hpp"
 #include "tura/ui/cli/statehandlers/sailingstatehandler.hpp"
@@ -27,6 +28,10 @@ void CliUi::SetState(CliUiState state)
     case CliUiState::InHarbor:
       activeStateHandler =
         new statehandlers::InHarborStateHandler(*this, gameClient, commandParser, commandMediator, outputStream);
+      break;
+    case CliUiState::InBattle:
+      activeStateHandler =
+        new statehandlers::InBattleStateHandler(*this, gameClient, commandParser, commandMediator, outputStream);
       break;
     case CliUiState::Map:
       activeStateHandler =
