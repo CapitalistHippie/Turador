@@ -75,9 +75,9 @@ public:
     outputStream << '\n';
 
     outputStream << "The following commands are available:\n"
-                 << "fire - Fire at the pirates.\n"
+                 << "fire - Fire your cannons at the pirates.\n"
                  << "run - Try to run. The pirates will fire on your ship while you're running.\n"
-                 << "surrender - Surrender to the pirates.\n";
+                 << "surrender - Surrender to the pirates. You will lose cargo but you won't lose your life.\n";
   }
 };
 }

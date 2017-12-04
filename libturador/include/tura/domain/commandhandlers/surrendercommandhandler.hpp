@@ -24,12 +24,32 @@ public:
   void HandleCommand(const commands::CommandBase<commands::SurrenderCommand>& command) const override
   {
     auto& gameData = command.gameData;
+    auto& ship = gameData.currentShip;
+    auto& enemyShip = gameData.currentEnemyShip;
 
     // Check if we're in the right state.
     if (gameData.gameState != models::GameState::InBattle)
     {
       throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
+
+    auto enemyShipCargoSpaceLeft = enemyShip.shipType.cargoSpaceMax;
+
+    for (auto& cargo : ship.goods)
+    {
+      if (cargo.amount >= enemyShipCargoSpaceLeft)
+      {
+        cargo.amount -= enemyShipCargoSpaceLeft;
+        break;
+      }
+      else
+      {
+        enemyShipCargoSpaceLeft -= cargo.amount;
+        cargo.amount = 0;
+      }
+    }
+
+    gameData.gameState = models::GameState::Sailing;
   }
 };
 }
