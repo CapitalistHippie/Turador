@@ -39,13 +39,15 @@ public:
     });
     if (shipCargo == ship.goods.end())
     {
-      throw std::system_error(std::make_error_code(FunctionalError::CargoNotInShip));
+      throw std::system_error(std::make_error_code(FunctionalError::CargoNotInShip),
+                              "You don't have that cargo in your ship.");
     }
 
     // Check if the ship has enough of the cargo that we want to sell.
     if (shipCargo->amount < command.command.cargoAmount)
     {
-      throw std::system_error(std::make_error_code(FunctionalError::InsufficientCargoInShip));
+      throw std::system_error(std::make_error_code(FunctionalError::InsufficientCargoInShip),
+                              "You don't have enough of that cargo in your ship.");
     }
 
     // Get the harbor cargo.
@@ -54,7 +56,7 @@ public:
     });
     if (harborCargo == harbor.goods.end())
     {
-      throw std::system_error(std::make_error_code(FunctionalError::UnknownCargo));
+      throw std::system_error(std::make_error_code(FunctionalError::UnknownCargo), "Unknown cargo type.");
     }
 
     // Calculate the total gold we are going to earn.

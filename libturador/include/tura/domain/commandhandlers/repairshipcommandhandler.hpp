@@ -53,7 +53,7 @@ public:
     // Check if we got enough money.
     if (gameData.currentGold < totalGoldToSpend)
     {
-      throw std::system_error(std::make_error_code(FunctionalError::InsufficientGold));
+      throw std::system_error(std::make_error_code(FunctionalError::InsufficientGold), "Not enough gold.");
     }
 
     // We got this.

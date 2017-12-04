@@ -41,20 +41,22 @@ public:
     });
     if (harborCargo == harbor.goods.end())
     {
-      throw std::system_error(std::make_error_code(FunctionalError::UnknownCargo));
+      throw std::system_error(std::make_error_code(FunctionalError::UnknownCargo), "Unknown cargo type.");
     }
 
     // Check if the harbor has enough of the cargo that we want to purchase.
     if (harborCargo->cargo.amount < command.command.cargoAmount)
     {
-      throw std::system_error(std::make_error_code(FunctionalError::InsufficientCargoInHarbor));
+      throw std::system_error(std::make_error_code(FunctionalError::InsufficientCargoInHarbor),
+                              "Not enough of that type of cargo in the harbor.");
     }
 
     // Check if the ship has enough cargo space to hold the cargo.
     if (command.command.cargoAmount + GetShipUsedCargoSpace(gameData.currentShip) >
         gameData.currentShip.shipType.cargoSpaceMax)
     {
-      throw std::system_error(std::make_error_code(FunctionalError::InsufficientShipCargoSpace));
+      throw std::system_error(std::make_error_code(FunctionalError::InsufficientShipCargoSpace),
+                              "You don't have enough cargo space in your ship.");
     }
 
     // Calculate the total amount of gold we need to spend.
@@ -63,7 +65,7 @@ public:
     // Check if the player has enough gold.
     if (gameData.currentGold < totalGoldToSpend)
     {
-      throw std::system_error(std::make_error_code(FunctionalError::InsufficientGold));
+      throw std::system_error(std::make_error_code(FunctionalError::InsufficientGold), "Not enough gold.");
     }
 
     // Get the ship cargo.

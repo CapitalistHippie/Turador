@@ -10,11 +10,7 @@ const char* FunctionalErrorCategory::name() const noexcept
 
 std::string FunctionalErrorCategory::message(int ev) const
 {
-  switch ((FunctionalError)ev)
-  {
-    default:
-      return "Unrecognized error.";
-  }
+  return "";
 }
 
 const std::error_category& tura::domain::GetFunctionalErrorCategory()

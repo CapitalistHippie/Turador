@@ -103,7 +103,9 @@ public:
         {
           RenderConsole();
 
-          outputStream << "You can not do that. Please try something else.\n" << e.what() << "\n\n";
+          outputStream << "You can not do that. Please try something else.\n";
+          outputStream.write(e.what(), std::char_traits<char>::length(e.what()) - 2);
+          outputStream << "\n\n";
         }
         else if (e.code() == Error::CommandNotRegistered)
         {
