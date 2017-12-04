@@ -11,6 +11,7 @@
 #include "tura/domain/gamehelpers.hpp"
 #include "tura/domain/models/game.h"
 #include "tura/domain/models/gamestate.h"
+#include "tura/domain/states/inharborstate.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -26,7 +27,6 @@ public:
   void HandleCommand(const commands::CommandBase<commands::PurchaseCargoCommand>& command) const override
   {
     auto& gameData = command.gameData;
-    auto& harbor = gameData.currentHarbor;
     auto& ship = gameData.currentShip;
 
     // Check if we're in the right state.
@@ -34,6 +34,9 @@ public:
     {
       throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
+
+    auto* state = static_cast<states::InHarborState*>(gameData.state);
+    auto& harbor = state->harbor;
 
     // Get the harbor cargo.
     auto harborCargo = std::find_if(harbor.goods.begin(), harbor.goods.end(), [&](const models::HarborCargo& cargo) {

@@ -20,6 +20,8 @@
 #include "tura/domain/models/windstrength.h"
 #include "tura/domain/shipgenerator.hpp"
 #include "tura/domain/shipgeneratorinterface.h"
+#include "tura/domain/states/inharborstate.h"
+#include "tura/domain/states/sailingstate.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -66,15 +68,16 @@ public:
   void HandleCommand(const commands::CommandBase<commands::SailCommand>& command) const override
   {
     auto& gameData = command.gameData;
-    auto& harbor = gameData.currentHarbor;
     auto& ship = gameData.currentShip;
-    auto& trip = gameData.currentSailTrip;
 
     // Check if we're in the right state.
     if (gameData.gameState != models::GameState::Sailing)
     {
       throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
+
+    auto* state = static_cast<states::SailingState*>(gameData.state);
+    auto& trip = state->trip;
 
     // Determine if there is a battle or if we're sailing.
     std::default_random_engine rng;
@@ -85,8 +88,13 @@ public:
 
     if (decision == SailResult::Battle)
     {
-      gameData.currentEnemyShip = shipGenerator->GenerateRandomEnemyShip();
-      gameData.gameState = models::GameState::InBattle;
+      auto trip = std::move(state->trip);
+
+      SetGameState(gameData, models::GameState::InBattle);
+
+      auto* inBattleState = static_cast<states::InBattleState*>(gameData.state);
+      inBattleState->enemyShip = shipGenerator->GenerateRandomEnemyShip();
+      inBattleState->trip = std::move(trip);
     }
     else
     {
@@ -150,8 +158,12 @@ public:
       // Check if the player has reached his destination.
       if (trip.turnsSailed >= trip.route.distanceInTurns)
       {
-        gameData.currentHarbor = harborGenerator->GenerateHarborByName(gameData.currentSailTrip.route.toHarborName);
-        gameData.gameState = models::GameState::InHarbor;
+        auto destination = trip.route.toHarborName;
+
+        SetGameState(gameData, models::GameState::InHarbor);
+
+        auto* state = static_cast<states::InHarborState*>(gameData.state);
+        state->harbor = harborGenerator->GenerateHarborByName(destination);
       }
     }
   }

@@ -15,6 +15,7 @@
 #include "tura/domain/models/harbor.h"
 #include "tura/domain/shipgenerator.hpp"
 #include "tura/domain/shipgeneratorinterface.h"
+#include "tura/domain/states/inharborstate.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -59,9 +60,13 @@ public:
     models::Game freshGameData;
     gameData = std::move(freshGameData);
     gameData.gameState = Constants::GameInitialState;
-    gameData.currentHarbor = harborGenerator->GenerateRandomHarbor();
     gameData.currentShip = shipGenerator->GenerateShipByShipTypeName("Pinnace");
     gameData.currentGold = Constants::GameInitialGold;
+
+    SetGameState(gameData, models::GameState::InHarbor);
+
+    auto* state = static_cast<states::InHarborState*>(gameData.state);
+    state->harbor = harborGenerator->GenerateRandomHarbor();
   }
 };
 }

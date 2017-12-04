@@ -18,7 +18,7 @@ struct Harbor
 {
   helpers::CharArray<64> name;
   helpers::Array<HarborCargo, 32> goods;
-  helpers::Array<Cannon, 32> cannonsForSale;
+  helpers::Array<Cannon, 64> cannonsForSale;
   helpers::Array<ShipType, 32> shipsForSale;
   helpers::Array<SailRoute, 64> sailRoutes;
 };

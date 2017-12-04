@@ -24,7 +24,7 @@ inline unsigned int GetShipUsedCargoSpace(const models::Ship& ship)
   return usedCargoSpace;
 }
 
-inline unsigned int CalculateCannonsDamage(const helpers::Array<models::Cannon, 32>& cannons)
+inline unsigned int CalculateCannonsDamage(const helpers::Array<models::Cannon, 64>& cannons)
 {
   std::default_random_engine rng;
   auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());

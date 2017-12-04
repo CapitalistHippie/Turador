@@ -11,6 +11,7 @@
 #include "tura/domain/gamehelpers.hpp"
 #include "tura/domain/models/game.h"
 #include "tura/domain/models/gamestate.h"
+#include "tura/domain/states/inharborstate.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -23,7 +24,7 @@ class SellCannonsCommandHandler
   : public helpers::CommandHandlerBase<commands::CommandBase<commands::SellCannonsCommand>>
 {
 private:
-  unsigned int GetCannonCountWithClass(const helpers::Array<domain::models::Cannon, 32>& cannons,
+  unsigned int GetCannonCountWithClass(const helpers::Array<domain::models::Cannon, 64>& cannons,
                                        domain::models::CannonClass cannonClass) const
   {
     return std::count_if(
@@ -34,7 +35,6 @@ public:
   void HandleCommand(const commands::CommandBase<commands::SellCannonsCommand>& command) const override
   {
     auto& gameData = command.gameData;
-    auto& harbor = gameData.currentHarbor;
     auto& ship = gameData.currentShip;
 
     // Check if we're in the right state.
@@ -42,6 +42,9 @@ public:
     {
       throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
+
+    auto* state = static_cast<states::InHarborState*>(gameData.state);
+    auto& harbor = state->harbor;
 
     // Check if the ship has enough of the type of cannons to sell.
     if (GetCannonCountWithClass(ship.cannons, command.command.cannonClass) < command.command.amount)

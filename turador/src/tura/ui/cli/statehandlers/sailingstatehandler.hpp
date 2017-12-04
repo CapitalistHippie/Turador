@@ -6,6 +6,7 @@
 #include <tura/domain/models/gamestate.h>
 #include <tura/domain/models/sailroute.h>
 #include <tura/domain/models/sailtrip.h>
+#include <tura/domain/states/sailingstate.h>
 
 #include "tura/ui/cli/statehandlers/basestatehandler.hpp"
 
@@ -49,7 +50,8 @@ public:
   {
     const auto& gameData = gameClient.GetGameData();
     const auto& ship = gameData.currentShip;
-    const auto& trip = gameData.currentSailTrip;
+    auto* state = static_cast<domain::states::SailingState*>(gameData.state);
+    const auto& trip = state->trip;
 
     outputStream << "You are sailing from " << trip.route.fromHarborName << " to " << trip.route.toHarborName << ".\n";
 

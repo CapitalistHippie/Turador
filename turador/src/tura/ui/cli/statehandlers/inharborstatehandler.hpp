@@ -9,6 +9,7 @@
 #include <tura/domain/models/game.h>
 #include <tura/domain/models/shipsizeclass.h>
 #include <tura/domain/models/shipweightclass.h>
+#include <tura/domain/states/inharborstate.h>
 #include <tura/helpers/chararray.hpp>
 
 #include "tura/ui/cli/helpers.hpp"
@@ -83,7 +84,7 @@ domain::models::CannonClass CannonClassStringToEnum(const helpers::CharArray<64>
   // TODO: Throw.
 }
 
-unsigned int GetCannonCountWithClass(const helpers::Array<domain::models::Cannon, 32>& cannons,
+unsigned int GetCannonCountWithClass(const helpers::Array<domain::models::Cannon, 64>& cannons,
                                      domain::models::CannonClass cannonClass)
 {
   return std::count_if(cannons.begin(), cannons.end(), [=](const domain::models::Cannon& cannon) {
@@ -182,8 +183,10 @@ public:
   void RenderConsole() const override
   {
     const auto& gameData = gameClient.GetGameData();
-    const auto& harbor = gameData.currentHarbor;
     const auto& ship = gameData.currentShip;
+
+    auto* state = static_cast<domain::states::InHarborState*>(gameData.state);
+    auto& harbor = state->harbor;
 
     outputStream << "You have " << gameData.currentGold << " gold.\n"
                  << "Your ship is the " << ship.shipType.name << ".\n"

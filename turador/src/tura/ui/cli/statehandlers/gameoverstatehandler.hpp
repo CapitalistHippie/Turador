@@ -32,7 +32,7 @@ public:
     }
     else if (gameState == domain::models::GameState::Lost)
     {
-      auto lostReason = gameData.lostReason;
+      auto lostReason = static_cast<domain::states::LostState*>(gameData.state)->lostReason;
 
       outputStream << "You lost. ";
 

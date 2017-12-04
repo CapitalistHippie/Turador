@@ -13,6 +13,7 @@
 #include "tura/domain/models/gamestate.h"
 #include "tura/domain/shipgenerator.hpp"
 #include "tura/domain/shipgeneratorinterface.h"
+#include "tura/domain/states/inharborstate.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -42,7 +43,6 @@ public:
   void HandleCommand(const commands::CommandBase<commands::PurchaseShipCommand>& command) const override
   {
     auto& gameData = command.gameData;
-    auto& harbor = gameData.currentHarbor;
     auto& ship = gameData.currentShip;
 
     // Check if we're in the right state.
@@ -50,6 +50,9 @@ public:
     {
       throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
+
+    auto* state = static_cast<states::InHarborState*>(gameData.state);
+    auto& harbor = state->harbor;
 
     // Get the type of the ship the player is purchasing.
     auto shipTypeToPurchase =

@@ -12,6 +12,7 @@
 #include "tura/domain/models/gamestate.h"
 #include "tura/domain/models/sailroute.h"
 #include "tura/domain/models/sailtrip.h"
+#include "tura/domain/states/inharborstate.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -27,7 +28,6 @@ public:
   void HandleCommand(const commands::CommandBase<commands::StartSailingCommand>& command) const override
   {
     auto& gameData = command.gameData;
-    auto& harbor = gameData.currentHarbor;
     auto& ship = gameData.currentShip;
 
     // Check if we're in the right state.
@@ -35,6 +35,9 @@ public:
     {
       throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
+
+    auto* inHarborState = static_cast<states::InHarborState*>(gameData.state);
+    auto& harbor = inHarborState->harbor;
 
     // Get the sail route.
     auto sailRoute =
@@ -47,10 +50,13 @@ public:
     }
 
     // Let's do it.
-    gameData.gameState = models::GameState::Sailing;
     models::SailTrip sailTrip;
     sailTrip.route = *sailRoute;
-    gameData.currentSailTrip = sailTrip;
+
+    SetGameState(gameData, models::GameState::Sailing);
+    auto* state = static_cast<states::SailingState*>(gameData.state);
+
+    state->trip = sailTrip;
   }
 };
 }

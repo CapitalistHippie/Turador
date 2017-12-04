@@ -3,6 +3,8 @@
 
 #include <functional>
 
+#include <tura/domain/states/inbattlestate.h>
+
 #include "tura/ui/cli/cliui.h"
 #include "tura/ui/cli/statehandlers/basestatehandler.hpp"
 
@@ -65,7 +67,9 @@ public:
   {
     const auto& gameData = gameClient.GetGameData();
     const auto& ship = gameData.currentShip;
-    const auto& enemyShip = gameData.currentEnemyShip;
+
+    auto* state = static_cast<domain::states::InBattleState*>(gameData.state);
+    auto& enemyShip = state->enemyShip;
 
     outputStream << "You encounterd a pirate ship and are engaged in battle!\n";
     outputStream << "Your ship has " << ship.hitPoints << " out of " << ship.shipType.hitPointsMax << " hit points.\n";

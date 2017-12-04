@@ -3,6 +3,8 @@
 
 #include <functional>
 
+#include <tura/domain/states/inharborstate.h>
+
 #include "tura/ui/cli/cliui.h"
 #include "tura/ui/cli/statehandlers/basestatehandler.hpp"
 
@@ -43,7 +45,9 @@ public:
   void RenderConsole() const override
   {
     const auto& gameData = gameClient.GetGameData();
-    const auto& harbor = gameData.currentHarbor;
+
+    auto* state = static_cast<domain::states::InHarborState*>(gameData.state);
+    auto& harbor = state->harbor;
 
     outputStream << "Welcome to the map. You can sail to the following harbors:\n"
                  << "(Harbor name - Distance in turns)\n";

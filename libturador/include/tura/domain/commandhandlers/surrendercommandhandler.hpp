@@ -10,6 +10,8 @@
 #include "tura/domain/gamehelpers.hpp"
 #include "tura/domain/models/game.h"
 #include "tura/domain/models/gamestate.h"
+#include "tura/domain/states/inbattlestate.h"
+#include "tura/domain/states/sailingstate.h"
 #include "tura/helpers/commandmediator.hpp"
 
 namespace tura
@@ -25,13 +27,15 @@ public:
   {
     auto& gameData = command.gameData;
     auto& ship = gameData.currentShip;
-    auto& enemyShip = gameData.currentEnemyShip;
 
     // Check if we're in the right state.
     if (gameData.gameState != models::GameState::InBattle)
     {
       throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
+
+    auto* state = static_cast<states::InBattleState*>(gameData.state);
+    auto& enemyShip = state->enemyShip;
 
     auto enemyShipCargoSpaceLeft = enemyShip.shipType.cargoSpaceMax;
 
@@ -49,7 +53,12 @@ public:
       }
     }
 
-    gameData.gameState = models::GameState::Sailing;
+    auto trip = std::move(state->trip);
+
+    SetGameState(gameData, models::GameState::Sailing);
+    auto* sailingState = static_cast<states::SailingState*>(gameData.state);
+
+    sailingState->trip = std::move(trip);
   }
 };
 }

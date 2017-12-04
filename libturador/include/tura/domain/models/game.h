@@ -3,9 +3,10 @@
 
 #include "tura/domain/models/gamestate.h"
 #include "tura/domain/models/harbor.h"
-#include "tura/domain/models/lostreason.h"
+
 #include "tura/domain/models/sailtrip.h"
 #include "tura/domain/models/ship.h"
+#include "tura/domain/states/state.h"
 
 namespace tura
 {
@@ -16,12 +17,9 @@ namespace models
 struct Game
 {
   GameState gameState = GameState::NotStarted;
+  states::State* state = nullptr;
 
-  Harbor currentHarbor;
   Ship currentShip;
-  Ship currentEnemyShip;
-  SailTrip currentSailTrip;
-  LostReason lostReason = LostReason::SunkInStorm;
 
   unsigned int currentGold = 0;
 };

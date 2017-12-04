@@ -16,7 +16,7 @@ struct Ship
   ShipType shipType;
   helpers::Array<Cargo, 32> goods;
   int hitPoints = 0;
-  helpers::Array<Cannon, 32> cannons;
+  helpers::Array<Cannon, 64> cannons;
 };
 }
 }

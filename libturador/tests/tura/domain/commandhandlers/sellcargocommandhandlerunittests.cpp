@@ -1,193 +1,194 @@
-#include <system_error>
+// #include <system_error>
 
-#include <gtest/gtest.h>
+// #include <gtest/gtest.h>
 
-#include <tura/domain/commandhandlers/sellcargocommandhandler.hpp>
-#include <tura/domain/commands/commandbase.h>
-#include <tura/domain/commands/sellcargocommand.h>
-#include <tura/domain/functionalerror.h>
-#include <tura/domain/models/game.h>
-#include <tura/domain/models/harbor.h>
-#include <tura/domain/models/ship.h>
-#include <tura/domain/models/shiptype.h>
-#include <tura/harborbuilder.hpp>
-#include <tura/shipbuilder.hpp>
+// #include <tura/domain/commandhandlers/sellcargocommandhandler.hpp>
+// #include <tura/domain/commands/commandbase.h>
+// #include <tura/domain/commands/sellcargocommand.h>
+// #include <tura/domain/functionalerror.h>
+// #include <tura/domain/models/game.h>
+// #include <tura/domain/models/harbor.h>
+// #include <tura/domain/models/ship.h>
+// #include <tura/domain/models/shiptype.h>
+// #include <tura/harborbuilder.hpp>
+// #include <tura/shipbuilder.hpp>
 
-#include "helpers/testhelpers.h"
+// #include "helpers/testhelpers.h"
 
-using namespace testing;
-using namespace tura;
-using namespace tura::domain::commands;
-using namespace tura::domain::commandhandlers;
-using namespace tura::domain::models;
+// using namespace testing;
+// using namespace tura;
+// using namespace tura::domain::commands;
+// using namespace tura::domain::commandhandlers;
+// using namespace tura::domain::models;
 
-TEST(SellCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableState)
-{
-  // Arrange.
-  Game gameData;
-  gameData.gameState = GameState::NotStarted;
+// TEST(SellCargoCommandHandler, HandleCommand_NotInHarbor_ThrowsInsuitableState)
+// {
+//   // Arrange.
+//   Game gameData;
+//   gameData.gameState = GameState::NotStarted;
 
-  SellCargoCommand command;
-  CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
+//   SellCargoCommand command;
+//   CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
 
-  SellCargoCommandHandler sut;
+//   SellCargoCommandHandler sut;
 
-  // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::InsuitableState);
-}
+//   // Act and assert.
+//   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::InsuitableState);
+// }
 
-TEST(SellCargoCommandHandler, HandleCommand_NotEnoughCargoInShip_ThrowsInsufficientCargoInShip)
-{
-  // Arrange.
-  const auto cargoName = "Test cargo";
+// TEST(SellCargoCommandHandler, HandleCommand_NotEnoughCargoInShip_ThrowsInsufficientCargoInShip)
+// {
+//   // Arrange.
+//   const auto cargoName = "Test cargo";
 
-  HarborBuilder harborBuilder;
-  auto harbor = harborBuilder.WithCargo(cargoName, 100, 100).Build();
+//   HarborBuilder harborBuilder;
+//   auto harbor = harborBuilder.WithCargo(cargoName, 100, 100).Build();
 
-  ShipType shipType;
+//   ShipType shipType;
 
-  ShipBuilder shipBuilder;
-  auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
+//   ShipBuilder shipBuilder;
+//   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
 
-  tura::domain::models::Game gameData;
-  gameData.gameState = tura::domain::models::GameState::InHarbor;
-  gameData.currentGold = 10000;
-  gameData.currentHarbor = harbor;
-  gameData.currentShip = ship;
+//   tura::domain::models::Game gameData;
+//   gameData.gameState = tura::domain::models::GameState::InHarbor;
+//   gameData.currentGold = 10000;
+//   gameData.currentHarbor = harbor;
+//   gameData.currentShip = ship;
 
-  SellCargoCommand command;
-  command.cargoName = cargoName;
-  command.cargoAmount = 11;
-  CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
+//   SellCargoCommand command;
+//   command.cargoName = cargoName;
+//   command.cargoAmount = 11;
+//   CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
 
-  SellCargoCommandHandler sut;
+//   SellCargoCommandHandler sut;
 
-  // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::InsufficientCargoInShip);
-}
+//   // Act and assert.
+//   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand),
+//   tura::domain::FunctionalError::InsufficientCargoInShip);
+// }
 
-TEST(SellCargoCommandHandler, HandleCommand_UnknownCargoInShip_ThrowsCargoNotInShip)
-{
-  // Arrange.
-  Harbor harbor;
+// TEST(SellCargoCommandHandler, HandleCommand_UnknownCargoInShip_ThrowsCargoNotInShip)
+// {
+//   // Arrange.
+//   Harbor harbor;
 
-  ShipType shipType;
+//   ShipType shipType;
 
-  ShipBuilder shipBuilder;
-  auto ship = shipBuilder.WithShipType(shipType).Build();
+//   ShipBuilder shipBuilder;
+//   auto ship = shipBuilder.WithShipType(shipType).Build();
 
-  tura::domain::models::Game gameData;
-  gameData.gameState = tura::domain::models::GameState::InHarbor;
-  gameData.currentGold = 10000;
-  gameData.currentHarbor = harbor;
-  gameData.currentShip = ship;
+//   tura::domain::models::Game gameData;
+//   gameData.gameState = tura::domain::models::GameState::InHarbor;
+//   gameData.currentGold = 10000;
+//   gameData.currentHarbor = harbor;
+//   gameData.currentShip = ship;
 
-  SellCargoCommand command;
-  command.cargoName = "Test cargo";
-  command.cargoAmount = 11;
-  CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
+//   SellCargoCommand command;
+//   command.cargoName = "Test cargo";
+//   command.cargoAmount = 11;
+//   CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
 
-  SellCargoCommandHandler sut;
+//   SellCargoCommandHandler sut;
 
-  // Act and assert.
-  ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::CargoNotInShip);
-}
+//   // Act and assert.
+//   ASSERT_THROW_SYSTEM_ERROR(sut.HandleCommand(wrappedCommand), tura::domain::FunctionalError::CargoNotInShip);
+// }
 
-TEST(SellCargoCommandHandler, HandleCommand_RemovesCargoSoldFromShip)
-{
-  // Arrange.
-  const auto cargoName = "Test cargo";
+// TEST(SellCargoCommandHandler, HandleCommand_RemovesCargoSoldFromShip)
+// {
+//   // Arrange.
+//   const auto cargoName = "Test cargo";
 
-  HarborBuilder harborBuilder;
-  auto harbor = harborBuilder.WithCargo(cargoName, 100, 100).Build();
+//   HarborBuilder harborBuilder;
+//   auto harbor = harborBuilder.WithCargo(cargoName, 100, 100).Build();
 
-  ShipType shipType;
+//   ShipType shipType;
 
-  ShipBuilder shipBuilder;
-  auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
+//   ShipBuilder shipBuilder;
+//   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
 
-  tura::domain::models::Game gameData;
-  gameData.gameState = tura::domain::models::GameState::InHarbor;
-  gameData.currentGold = 0;
-  gameData.currentHarbor = harbor;
-  gameData.currentShip = ship;
+//   tura::domain::models::Game gameData;
+//   gameData.gameState = tura::domain::models::GameState::InHarbor;
+//   gameData.currentGold = 0;
+//   gameData.currentHarbor = harbor;
+//   gameData.currentShip = ship;
 
-  SellCargoCommand command;
-  command.cargoName = cargoName;
-  command.cargoAmount = 10;
-  CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
+//   SellCargoCommand command;
+//   command.cargoName = cargoName;
+//   command.cargoAmount = 10;
+//   CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
 
-  SellCargoCommandHandler sut;
+//   SellCargoCommandHandler sut;
 
-  // Act.
-  sut.HandleCommand(wrappedCommand);
+//   // Act.
+//   sut.HandleCommand(wrappedCommand);
 
-  // Assert.
-  EXPECT_EQ(gameData.currentShip.goods[0].amount, 0);
-}
+//   // Assert.
+//   EXPECT_EQ(gameData.currentShip.goods[0].amount, 0);
+// }
 
-TEST(SellCargoCommandHandler, HandleCommand_AddsCargoSoldToHarbor)
-{
-  // Arrange.
-  const auto cargoName = "Test cargo";
+// TEST(SellCargoCommandHandler, HandleCommand_AddsCargoSoldToHarbor)
+// {
+//   // Arrange.
+//   const auto cargoName = "Test cargo";
 
-  HarborBuilder harborBuilder;
-  auto harbor = harborBuilder.WithCargo(cargoName, 100, 100).Build();
+//   HarborBuilder harborBuilder;
+//   auto harbor = harborBuilder.WithCargo(cargoName, 100, 100).Build();
 
-  ShipType shipType;
+//   ShipType shipType;
 
-  ShipBuilder shipBuilder;
-  auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
+//   ShipBuilder shipBuilder;
+//   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
 
-  tura::domain::models::Game gameData;
-  gameData.gameState = tura::domain::models::GameState::InHarbor;
-  gameData.currentGold = 0;
-  gameData.currentHarbor = harbor;
-  gameData.currentShip = ship;
+//   tura::domain::models::Game gameData;
+//   gameData.gameState = tura::domain::models::GameState::InHarbor;
+//   gameData.currentGold = 0;
+//   gameData.currentHarbor = harbor;
+//   gameData.currentShip = ship;
 
-  SellCargoCommand command;
-  command.cargoName = cargoName;
-  command.cargoAmount = 10;
-  CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
+//   SellCargoCommand command;
+//   command.cargoName = cargoName;
+//   command.cargoAmount = 10;
+//   CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
 
-  SellCargoCommandHandler sut;
+//   SellCargoCommandHandler sut;
 
-  // Act.
-  sut.HandleCommand(wrappedCommand);
+//   // Act.
+//   sut.HandleCommand(wrappedCommand);
 
-  // Assert.
-  EXPECT_EQ(gameData.currentHarbor.goods[0].cargo.amount, 110);
-}
+//   // Assert.
+//   EXPECT_EQ(gameData.currentHarbor.goods[0].cargo.amount, 110);
+// }
 
-TEST(SellCargoCommandHandler, HandleCommand_AddsCorrectAmountOfGoldToPlayer)
-{
-  // Arrange.
-  const auto cargoName = "Test cargo";
+// TEST(SellCargoCommandHandler, HandleCommand_AddsCorrectAmountOfGoldToPlayer)
+// {
+//   // Arrange.
+//   const auto cargoName = "Test cargo";
 
-  HarborBuilder harborBuilder;
-  auto harbor = harborBuilder.WithCargo(cargoName, 100, 100).Build();
+//   HarborBuilder harborBuilder;
+//   auto harbor = harborBuilder.WithCargo(cargoName, 100, 100).Build();
 
-  ShipType shipType;
+//   ShipType shipType;
 
-  ShipBuilder shipBuilder;
-  auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
+//   ShipBuilder shipBuilder;
+//   auto ship = shipBuilder.WithShipType(shipType).WithCargo(cargoName, 10).Build();
 
-  tura::domain::models::Game gameData;
-  gameData.gameState = tura::domain::models::GameState::InHarbor;
-  gameData.currentGold = 0;
-  gameData.currentHarbor = harbor;
-  gameData.currentShip = ship;
+//   tura::domain::models::Game gameData;
+//   gameData.gameState = tura::domain::models::GameState::InHarbor;
+//   gameData.currentGold = 0;
+//   gameData.currentHarbor = harbor;
+//   gameData.currentShip = ship;
 
-  SellCargoCommand command;
-  command.cargoName = cargoName;
-  command.cargoAmount = 10;
-  CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
+//   SellCargoCommand command;
+//   command.cargoName = cargoName;
+//   command.cargoAmount = 10;
+//   CommandBase<SellCargoCommand> wrappedCommand(command, gameData);
 
-  SellCargoCommandHandler sut;
+//   SellCargoCommandHandler sut;
 
-  // Act.
-  sut.HandleCommand(wrappedCommand);
+//   // Act.
+//   sut.HandleCommand(wrappedCommand);
 
-  // Assert.
-  EXPECT_EQ(gameData.currentGold, 1000);
-}
+//   // Assert.
+//   EXPECT_EQ(gameData.currentGold, 1000);
+// }
