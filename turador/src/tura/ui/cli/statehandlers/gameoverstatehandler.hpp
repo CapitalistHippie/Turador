@@ -23,14 +23,27 @@ public:
 
   void RenderConsole() const override
   {
-    auto gameState = gameClient.GetGameData().gameState;
+    const auto& gameData = gameClient.GetGameData();
+    auto gameState = gameData.gameState;
+
     if (gameState == domain::models::GameState::Won)
     {
       outputStream << "You won! Congratulations!\n";
     }
     else if (gameState == domain::models::GameState::Lost)
     {
-      outputStream << "You lost.\n";
+      auto lostReason = gameData.lostReason;
+
+      outputStream << "You lost. ";
+
+      if (lostReason == domain::models::LostReason::SunkInStorm)
+      {
+        outputStream << "You were sunk in a storm.\n";
+      }
+      else if (lostReason == domain::models::LostReason::SunkByPirates)
+      {
+        outputStream << "You were sunk by pirates.\n";
+      }
     }
   }
 };

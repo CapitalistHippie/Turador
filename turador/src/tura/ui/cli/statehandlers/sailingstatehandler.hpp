@@ -28,6 +28,10 @@ private:
     {
       context.SetState(CliUiState::InHarbor);
     }
+    else if (gameClient.GetGameData().gameState == domain::models::GameState::InBattle)
+    {
+      context.SetState(CliUiState::InBattle);
+    }
   }
 
 public:
@@ -56,6 +60,27 @@ public:
 
     outputStream << "The following commands are available:\n"
                  << "sail - Sail for a turn.\n";
+
+    switch (trip.lastWindStrength)
+    {
+      case domain::models::WindStrength::None:
+        outputStream << "There was no wind.\n";
+        break;
+      case domain::models::WindStrength::Breeze:
+        outputStream << "There was breeze.\n";
+        break;
+      case domain::models::WindStrength::Weak:
+        outputStream << "There was a weak wind.\n";
+        break;
+      case domain::models::WindStrength::Normal:
+        outputStream << "There was a normal wind.\n";
+        break;
+      case domain::models::WindStrength::Strong:
+        outputStream << "There was a strong wind.\n";
+        break;
+      case domain::models::WindStrength::Storm:
+        outputStream << "You sailed into a storm. Your ship took damage.\n";
+    }
   }
 };
 }

@@ -15,6 +15,7 @@ public:
 
   virtual models::Ship GenerateShipByShipTypeName(const char* const shipTypeName) const = 0;
   virtual models::Ship GenerateShipByShipType(const models::ShipType& shipType) const = 0;
+  virtual models::Ship GenerateRandomEnemyShip() const = 0;
 };
 }
 }

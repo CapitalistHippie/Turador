@@ -13,7 +13,8 @@ enum class GameState
   InHarbor,
   Won,
   Lost,
-  Sailing
+  Sailing,
+  InBattle
 };
 }
 }

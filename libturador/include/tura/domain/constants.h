@@ -25,7 +25,7 @@ struct Constants
 
   static const unsigned int HarborShipsForSale = 3;
 
-  static const float SailingFightChance;
+  static const float SailingBattleChance;
   static const float SailingSailChance;
 
   static const float SailingWindStrengthChanceNone;

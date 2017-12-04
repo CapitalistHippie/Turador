@@ -38,6 +38,15 @@ public:
     }
     else if (gameData.currentShip.hitPoints <= 0)
     {
+      if (gameData.gameState == models::GameState::Sailing)
+      {
+        gameData.lostReason = models::LostReason::SunkInStorm;
+      }
+      else if (gameData.gameState == models::GameState::InBattle)
+      {
+        gameData.lostReason = models::LostReason::SunkByPirates;
+      }
+
       gameData.gameState = models::GameState::Lost;
     }
   }

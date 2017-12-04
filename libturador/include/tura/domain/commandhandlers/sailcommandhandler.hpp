@@ -17,6 +17,7 @@
 #include "tura/domain/models/gamestate.h"
 #include "tura/domain/models/sailroute.h"
 #include "tura/domain/models/sailtrip.h"
+#include "tura/domain/models/windstrength.h"
 #include "tura/domain/shipgenerator.hpp"
 #include "tura/domain/shipgeneratorinterface.h"
 #include "tura/helpers/commandmediator.hpp"
@@ -32,18 +33,8 @@ class SailCommandHandler : public helpers::CommandHandlerBase<commands::CommandB
 private:
   enum class SailResult
   {
-    Pirates = 0,
+    Battle = 0,
     Sail = 1
-  };
-
-  enum class WindStrength
-  {
-    None = 0,
-    Breeze = 1,
-    Weak = 2,
-    Normal = 3,
-    Strong = 4,
-    Storm = 5
   };
 
   enum class StormResult
@@ -85,15 +76,17 @@ public:
       throw std::system_error(std::make_error_code(FunctionalError::InsuitableState));
     }
 
-    // Determine if there are pirates or if we're sailing.
+    // Determine if there is a battle or if we're sailing.
     std::default_random_engine rng;
     auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
     rng.seed(seed);
-    std::discrete_distribution<> dist({ Constants::SailingFightChance, Constants::SailingSailChance });
+    std::discrete_distribution<> dist({ Constants::SailingBattleChance, Constants::SailingSailChance });
     auto decision = static_cast<SailResult>(dist(rng));
 
-    if (decision == SailResult::Pirates)
+    if (decision == SailResult::Battle)
     {
+      gameData.currentEnemyShip = shipGenerator->GenerateRandomEnemyShip();
+      gameData.gameState = models::GameState::InBattle;
     }
     else
     {
@@ -104,31 +97,32 @@ public:
                                                       Constants::SailingWindStrengthChanceNormal,
                                                       Constants::SailingWindStrengthChanceStrong,
                                                       Constants::SailingWindStrengthChanceStorm });
-      auto windStrength = static_cast<WindStrength>(windStrengthDist(rng));
+      auto windStrength = static_cast<models::WindStrength>(windStrengthDist(rng));
+      trip.lastWindStrength = windStrength;
 
       switch (windStrength)
       {
-        case WindStrength::None:
+        case models::WindStrength::None:
           break;
-        case WindStrength::Breeze:
+        case models::WindStrength::Breeze:
           if (ship.shipType.weightClass == models::ShipWeightClass::Light)
           {
             trip.turnsSailed++;
           }
           break;
-        case WindStrength::Weak:
+        case models::WindStrength::Weak:
           if (ship.shipType.weightClass != models::ShipWeightClass::Heavy)
           {
             trip.turnsSailed++;
           }
           break;
-        case WindStrength::Normal:
+        case models::WindStrength::Normal:
           trip.turnsSailed++;
           break;
-        case WindStrength::Strong:
+        case models::WindStrength::Strong:
           trip.turnsSailed += 2;
           break;
-        case WindStrength::Storm:
+        case models::WindStrength::Storm:
           // Determine the storm result.
           std::discrete_distribution<> stormResultDist({ Constants::SailingStormResultChanceBlownOffCourse,
                                                          Constants::SailingStormResultChanceNothing,

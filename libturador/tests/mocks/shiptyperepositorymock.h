@@ -11,6 +11,7 @@ class ShipTypeRepositoryMock : public tura::dal::repositories::ShipTypeRepositor
 public:
   MOCK_CONST_METHOD0(GetShipTypeCount, unsigned int());
   MOCK_CONST_METHOD1(GetShipTypeByName, tura::domain::models::ShipType(const char* const shipTypeName));
+  MOCK_CONST_METHOD0(GetRandomShipType, tura::domain::models::ShipType());
 };
 
 #endif // LIBTURADOR_TESTS_MOCKS_SHIPTYPEREPOSITORYMOCK_H_INCLUDED

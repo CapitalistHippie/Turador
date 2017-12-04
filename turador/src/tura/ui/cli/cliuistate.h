@@ -13,7 +13,8 @@ enum class CliUiState
   InHarbor,
   GameOver,
   Map,
-  Sailing
+  Sailing,
+  InBattle
 };
 }
 }

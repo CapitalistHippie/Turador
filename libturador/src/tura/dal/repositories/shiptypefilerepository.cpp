@@ -1,6 +1,8 @@
 #include "tura/dal/repositories/shiptypefilerepository.h"
 
+#include <chrono>
 #include <cstring>
+#include <random>
 #include <stdexcept>
 #include <system_error>
 
@@ -90,4 +92,14 @@ ShipType ShipTypeFileRepository::GetShipTypeByName(const char* const shipTypeNam
 ShipType ShipTypeFileRepository::GetShipTypeByIndex(unsigned int index) const
 {
   return shipTypes[index];
+}
+
+ShipType ShipTypeFileRepository::GetRandomShipType() const
+{
+  std::default_random_engine rng;
+  auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
+  rng.seed(seed);
+  std::uniform_int_distribution<int> rngDistribution1(0, GetShipTypeCount() - 1);
+
+  return GetShipTypeByIndex(rngDistribution1(rng));
 }

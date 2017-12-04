@@ -2,7 +2,7 @@
 
 using namespace tura::domain;
 
-const float Constants::SailingFightChance = 0.2f;
+const float Constants::SailingBattleChance = 0.2f;
 const float Constants::SailingSailChance = 0.8f;
 
 const float Constants::SailingWindStrengthChanceNone = 0.1f;

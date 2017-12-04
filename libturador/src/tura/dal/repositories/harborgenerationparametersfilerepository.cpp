@@ -1,6 +1,6 @@
 #include "tura/dal/repositories/harborgenerationparametersfilerepository.h"
 
-#include <ctime>
+#include <chrono>
 #include <random>
 #include <system_error>
 
@@ -145,7 +145,8 @@ HarborGenerationParameters HarborGenerationParametersFileRepository::GetHarborGe
 HarborGenerationParameters HarborGenerationParametersFileRepository::GetRandomHarborGenerationParameters() const
 {
   std::default_random_engine rng;
-  rng.seed(time(0));
+  auto seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
+  rng.seed(seed);
   std::uniform_int_distribution<int> rngDistribution1(0, GetHarborGenerationParametersCount() - 1);
 
   return harborGenerationParameters[rngDistribution1(rng)];
